@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" xmlns:tns="http://server.xfire.service.oserver.cdt.com" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://server.xfire.service.oserver.cdt.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://server.xfire.service.oserver.cdt.com">
+      <xsd:element name="outService1">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="jkid" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="xlh" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="yhbz" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="dwmc" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="dwjgdm" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="yhxm" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="zdbs" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="xmlDoc" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="outService1Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="outServiceResult" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="outService">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="jkid" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="xlh" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="xmlDoc" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="outServiceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="outServiceResult" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="outSyncService">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="jkurl" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="jkhsm" nillable="true" type="xsd:string" />
+            <xsd:element minOccurs="1" maxOccurs="1" name="jkcs" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="outSyncServiceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="outSyncServiceResult" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="outServiceResponse">
+    <wsdl:part name="parameters" element="tns:outServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="outService1Response">
+    <wsdl:part name="parameters" element="tns:outService1Response" />
+  </wsdl:message>
+  <wsdl:message name="outSyncServiceRequest">
+    <wsdl:part name="parameters" element="tns:outSyncService" />
+  </wsdl:message>
+  <wsdl:message name="outService1Request">
+    <wsdl:part name="parameters" element="tns:outService1" />
+  </wsdl:message>
+  <wsdl:message name="outSyncServiceResponse">
+    <wsdl:part name="parameters" element="tns:outSyncServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="outServiceRequest">
+    <wsdl:part name="parameters" element="tns:outService" />
+  </wsdl:message>
+  <wsdl:portType name="CdtOutAccessPortType">
+    <wsdl:operation name="outService1">
+      <wsdl:input name="outService1Request" message="tns:outService1Request" />
+      <wsdl:output name="outService1Response" message="tns:outService1Response" />
+    </wsdl:operation>
+    <wsdl:operation name="outService">
+      <wsdl:input name="outServiceRequest" message="tns:outServiceRequest" />
+      <wsdl:output name="outServiceResponse" message="tns:outServiceResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="outSyncService">
+      <wsdl:input name="outSyncServiceRequest" message="tns:outSyncServiceRequest" />
+      <wsdl:output name="outSyncServiceResponse" message="tns:outSyncServiceResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CdtOutAccessHttpBinding" type="tns:CdtOutAccessPortType">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="outService1">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="outService1Request">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="outService1Response">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="outService">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="outServiceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="outServiceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="outSyncService">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="outSyncServiceRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="outSyncServiceResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CdtOutAccess">
+    <wsdl:port name="CdtOutAccessHttpPort" binding="tns:CdtOutAccessHttpBinding">
+      <wsdlsoap:address location="http://10.123.91.29:18081/outService/services/CdtOutAccess" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <link href="Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+    <link href="CSS/dataManagement.css" rel="stylesheet" />
+    <link href="CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="CSS/jquery.dataTables.css" rel="stylesheet" />
+    <link href="Static_Seed_Project/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <div id="header"></div>
+    <div class="row">
+        <div class="col-md-3"><div><i class="fa fa-database" aria-hidden="true"></i><ul id="ulsbpf"><li>0</li><li>设备配发量</li><li>同比上周--% </li></ul></div></div>
+        <div class="col-md-3"><div><i class="fa fa-clock-o" aria-hidden="true"></i><ul id="ulsysc"><li>0</li><li>使用时长</li><li>同比上周--%</li></ul></div></div>
+        <div class="col-md-3"><div><i class="fa fa-server" aria-hidden="true"></i><ul id="ulsysl"><li>0</li><li>设备使用数量</li><li>同比上周--%</li></ul></div></div>
+        <div class="col-md-3"><div><i class="fa fa-area-chart" aria-hidden="true"></i><ul id="ulzxsb"><li>0</li><li>在线设备</li><li>同比上周--%</li></ul></div></div>
+    </div>
+    <div class="tablediv">
+        <div class="row"><label>| 车载视频报表</label></div>
+        <div class="row">
+            <label>  设备类型:</label>
+            <div class="sentity">
+                <select id="deviceselect">
+         
+              
+                </select>
+            </div>
+            <label>部门:</label>
+            <div class="sentity"> <select id="brigadeselect"><option value="all">全部</option></select></div>
+            <div class="sentity"> <select id="squadronselect" disabled="disabled"><option value="all">全部</option></select></div>
+        </div>
+        <div class="row">
+         <label>统计时间:</label>
+        <div class="date" ><input type="text" class=" start_form_datetime"><i class="fa fa-calendar"></i></div>
+         <label>—</label>
+         <div class="date"><input type="text" class=" end_form_datetime"><i class="fa fa-calendar"></i></div>
+         <div class="date search"><input type="text"  placeholder="请输入设备编号" ><i class="fa fa-search" aria-hidden="true"></i></div>
+         <div class="cell-button" id="requestbtn">查询</div>
+         <div class="cell-button" id="resetbtn">重置</div>
+         </div>
+     
+        <div class="row">
+        <div class="cell-button daochu">导出</div>
+        <div class="cell-button" id="configbtn">参数配置</div>
+        <div class="cell-button btnsjx" disabled="disabled">显示数据项</div>
+
+        <div class="cell-button shujudiv"><ul id="shujuxiang"><li><i class="fa fa-check-square-o" aria-hidden="true"></i>序号</li><li><i class="fa fa-check-square-o" aria-hidden="true"></i>操作</li></ul></div> 
+        </div>
+        <div class="row" style="overflow-y:hidden;overflow-x:auto;">
+            <div class="progress progress-striped active progresshz" style="width:80%;margin:0 auto;"><div class="floot-zhbar progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div> </div>
+                <table id="search-result-table" style="width:1200px;border:none!important" >
+                    <thead>
+                        <tr>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th ></th>
+                            <th style="width:60px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+        </div>
+    </div>
+
+    <!--查看详情-->
+    <div class="modal fade custom-modal datadetail" id="myModalgr" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="max-width:960px;width:100%;">
+            <div class="modal-content" style="max-width:960px;width:100%;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModaltxzsLabel">设备详情</h4>
+                    <div class="cell-button daochumx">导出</div>
+                </div>
+                <div class="modal-body">
+                    <div id="txbox">
+                        <div class="progress progress-striped active progressdt" style="width:80%;margin:0 auto;"><div class="floot-zhbar progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div> </div>
+                        <table class="table table-striped dataTables-example" id="detailgr-result-table" style="width:100%;">
+                            <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>部门</th>
+                                    <th>警员姓名</th>
+                                    <th>警号编号</th>
+                                    <th>编号</th>
+                                    <th>在线时长</th>
+                                    <th>数据</th>
+                                    <th>数据</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="search-result-flooterleft" style="margin-left:30px;width:640px">
+                    <label><span></span></label>
+                    <label style="float:right;"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+  <div class="modal fade custom-modal in" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mydeleModeNo" style="display: none">
+        <div class="modal-backdrop fade in" style="height: 955px;z-index: -1;"></div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">告警</h4><input style="display:none;" />
+                </div>
+                <div class="modal-body">
+                    结束时间不能小于起始时间！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-qx" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade custom-modal in" id="configmodal" tabindex="-1" role="dialog" aria-labelledby="mydeleModeNo" style="display: none">
+        <div class="modal-backdrop fade in" style="height: 955px;z-index: -1;"></div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">报表参数设置</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="date">设备使用标准：超过<input type="text" value="10" onkeyup="this.value=this.value.replace(/\D|^/g,'')" onafterpaste="this.value=this.value.replace(/\D|^/g,'')">分钟<label class="alainfo"><i class="fa fa-close"></i>设备使用标准不能为空</label></div>
+                    <div class="date">设备在线标准：超过<input type="text" value="30" onkeyup="this.value=this.value.replace(/\D|^/g,'')" onafterpaste="this.value=this.value.replace(/\D|^/g,'')">分钟<label class="alainfo"><i class="fa fa-close"></i>设备在线标准不能为空</label></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-save" >保存</button>
+                    <button type="button" class="btn btn-primary btn-qx" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="comjs/jquery.js"></script>
+    <script src="comjs/jquery.cookie.js"></script>
+    <script src="comjs/bootstrap.min.js"></script>
+    <script src="comjs/jquery.dataTables.js"></script>
+    <script src="comjs/bootstrap-datetimepicker.js"></script>
+    <script src="Js/dataManagement.js"></script>
+</body>
+</html>

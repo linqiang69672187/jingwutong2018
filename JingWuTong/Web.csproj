@@ -1,0 +1,1290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A84F39CE-5B47-44DB-BE79-1CBD3046B08A}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>JingWuTong</RootNamespace>
+    <AssemblyName>JingWuTong</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GemBox.Spreadsheet">
+      <HintPath>..\DbComponet\bin\Debug\GemBox.Spreadsheet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NPOI">
+      <HintPath>C:\Users\queyx\Desktop\Npoi201Dll\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\BLL.dll" />
+    <Content Include="bin\BLL.pdb" />
+    <Content Include="bin\DAL.dll" />
+    <Content Include="bin\DAL.pdb" />
+    <Content Include="bin\DbComponet.dll" />
+    <Content Include="bin\DbComponet.pdb" />
+    <Content Include="bin\GemBox.Spreadsheet.dll" />
+    <Content Include="bin\JingWuTong.dll" />
+    <Content Include="bin\JingWuTong.pdb" />
+    <Content Include="bin\JingWuTong.XmlSerializers.dll" />
+    <Content Include="bin\Model.dll" />
+    <Content Include="bin\Model.pdb" />
+    <Content Include="bin\NPOI.dll" />
+    <Content Include="bin\TOOL.dll" />
+    <Content Include="bin\TOOL.pdb" />
+    <Content Include="build\examples\addlayer.html" />
+    <Content Include="build\examples\addlayer.js" />
+    <Content Include="build\examples\browserify\index.html" />
+    <Content Include="build\examples\browserify\index.js" />
+    <Content Include="build\examples\layerswitcher.css" />
+    <Content Include="build\examples\layerswitcher.html" />
+    <Content Include="build\examples\layerswitcher.js" />
+    <Content Include="build\examples\scroll.css" />
+    <Content Include="build\examples\scroll.html" />
+    <Content Include="build\examples\scroll.js" />
+    <Content Include="build\ol-debug.js" />
+    <Content Include="build\ol-deps.js" />
+    <Content Include="build\ol.js" />
+    <Content Include="build\ol3-layerswitcher.js" />
+    <Content Include="build\src\ol3-layerswitcher.css" />
+    <Content Include="build\src\ol3-layerswitcher.js" />
+    <Content Include="comjs\Addcomjs.js" />
+    <Content Include="comjs\apiv2.0.my.js" />
+    <Content Include="comjs\bootstrap-datetimepicker.js" />
+    <Content Include="comjs\bootstrap.min.js" />
+    <Content Include="comjs\datatables.min - 复制.js" />
+    <Content Include="comjs\datatables.min.js" />
+    <Content Include="comjs\echarts.js" />
+    <Content Include="comjs\echarts.min.js" />
+    <Content Include="comjs\fonts\fontawesome-webfont.svg" />
+    <Content Include="comjs\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="comjs\handlebars.js" />
+    <Content Include="comjs\highchart.js" />
+    <Content Include="comjs\highcharts-more.js" />
+    <Content Include="comjs\highcharts.js" />
+    <Content Include="comjs\highmap.js" />
+    <Content Include="comjs\highmaps.js" />
+    <Content Include="comjs\ion.rangeSlider.js" />
+    <Content Include="comjs\jquery-1.12.3.min - 复制.js" />
+    <Content Include="comjs\jquery-1.12.3.min.js" />
+    <Content Include="comjs\jquery.bootstrap.newsbox.js" />
+    <Content Include="comjs\jquery.bootstrap.newsbox.min.js" />
+    <Content Include="comjs\jquery.cookie.js" />
+    <Content Include="comjs\jquery.dataTables.js" />
+    <Content Include="comjs\jquery.Huploadify.js" />
+    <Content Include="comjs\jquery.js" />
+    <Content Include="comjs\jquery.orgchart.js" />
+    <Content Include="comjs\jquery.pagination.js" />
+    <Content Include="comjs\jquery.vticker.js" />
+    <Content Include="comjs\jquery.vticker.min.js" />
+    <Content Include="comjs\moment-with-locales.js" />
+    <Content Include="comjs\moment.js" />
+    <Content Include="comjs\myHeatmap2.0.min.js" />
+    <Content Include="comjs\textCount.js" />
+    <Content Include="config.html" />
+    <Content Include="configs\entitymanage.html" />
+    <Content Include="configs\Images\favicon.ico" />
+    <Content Include="configs\Images\sort_asc.png" />
+    <Content Include="configs\Images\sort_asc_disabled.png" />
+    <Content Include="configs\Images\sort_both.png" />
+    <Content Include="configs\Images\sort_desc.png" />
+    <Content Include="configs\Images\sort_desc_disabled.png" />
+    <Content Include="configs\indexconfig.html" />
+    <Content Include="css\bootstrap-datetimepicker.min.css" />
+    <Content Include="css\bootstrap-theme.css" />
+    <Content Include="css\bootstrap-theme.min.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\config.css" />
+    <Content Include="css\dataManagement.css" />
+    <Content Include="css\indexdemo.css" />
+    <Content Include="css\report.css" />
+    <Content Include="css\window.css" />
+    <Content Include="css\datatables.min.css" />
+    <Content Include="css\entitymanage.css" />
+    <Content Include="css\font-awesome\css\font-awesome.css" />
+    <Content Include="css\font-awesome\css\font-awesome.min.css" />
+    <Content Include="css\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="css\font-awesome\less\font-awesome.css" />
+    <Content Include="css\font-awesome\less\mixins.css" />
+    <Content Include="css\font-awesome\less\variables.css" />
+    <Content Include="css\font-awesome\scss\font-awesome.css" />
+    <Content Include="css\index.css" />
+    <Content Include="css\indexconfig.css" />
+    <Content Include="css\jquery.dataTables.css" />
+    <Content Include="css\map.css" />
+    <Content Include="css\ol.css" />
+    <Content Include="css\top.css" />
+    <Content Include="data.html" />
+    <Content Include="dataManagement.html" />
+    <Content Include="demo.html" />
+    <Content Include="Equipment\Equipment_Examine.aspx" />
+    <Content Include="Equipment\Equipment_Management.aspx" />
+    <Content Include="Equipment\Equipment_Register.aspx" />
+    <Content Include="Equipment\Equipment_Register_Add.aspx" />
+    <Content Include="Handle\index_24histroy.ashx" />
+    <Content Include="Handle\report\1.xls" />
+    <Content Include="Handle\WebForm1.aspx" />
+    <Content Include="HtmlPage1.html" />
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\sort_asc.png" />
+    <Content Include="Images\sort_asc_disabled.png" />
+    <Content Include="Images\sort_both.png" />
+    <Content Include="Images\sort_desc.png" />
+    <Content Include="Images\sort_desc_disabled.png" />
+    <Content Include="image\bannar-logo.png" />
+    <Content Include="image\bannar-logo_L.png" />
+    <Content Include="image\bannar-time-bg.png" />
+    <Content Include="image\bannerbg.png" />
+    <Content Include="image\config_indexleft1.png" />
+    <Content Include="image\config_indexleft2.png" />
+    <Content Include="image\config_indexright.png" />
+    <Content Include="image\datamanagement_listbg.png" />
+    <Content Include="image\datamanagermentbg.jpg" />
+    <Content Include="image\deviceicologo.png" />
+    <Content Include="image\DropDownList.png" />
+    <Content Include="image\entitylist.png" />
+    <Content Include="image\favicon.ico" />
+    <Content Include="image\indexbg.jpg" />
+    <Content Include="image\indexywxt_bg.png" />
+    <Content Include="image\index_bz.png" />
+    <Content Include="image\index_chezaiship.png" />
+    <Content Include="image\index_duijiangji.png" />
+    <Content Include="image\index_fujingtong.png" />
+    <Content Include="image\index_jingwutong.png" />
+    <Content Include="image\index_lanjieyi.png" />
+    <Content Include="image\index_zhifajiluyi.png" />
+    <Content Include="image\leftbootombg.png" />
+    <Content Include="image\leftbootombg_1.png" />
+    <Content Include="image\left_bannerbg.png" />
+    <Content Include="image\policestationlogo.png" />
+    <Content Include="image\rightbox_bg.png" />
+    <Content Include="image\sort_asc.png" />
+    <Content Include="image\sort_asc_disabled.png" />
+    <Content Include="image\sort_both.png" />
+    <Content Include="image\sort_desc.png" />
+    <Content Include="image\sort_desc_disabled.png" />
+    <Content Include="image\topbannerbg.png" />
+    <Content Include="image\修改.png" />
+    <Content Include="image\全部显示.png" />
+    <Content Include="image\删除.png" />
+    <Content Include="image\登录界面.jpg" />
+    <Content Include="image\登录界面头.jpg" />
+    <Content Include="image\登录界面头.png" />
+    <Content Include="image\线条.png" />
+    <Content Include="image\设备查看标题.png" />
+    <Content Include="image\设备查看标题2.png" />
+    <Content Include="image\设备查看标题3.png" />
+    <Content Include="image\设备查看标题4.png" />
+    <Content Include="image\设备查看背景.jpg" />
+    <Content Include="image\飘窗图标.png" />
+    <Content Include="img\00bj1.png" />
+    <Content Include="img\00bj2.png" />
+    <Content Include="img\1-警务通.png" />
+    <Content Include="img\1.png" />
+    <Content Include="img\11.jpg" />
+    <Content Include="img\11.png" />
+    <Content Include="img\arrow.png" />
+    <Content Include="img\arrow1.png" />
+    <Content Include="img\bg-policeman-selected.png" />
+    <Content Include="img\big-cloud-selected.png" />
+    <Content Include="img\big-cloud.png" />
+    <Content Include="img\car1.png" />
+    <Content Include="img\car2.png" />
+    <Content Include="img\car3.png" />
+    <Content Include="img\car4.png" />
+    <Content Include="img\car5.png" />
+    <Content Include="img\car6.png" />
+    <Content Include="img\car7.png" />
+    <Content Include="img\dadui.png" />
+    <Content Include="img\data1.png" />
+    <Content Include="img\deviceClick_bg.png" />
+    <Content Include="img\devicepic\1\car\1.png" />
+    <Content Include="img\devicepic\1\car\2.png" />
+    <Content Include="img\devicepic\1\car\3.png" />
+    <Content Include="img\devicepic\1\moto\1.png" />
+    <Content Include="img\devicepic\1\moto\2.png" />
+    <Content Include="img\devicepic\1\moto\3.png" />
+    <Content Include="img\devicepic\2\1.png" />
+    <Content Include="img\devicepic\2\2.png" />
+    <Content Include="img\devicepic\4\1.png" />
+    <Content Include="img\devicepic\4\2.png" />
+    <Content Include="img\devicepic\4\3.png" />
+    <Content Include="img\gjclose.png" />
+    <Content Include="img\interceptor.png" />
+    <Content Include="img\jingjingju.png" />
+    <Content Include="img\jingwutong.png" />
+    <Content Include="img\logo.png" />
+    <Content Include="img\moto1.png" />
+    <Content Include="img\moto2.png" />
+    <Content Include="img\moto3.png" />
+    <Content Include="img\moto4.png" />
+    <Content Include="img\moto5.png" />
+    <Content Include="img\moto6.png" />
+    <Content Include="img\moto7.png" />
+    <Content Include="img\police-car.png" />
+    <Content Include="img\policeman-avatar.png" />
+    <Content Include="img\qd.png" />
+    <Content Include="img\ser.png" />
+    <Content Include="img\small-cloud-selected.png" />
+    <Content Include="img\small-cloud.png" />
+    <Content Include="img\sprite-skin-flat.png" />
+    <Content Include="img\sprite-skin-modern.png" />
+    <Content Include="img\sprite-skin-nice.png" />
+    <Content Include="img\sprite-skin-simple.png" />
+    <Content Include="img\taizhoulogo.jpg" />
+    <Content Include="img\timg.gif" />
+    <Content Include="img\two-way-radio.png" />
+    <Content Include="img\user1.png" />
+    <Content Include="img\user2.png" />
+    <Content Include="img\user3.png" />
+    <Content Include="img\user4.png" />
+    <Content Include="img\zd.png" />
+    <Content Include="img\zdui.png" />
+    <Content Include="img\警员.png" />
+    <Content Include="index.html" />
+    <Content Include="indexdemo.html" />
+    <Content Include="jQuery.flipster\css\carousel.css" />
+    <Content Include="jQuery.flipster\index.html" />
+    <Content Include="jQuery.flipster\js\jquery.carousel.js" />
+    <Content Include="jQuery.flipster\js\jquery.js" />
+    <Content Include="js\bootstrap.js" />
+    <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\config.js" />
+    <Content Include="js\config1.js" />
+    <Content Include="js\dataManagement.js" />
+    <Content Include="js\demo.js" />
+    <Content Include="js\indexdemo.js" />
+    <Content Include="js\opendiv.js" />
+    <Content Include="js\report.js" />
+    <Content Include="js\window1.js" />
+    <Content Include="js\Date.js" />
+    <Content Include="js\entitymanage.js" />
+    <Content Include="js\index.js" />
+    <Content Include="js\indexconfig.js" />
+    <Content Include="js\jquery\jquery-3.3.1.js" />
+    <Content Include="js\jquery\jquery-3.3.1.min.js" />
+    <Content Include="js\map.js" />
+    <Content Include="js\markpic.js" />
+    <Content Include="js\My97DatePicker\calendar.js" />
+    <Content Include="js\My97DatePicker\lang\en.js" />
+    <Content Include="js\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="js\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="js\My97DatePicker\skin\blueFresh\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\blueFresh\img.gif" />
+    <Content Include="js\My97DatePicker\skin\blue\bg.jpg" />
+    <Content Include="js\My97DatePicker\skin\blue\btnbg.jpg" />
+    <Content Include="js\My97DatePicker\skin\blue\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\blue\down.jpg" />
+    <Content Include="js\My97DatePicker\skin\blue\left.gif" />
+    <Content Include="js\My97DatePicker\skin\blue\navLeft.gif" />
+    <Content Include="js\My97DatePicker\skin\blue\navRight.gif" />
+    <Content Include="js\My97DatePicker\skin\blue\qs.jpg" />
+    <Content Include="js\My97DatePicker\skin\blue\right.gif" />
+    <Content Include="js\My97DatePicker\skin\blue\up.jpg" />
+    <Content Include="js\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="js\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\default\img.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\ext\dateselect.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\glass-bg.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\hd-sprite.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\img.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\left-btn.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\left-btn2.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\right-btn.gif" />
+    <Content Include="js\My97DatePicker\skin\ext\right-btn2.gif" />
+    <Content Include="js\My97DatePicker\skin\green\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\green\img.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\bg.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\bg_calendar.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\simple\down.jpg" />
+    <Content Include="js\My97DatePicker\skin\simple\indexbg.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\left.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\navLeft.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\navRight.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\qs.jpg" />
+    <Content Include="js\My97DatePicker\skin\simple\right.gif" />
+    <Content Include="js\My97DatePicker\skin\simple\up.jpg" />
+    <Content Include="js\My97DatePicker\skin\simple\ymbg.jpg" />
+    <Content Include="js\My97DatePicker\skin\twoer\datepicker-dev.css" />
+    <Content Include="js\My97DatePicker\skin\twoer\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\twoer\img.gif" />
+    <Content Include="js\My97DatePicker\skin\twoer\img.png" />
+    <Content Include="js\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="js\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="js\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="js\My97DatePicker\skin\YcloudRed\bg.gif" />
+    <Content Include="js\My97DatePicker\skin\YcloudRed\datepicker.css" />
+    <Content Include="js\My97DatePicker\skin\YcloudRed\qs.jpg" />
+    <Content Include="js\My97DatePicker\WdatePicker.js" />
+    <Content Include="js\npm.js" />
+    <Content Include="js\test.js" />
+    <Content Include="js\vertor.js" />
+    <Content Include="js\Window2.js" />
+    <Content Include="login.aspx" />
+    <Content Include="Equipment\MainTain_DeviceLog.aspx" />
+    <Content Include="Equipment\MainTain_DeviceLog_Add.aspx" />
+    <Content Include="map.html" />
+    <Content Include="Ol\baidu.js" />
+    <Content Include="Ol\loader.js" />
+    <Content Include="Ol\mark.js" />
+    <Content Include="Ol\resources\common.js" />
+    <Content Include="Ol\resources\layout.css" />
+    <Content Include="Ol\resources\logo-70x70.png" />
+    <Content Include="Ol\resources\map-background.jpg" />
+    <Content Include="Ol\resources\mapbox-streets-v6-style.js" />
+    <Content Include="Ol\resources\prism\prism.css" />
+    <Content Include="Ol\resources\prism\prism.min.js" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.Core.js" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.Core.min.js" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.js" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.min.js" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.swf" />
+    <Content Include="Ol\vertor.js" />
+    <Content Include="Ol\xyz-esri.html" />
+    <Content Include="Ol\xyz-esri.js" />
+    <Content Include="PCSS\bootstrap-datetimepicker.min.css" />
+    <Content Include="PCSS\config.css" />
+    <Content Include="PCSS\dataManagement.css" />
+    <Content Include="PCSS\datatables.min.css" />
+    <Content Include="PCSS\Date.css" />
+    <Content Include="PCSS\entitymanage.css" />
+    <Content Include="PCSS\index.css" />
+    <Content Include="PCSS\jquery.dataTables.css" />
+    <Content Include="PCSS\map.css" />
+    <Content Include="PCSS\ol.css" />
+    <Content Include="PCSS\top.css" />
+    <Content Include="Personnel\Personnel_Manageme.aspx" />
+    <Content Include="Personnel\Police_Management.aspx" />
+    <Content Include="Personnel\Police_Management_Add.aspx" />
+    <Content Include="Personnel\Role_Management.aspx" />
+    <Content Include="Equipment\Recycle_Device.aspx" />
+    <Content Include="Equipment\Remind_Device.aspx" />
+    <Content Include="Personnel\Role_Management_Add.aspx" />
+    <Content Include="PImage\bannar-logo.png" />
+    <Content Include="PImage\bannar-time-bg.png" />
+    <Content Include="PImage\bannerbg.png" />
+    <Content Include="PImage\datamanagement_listbg.png" />
+    <Content Include="PImage\datamanagermentbg.jpg" />
+    <Content Include="PImage\deviceicologo.png" />
+    <Content Include="PImage\entitylist.png" />
+    <Content Include="PImage\favicon.ico" />
+    <Content Include="PImage\indexbg.jpg" />
+    <Content Include="PImage\indexywxt_bg.png" />
+    <Content Include="PImage\index_bz.png" />
+    <Content Include="PImage\index_chezaiship.png" />
+    <Content Include="PImage\index_duijiangji.png" />
+    <Content Include="PImage\index_jingwutong.png" />
+    <Content Include="PImage\index_lanjieyi.png" />
+    <Content Include="PImage\index_zhifajiluyi.png" />
+    <Content Include="PImage\leftbootombg.png" />
+    <Content Include="PImage\leftbootombg_1.png" />
+    <Content Include="PImage\left_bannerbg.png" />
+    <Content Include="PImage\sort_asc.png" />
+    <Content Include="PImage\sort_asc_disabled.png" />
+    <Content Include="PImage\sort_both.png" />
+    <Content Include="PImage\sort_desc.png" />
+    <Content Include="PImage\sort_desc_disabled.png" />
+    <Content Include="PImage\topbannerbg.png" />
+    <Content Include="scripts\ai.0.22.9-build00167.js" />
+    <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="SQL\sql.txt" />
+    <Content Include="Static_Seed_Project\css\animate.css" />
+    <Content Include="Static_Seed_Project\css\bootstrap.css" />
+    <Content Include="Static_Seed_Project\css\bootstrap.min.css" />
+    <Content Include="Static_Seed_Project\css\patterns\1.png" />
+    <Content Include="Static_Seed_Project\css\patterns\2.png" />
+    <Content Include="Static_Seed_Project\css\patterns\3.png" />
+    <Content Include="Static_Seed_Project\css\patterns\4.png" />
+    <Content Include="Static_Seed_Project\css\patterns\5.png" />
+    <Content Include="Static_Seed_Project\css\patterns\6.png" />
+    <Content Include="Static_Seed_Project\css\patterns\7.png" />
+    <Content Include="Static_Seed_Project\css\patterns\congruent_pentagon.png" />
+    <Content Include="Static_Seed_Project\css\patterns\header-profile-skin-1.png" />
+    <Content Include="Static_Seed_Project\css\patterns\header-profile-skin-2.png" />
+    <Content Include="Static_Seed_Project\css\patterns\header-profile-skin-3.png" />
+    <Content Include="Static_Seed_Project\css\patterns\header-profile.jpg" />
+    <Content Include="Static_Seed_Project\css\patterns\header-profile.png" />
+    <Content Include="Static_Seed_Project\css\patterns\otis_redding.png" />
+    <Content Include="Static_Seed_Project\css\patterns\shattered.png" />
+    <Content Include="Static_Seed_Project\css\patterns\triangular.png" />
+    <Content Include="Static_Seed_Project\css\style.css" />
+    <Content Include="Static_Seed_Project\dataanalysis.html" />
+    <Content Include="Static_Seed_Project\font-awesome\css\font-awesome.css" />
+    <Content Include="Static_Seed_Project\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Static_Seed_Project\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Static_Seed_Project\font-awesome\less\font-awesome.css" />
+    <Content Include="Static_Seed_Project\font-awesome\less\mixins.css" />
+    <Content Include="Static_Seed_Project\font-awesome\less\variables.css" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\font-awesome.css" />
+    <Content Include="Static_Seed_Project\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Static_Seed_Project\Header.html" />
+    <Content Include="Static_Seed_Project\img\profile_small.jpg" />
+    <Content Include="Static_Seed_Project\index.html" />
+    <Content Include="Static_Seed_Project\js\bootstrap.js" />
+    <Content Include="Static_Seed_Project\js\bootstrap.min.js" />
+    <Content Include="Static_Seed_Project\js\handlebars.js" />
+    <Content Include="Static_Seed_Project\js\inspinia.js" />
+    <Content Include="Static_Seed_Project\js\jquery-3.1.1.min.js" />
+    <Content Include="Static_Seed_Project\js\plugins\dataTables\datatables.min.js" />
+    <Content Include="Static_Seed_Project\js\plugins\metisMenu\jquery.metisMenu.js" />
+    <Content Include="Static_Seed_Project\js\plugins\pace\pace.min.js" />
+    <Content Include="Static_Seed_Project\js\plugins\slimscroll\jquery.slimscroll.js" />
+    <Content Include="Static_Seed_Project\js\plugins\slimscroll\jquery.slimscroll.min.js" />
+    <Content Include="Static_Seed_Project\login.html" />
+    <Content Include="Static_Seed_Project\login.js" />
+    <Content Include="Static_Seed_Project\minor.html" />
+    <Content Include="Statistics\Statistics_Management.aspx" />
+    <Content Include="Statistics\Timesharing_Reports.html" />
+    <Content Include="SystemSetup\AlarmGate.aspx" />
+    <Content Include="SystemSetup\Department_Management.aspx" />
+    <Content Include="SystemSetup\Equipment_Log.aspx" />
+    <Content Include="SystemSetup\SystemSetup.aspx" />
+    <Content Include="SystemSetup\System_Log.aspx" />
+    <Content Include="Top.aspx" />
+    <Content Include="uploadfiles\AccessDatabaseEngine_X64.exe" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="WebForm1.aspx" />
+    <Content Include="Window\Detachment.html" />
+    <Content Include="Window\Drigade.html" />
+    <Content Include="Window\Squadron.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Examine.aspx.cs">
+      <DependentUpon>Equipment_Examine.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Examine.aspx.designer.cs">
+      <DependentUpon>Equipment_Examine.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Management.aspx.cs">
+      <DependentUpon>Equipment_Management.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Management.aspx.designer.cs">
+      <DependentUpon>Equipment_Management.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Register.aspx.cs">
+      <DependentUpon>Equipment_Register.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Register.aspx.designer.cs">
+      <DependentUpon>Equipment_Register.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Register_Add.aspx.cs">
+      <DependentUpon>Equipment_Register_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Equipment_Register_Add.aspx.designer.cs">
+      <DependentUpon>Equipment_Register_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\dataManagement.ashx.cs">
+      <DependentUpon>dataManagement.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\dataManagementConfig.ashx.cs">
+      <DependentUpon>dataManagementConfig.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\dataManagementdetail.ashx.cs">
+      <DependentUpon>dataManagementdetail.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\entitymanage.ashx.cs">
+      <DependentUpon>entitymanage.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\getAlarmdays.ashx.cs">
+      <DependentUpon>getAlarmdays.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\getAlarmuser.ashx.cs">
+      <DependentUpon>getAlarmuser.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\GetaMarksbyBound.ashx.cs">
+      <DependentUpon>GetaMarksbyBound.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\getDataManagement.ashx.cs">
+      <DependentUpon>getDataManagement.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\getDevices.ashx.cs">
+      <DependentUpon>getDevices.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\getRolevalue.ashx.cs">
+      <DependentUpon>getRolevalue.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\indexRealtime.ashx.cs">
+      <DependentUpon>indexRealtime.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\index_24histroy.ashx.cs">
+      <DependentUpon>index_24histroy.ashx</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Handle\Jingwutongdemo.ashx.cs">
+      <DependentUpon>Jingwutongdemo.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\loadfreshTime.ashx.cs">
+      <DependentUpon>loadfreshTime.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\ReportTimes.ashx.cs">
+      <DependentUpon>ReportTimes.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\Timesharing_Reports.ashx.cs">
+      <DependentUpon>Timesharing_Reports.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\Timesharing_ReportsTime.ashx.cs">
+      <DependentUpon>Timesharing_ReportsTime.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Handle\WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\Window1.ashx.cs">
+      <DependentUpon>Window1.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\GetEntitys.ashx.cs">
+      <DependentUpon>GetEntitys.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\index.ashx.cs">
+      <DependentUpon>index.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\indexconfig.ashx.cs">
+      <DependentUpon>indexconfig.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\Jqueryflipster.ashx.cs">
+      <DependentUpon>Jqueryflipster.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\Login.ashx.cs">
+      <DependentUpon>Login.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\map.ashx.cs">
+      <DependentUpon>map.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\OperationLog.ashx.cs">
+      <DependentUpon>OperationLog.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\saveindexconfig.ashx.cs">
+      <DependentUpon>saveindexconfig.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\TotalDevices.ashx.cs">
+      <DependentUpon>TotalDevices.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\Window2.ashx.cs">
+      <DependentUpon>Window2.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\MainTain_DeviceLog.aspx.cs">
+      <DependentUpon>MainTain_DeviceLog.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\MainTain_DeviceLog.aspx.designer.cs">
+      <DependentUpon>MainTain_DeviceLog.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\MainTain_DeviceLog_Add.aspx.cs">
+      <DependentUpon>MainTain_DeviceLog_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\MainTain_DeviceLog_Add.aspx.designer.cs">
+      <DependentUpon>MainTain_DeviceLog_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OperationLog.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Personnel_Manageme.aspx.cs">
+      <DependentUpon>Personnel_Manageme.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Personnel_Manageme.aspx.designer.cs">
+      <DependentUpon>Personnel_Manageme.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\Police_Management.aspx.cs">
+      <DependentUpon>Police_Management.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Police_Management.aspx.designer.cs">
+      <DependentUpon>Police_Management.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\Police_Management_Add.aspx.cs">
+      <DependentUpon>Police_Management_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Police_Management_Add.aspx.designer.cs">
+      <DependentUpon>Police_Management_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\Role_Management.aspx.cs">
+      <DependentUpon>Role_Management.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Role_Management.aspx.designer.cs">
+      <DependentUpon>Role_Management.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Personnel\Role_Management_Add.aspx.cs">
+      <DependentUpon>Role_Management_Add.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Personnel\Role_Management_Add.aspx.designer.cs">
+      <DependentUpon>Role_Management_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Equipment\Recycle_Device.aspx.cs">
+      <DependentUpon>Recycle_Device.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Recycle_Device.aspx.designer.cs">
+      <DependentUpon>Recycle_Device.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\Remind_Device.aspx.cs">
+      <DependentUpon>Remind_Device.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Equipment\Remind_Device.aspx.designer.cs">
+      <DependentUpon>Remind_Device.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics\Statistics_Management.aspx.cs">
+      <DependentUpon>Statistics_Management.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Statistics\Statistics_Management.aspx.designer.cs">
+      <DependentUpon>Statistics_Management.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetup\AlarmGate.aspx.cs">
+      <DependentUpon>AlarmGate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemSetup\AlarmGate.aspx.designer.cs">
+      <DependentUpon>AlarmGate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetup\Department_Management.aspx.cs">
+      <DependentUpon>Department_Management.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemSetup\Department_Management.aspx.designer.cs">
+      <DependentUpon>Department_Management.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetup\Equipment_Log.aspx.cs">
+      <DependentUpon>Equipment_Log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemSetup\Equipment_Log.aspx.designer.cs">
+      <DependentUpon>Equipment_Log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetup\SystemSetup.aspx.cs">
+      <DependentUpon>SystemSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemSetup\SystemSetup.aspx.designer.cs">
+      <DependentUpon>SystemSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SystemSetup\System_Log.aspx.cs">
+      <DependentUpon>System_Log.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SystemSetup\System_Log.aspx.designer.cs">
+      <DependentUpon>System_Log.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Top.aspx.cs">
+      <DependentUpon>Top.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Top.aspx.designer.cs">
+      <DependentUpon>Top.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\LiuHeYiInterface\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\bootstrap-theme.css.map" />
+    <Content Include="css\bootstrap-theme.min.css.map" />
+    <Content Include="css\bootstrap.css.map" />
+    <Content Include="css\bootstrap.min.css.map" />
+    <Content Include="js\My97DatePicker\skin\blueFresh\Thumbs.db" />
+    <Content Include="Excel\部门管理.xls" />
+    <Content Include="Excel\设备登记.xls" />
+    <Content Include="Excel\警员管理.xls" />
+    <Content Include="css\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="css\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="css\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="css\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="css\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="css\font-awesome\less\animated.less" />
+    <Content Include="css\font-awesome\less\bordered-pulled.less" />
+    <Content Include="css\font-awesome\less\core.less" />
+    <Content Include="css\font-awesome\less\fixed-width.less" />
+    <Content Include="css\font-awesome\less\font-awesome.less" />
+    <Content Include="css\font-awesome\less\icons.less" />
+    <Content Include="css\font-awesome\less\larger.less" />
+    <Content Include="css\font-awesome\less\list.less" />
+    <Content Include="css\font-awesome\less\mixins.less" />
+    <Content Include="css\font-awesome\less\path.less" />
+    <Content Include="css\font-awesome\less\rotated-flipped.less" />
+    <Content Include="css\font-awesome\less\screen-reader.less" />
+    <Content Include="css\font-awesome\less\stacked.less" />
+    <Content Include="css\font-awesome\less\variables.less" />
+    <Content Include="css\font-awesome\scss\font-awesome.scss" />
+    <Content Include="css\font-awesome\scss\_animated.scss" />
+    <Content Include="css\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="css\font-awesome\scss\_core.scss" />
+    <Content Include="css\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="css\font-awesome\scss\_icons.scss" />
+    <Content Include="css\font-awesome\scss\_larger.scss" />
+    <Content Include="css\font-awesome\scss\_list.scss" />
+    <Content Include="css\font-awesome\scss\_mixins.scss" />
+    <Content Include="css\font-awesome\scss\_path.scss" />
+    <Content Include="css\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="css\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="css\font-awesome\scss\_stacked.scss" />
+    <Content Include="css\font-awesome\scss\_variables.scss" />
+    <Content Include="PImage\Sorting icons.psd" />
+    <Content Include="image\Sorting icons.psd" />
+    <Content Include="Images\Sorting icons.psd" />
+    <Content Include="comjs\fonts\fontawesome-webfont.eot" />
+    <Content Include="comjs\fonts\fontawesome-webfont.ttf" />
+    <Content Include="comjs\fonts\fontawesome-webfont.woff" />
+    <Content Include="comjs\fonts\fontawesome-webfont.woff2" />
+    <Content Include="comjs\fonts\FontAwesome.otf" />
+    <Content Include="comjs\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="comjs\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="comjs\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="comjs\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="configs\Images\Sorting icons.psd" />
+    <Content Include="Handle\dataManagement.ashx" />
+    <Content Include="Handle\dataManagementdetail.ashx" />
+    <Content Include="Handle\entitymanage.ashx" />
+    <Content Include="Handle\GetaMarksbyBound.ashx" />
+    <Content Include="Handle\GetEntitys.ashx" />
+    <Content Include="Handle\index.ashx" />
+    <Content Include="Handle\indexconfig.ashx" />
+    <Content Include="Handle\Jqueryflipster.ashx" />
+    <Content Include="Handle\map.ashx" />
+    <Content Include="Handle\saveindexconfig.ashx" />
+    <Content Include="Handle\templet\1.xls" />
+    <Content Include="Handle\templet\4.xls" />
+    <Content Include="Handle\templet\mingxi\1.xls" />
+    <Content Include="Handle\TotalDevices.ashx" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-13台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-13直属四大队直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-13直属四大队秩序管理中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-13直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-13车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14台州交警局警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14直属一大队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14直属一大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14直属三大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14直属四大队警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14直属四大队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-14综合保障中队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-16台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-08-16直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-01_2018-08-16台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-01_2018-08-16直属四大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-08-14_2018-08-15台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-15_2018-08-16台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-15_2018-08-16台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-08-15_2018-08-16直属一大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-08-29台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\8月份台州市交警局对讲机在线时长报表.xls" />
+    <Content Include="Handle\upload\8月份台州市交警局移动警务通报表.xls" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.Core.min.map" />
+    <Content Include="Ol\resources\zeroclipboard\ZeroClipboard.min.map" />
+    <Content Include="build\examples\browserify\package.json" />
+    <Content Include="build\examples\browserify\README.md" />
+    <Content Include="Handle\OperationLog.ashx" />
+    <Content Include="Handle\Login.ashx" />
+    <Content Include="Handle\Window1.ashx" />
+    <Content Include="Handle\dataManagementConfig.ashx" />
+    <Content Include="Handle\Window2.ashx" />
+    <Content Include="Handle\getDataManagement.ashx" />
+    <Content Include="Handle\getAlarmdays.ashx" />
+    <Content Include="Handle\getAlarmuser.ashx" />
+    <Content Include="Handle\Jingwutongdemo.ashx" />
+    <Content Include="Handle\templet\5.xls" />
+    <Content Include="Handle\templet\6.xls" />
+    <Content Include="Handle\upload\2017-11-27_2018-10-23台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2017-12-25_2018-09-20台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2017-12-25_2018-09-20台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-08台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-18直属二大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-19台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-19台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-19直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-19直属四大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-25台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-25局机关车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-25直属二大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-25直属四大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26台州交警局警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26直属一大队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26直属一大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26直属四大队执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26直属四大队秩序管理中队执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26直属四大队秩序管理中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-26直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-27台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-09-27台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-23台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-23台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-24对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-24执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-24拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-24警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-24车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-10-24辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04台州交警局拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04台州交警局辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-04直属四大队辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-01-04_2018-10-02台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-09_2018-11-04台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-29_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-29_2018-09-26台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-18直属一大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-18直属二大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-18直属四大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-19直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-26台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-09-30直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-10-09台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-30_2018-10-14台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-07-05_2018-10-14一中队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-07-05_2018-10-14事故处理中队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-07-05_2018-10-14台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-07-05_2018-10-14直属一大队一中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-07-05_2018-10-14直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-07-05_2018-10-14秩序管理中队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-07-12_2018-07-13直属一大队一中队警务通报表.xls" />
+    <Content Include="Handle\upload\2018-08-01_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-12_2018-08-18对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-08-19_2018-08-25对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-08-26_2018-09-01对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-08-27_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-27_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-27_2018-09-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-27_2018-09-26台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-18交通治安工作站车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-18直属一大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-19直属四大队一中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-19直属四大队秩序管理中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-28_2018-09-19直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-30_2018-09-26台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-08-30_2018-09-26台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-08-31_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-01_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-02_2018-09-08对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-09-02_2018-09-08执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-09-02_2018-09-08警务通报表.xls" />
+    <Content Include="Handle\upload\2018-09-02_2018-09-08辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-09-03_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-03_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-07_2018-09-08台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-09_2018-09-15对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-09-11_2018-09-12直属一大队一中队警务通报表.xls" />
+    <Content Include="Handle\upload\2018-09-11_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-16_2018-09-22对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-09-17_2018-09-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-17_2018-09-18直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-17_2018-09-18直属二大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-17_2018-09-18直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-18_2018-09-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-18_2018-09-19直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-19_2018-09-20台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-19_2018-09-20直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-20_2018-09-21台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-20_2018-09-21直属四大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-09-23_2018-09-24台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-09-23_2018-09-24台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-23_2018-09-24直属一大队一中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-23_2018-09-24直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-23_2018-09-24直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-23_2018-09-29对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-09-24_2018-09-25台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-24_2018-09-25直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-24_2018-09-25直属四大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-09-25_2018-09-26台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-26_2018-09-27台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-09-26_2018-09-27台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-26_2018-09-27直属四大队秩序管理中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-27_2018-09-28台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-27_2018-09-28车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-29_2018-09-30直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-09-30_2018-10-06对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-02台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-02局机关车管所车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-15局机关支队法制科警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-15局机关支队法制科车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-06_2018-10-07台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-07台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08一中队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08直属一大队一中队警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08直属一大队一中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08直属一大队直属一大队一中队警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08直属一大队直属一大队一中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08直属四大队一中队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-08直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-07_2018-10-13对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-08_2018-10-09台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-08_2018-10-09直属二大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-10_2018-10-11台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-11_2018-10-12台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-12_2018-10-13台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-13_2018-10-14台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-13_2018-10-14台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-13_2018-10-14局机关车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-13_2018-10-14直属四大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-14对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-15局机关支队法制科执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-15局机关支队法制科车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-20对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-20执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-20拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-20警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-20车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-20辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-10-14_2018-10-21对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-20_2018-10-14对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-20_2018-10-21台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-21_2018-10-22台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-21_2018-10-22台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-21_2018-10-22局机关车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-21_2018-10-27对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-21_2018-10-27执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-22_2018-10-23台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-22_2018-10-23台州交警局车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24局机关车管所对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24局机关车管所执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24局机关车管所拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24局机关车管所警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-23_2018-10-24辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-10-25_2018-10-26对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-26_2018-10-27对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-28_2018-11-03对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-30_2018-10-31局机关支队秩序大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-31_2018-11-01台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-03_2018-11-03台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-03_2018-11-04台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-11-03_2018-11-04台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-03_2018-11-04直属一大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-11-04_2018-11-04台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-04_2018-11-05台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-04_2018-11-10对讲机报表.xls" />
+    <Content Include="Handle\getRolevalue.ashx" />
+    <Content Include="Handle\upload\2018-11-05_2018-11-06台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-11-05_2018-11-06台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-11-05_2018-11-06直属二大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-11-05_2018-11-06直属三大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06台州交警局辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属一大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属三大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属三大队执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属三大队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属三大队车载视频设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属三大队辅警通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属二大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属二大队执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属二大队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属四大队执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-06直属四大队警务通设备详情报表.xls" />
+    <Content Include="Handle\getDevices.ashx" />
+    <Content Include="Handle\loadfreshTime.ashx" />
+    <Content Include="font\alarm clock.woff" />
+    <Content Include="font\digital-7 %28mono%29.woff" />
+    <Content Include="font\Open 24 Display St.woff" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队警务通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队警务通设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属一大队辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-07直属四大队对讲机设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-11台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-11台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-11局机关执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-11局机关执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-12台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-12台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-12局机关执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-12局机关车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-22台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-01-01_2018-11-22直属一大队执法记录仪设备详情报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07台州交警局拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07台州交警局辅警通报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07直属一大队对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07直属一大队执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-07直属一大队车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-10-08台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-11-07台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-11-07台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-10-01_2018-11-07台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-10-08_2018-10-14台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-10-08_2018-10-14直属一大队对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-11-01_2018-11-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-11_2018-11-12台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-11-11_2018-11-12台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-12_2018-11-18台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-11-14_2018-11-15台州交警局拦截仪报表.xls" />
+    <Content Include="Handle\upload\2018-11-14_2018-11-15台州交警局警务通报表.xls" />
+    <Content Include="Handle\upload\2018-11-14_2018-11-15台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-17_2018-11-18台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-18_2018-11-19台州交警局对讲机报表.xls" />
+    <Content Include="Handle\upload\2018-11-18_2018-11-19台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-21_2018-11-22台州交警局执法记录仪报表.xls" />
+    <Content Include="Handle\upload\2018-11-21_2018-11-22台州交警局车载视频报表.xls" />
+    <Content Include="Handle\upload\2018-11-28_2018-11-29局机关车管所对讲机报表.xls" />
+    <Content Include="bin\JingWuTong.dll.config" />
+    <Content Include="Handle\Timesharing_Reports.ashx" />
+    <Content Include="Handle\ReportTimes.ashx" />
+    <Content Include="Handle\indexRealtime.ashx" />
+    <Content Include="Handle\Timesharing_ReportsTime.ashx" />
+    <Content Include="Handle\ReportTime\1.xls" />
+    <Content Include="Handle\ReportTime\4.xls" />
+    <Content Include="Handle\ReportTime\5.xls" />
+    <Content Include="Handle\ReportTime\6.xls" />
+    <Content Include="Handle\report\1-3.xls" />
+    <Content Include="Handle\report\2.xls" />
+    <Content Include="Handle\report\4-4.xls" />
+    <Content Include="Handle\report\4.xls" />
+    <Content Include="Handle\report\5-5.xls" />
+    <Content Include="Handle\report\5.xls" />
+    <Content Include="Handle\report\6-6.xls" />
+    <Content Include="Handle\report\6.xls" />
+    <None Include="Properties\PublishProfiles\web.config.pubxml" />
+    <Content Include="Static_Seed_Project\css\bootstrap.css.map" />
+    <Content Include="Static_Seed_Project\css\bootstrap.min.css.map" />
+    <Content Include="Static_Seed_Project\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Static_Seed_Project\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Static_Seed_Project\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Static_Seed_Project\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Static_Seed_Project\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Static_Seed_Project\font-awesome\less\animated.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\bordered-pulled.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\core.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\fixed-width.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\font-awesome.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\icons.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\larger.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\list.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\mixins.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\path.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\rotated-flipped.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\screen-reader.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\stacked.less" />
+    <Content Include="Static_Seed_Project\font-awesome\less\variables.less" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\font-awesome.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_animated.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_core.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_icons.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_larger.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_list.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_mixins.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_path.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_stacked.scss" />
+    <Content Include="Static_Seed_Project\font-awesome\scss\_variables.scss" />
+    <Content Include="Static_Seed_Project\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Static_Seed_Project\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Static_Seed_Project\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Static_Seed_Project\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web References\LiuHeYiInterface\LiuHeYiInterface.wsdl" />
+    <Content Include="Web References\LiuHeYiInterface\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="wsdl\interface.wsdl" />
+    <Content Include="wsdl\LiuHeYiInterface.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{f288fce8-7dbf-4ff3-9b12-9e29c1006cd0}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DbComponet\DbComponet.csproj">
+      <Project>{3f4e5eb9-6df5-4ed3-9363-a95b17f1be51}</Project>
+      <Name>DbComponet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{d0b4472d-c85e-4250-b2a7-ae80ccf06ff1}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TOOL\TOOL.csproj">
+      <Project>{01372cac-3d28-4256-a8cb-38284e7f6a7b}</Project>
+      <Name>TOOL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="E:\单警科技\JingWuTong\JingWuTong\wsdl\LiuHeYiInterface.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\LiuHeYiInterface\</RelPath>
+      <UpdateFromURL>E:\单警科技\JingWuTong\JingWuTong\wsdl\LiuHeYiInterface.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>JingWuTong_LiuHeYiInterface_CdtOutAccess</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>39355</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:10652/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

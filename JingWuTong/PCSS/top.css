@@ -1,0 +1,96 @@
+﻿
+ #header .row{
+    height:102px;
+    background-image:url(../PImage/topbannerbg.png); 
+    background-repeat:repeat-x; 
+    background-size:100% 100%;
+}
+
+#header .row div:nth-child(2){
+    width:160px;
+    height:102px;
+    float:right;  
+    color:#cccccc;
+     display: table-cell;
+    vertical-align:middle;
+}
+#header label{
+    vertical-align:middle;display:inline-block;
+}
+#header .row div:nth-child(1){
+     float:left;
+    width:calc(100% - 160px);
+}
+#header .row div:nth-child(1)>div{
+    width:300px;
+}
+#header .row div:nth-child(1) div:nth-child(2){
+    width:calc(100% - 340px);
+    margin-right:40px;
+}
+#header .row > div:nth-child(2) span:nth-child(-n+4){
+    display:inline-block;
+    margin-top:25px;
+    margin-left:6px;
+}
+#header .row> div:nth-child(2) span:nth-child(5){
+    display:block;
+    margin-top:5px;
+    margin-left:6px;
+}
+#header .row img:nth-child(1){
+    margin-left:40px;
+    margin-top:30px;
+}
+#header ul{
+    height:102px;
+    margin:0;
+    list-style:none;
+    float:right;
+}
+#header li{
+    height:102px;
+    float:left;
+    list-style-type:none;
+    position:relative;
+    display:list-item;
+    width:100px;
+    vertical-align:middle;
+    text-align: center;
+    line-height:102px;
+}
+#header li a{
+    text-decoration:none;
+    background-color: transparent;
+    color:#fff;
+    font-size:16px;
+}
+#header ul>li.active,a.active{
+    background: -webkit-linear-gradient(#005EB8, #014688); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#005EB8, #014688); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#005EB8, #014688); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#005EB8, #014688); /* 标准的语法 */
+    text-decoration: none;
+  }
+#header ul>li:not(.active):not(.userInfor):hover {
+    color: #fff;
+    background: -webkit-linear-gradient(#005EB8, #014688); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(#005EB8, #014688); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(#005EB8, #014688); /* Firefox 3.6 - 15 */
+    background: linear-gradient(#005EB8, #014688); /* 标准的语法 */
+    text-decoration: none;
+    cursor:pointer;
+  }
+#header ul i{
+    display:block !important;
+    margin-bottom:-40px;
+    margin-top:30px;
+    font-size:30px !important;
+}
+#header a{
+    text-decoration-line:none;
+    color:#fff
+}
+.bannertime{
+    margin-top:5px !important;
+}

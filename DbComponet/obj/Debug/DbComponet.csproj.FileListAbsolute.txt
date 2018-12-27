@@ -1,0 +1,17 @@
+E:\科技\JingWuTong\DbComponet\obj\Debug\DbComponet.dll
+E:\科技\JingWuTong\DbComponet\bin\Debug\DbComponet.dll
+E:\科技\JingWuTong\DbComponet\bin\Debug\DbComponet.pdb
+E:\科技\JingWuTong\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
+E:\科技\JingWuTong\DbComponet\obj\Debug\DbComponet.pdb
+E:\单警科技\JingWuTong\DbComponet\bin\Debug\DbComponet.dll
+E:\单警科技\JingWuTong\DbComponet\bin\Debug\DbComponet.pdb
+E:\单警科技\JingWuTong\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
+E:\单警科技\JingWuTong\DbComponet\obj\Debug\DbComponet.dll
+E:\单警科技\JingWuTong\DbComponet\obj\Debug\DbComponet.pdb
+E:\单警科技\JingWuTong\DbComponet\obj\Debug\DbComponet.csprojResolveAssemblyReference.cache
+E:\工作\JingWuTong\DbComponet\bin\Debug\DbComponet.dll
+E:\工作\JingWuTong\DbComponet\bin\Debug\DbComponet.pdb
+E:\工作\JingWuTong\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
+E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.csprojResolveAssemblyReference.cache
+E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.dll
+E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.pdb

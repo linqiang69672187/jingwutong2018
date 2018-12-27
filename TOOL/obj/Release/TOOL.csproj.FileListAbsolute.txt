@@ -1,0 +1,10 @@
+E:\科技\JingWuTong\TOOL\bin\Release\TOOL.dll
+E:\科技\JingWuTong\TOOL\bin\Release\TOOL.pdb
+E:\科技\JingWuTong\TOOL\obj\Release\TOOL.dll
+E:\科技\JingWuTong\TOOL\obj\Release\TOOL.pdb
+E:\科技\JingWuTong\TOOL\obj\Release\TOOL.csprojResolveAssemblyReference.cache
+E:\单警科技\JingWuTong\TOOL\bin\Release\TOOL.dll
+E:\单警科技\JingWuTong\TOOL\bin\Release\TOOL.pdb
+E:\单警科技\JingWuTong\TOOL\obj\Release\TOOL.dll
+E:\单警科技\JingWuTong\TOOL\obj\Release\TOOL.pdb
+E:\单警科技\JingWuTong\TOOL\obj\Release\TOOL.csprojResolveAssemblyReference.cache

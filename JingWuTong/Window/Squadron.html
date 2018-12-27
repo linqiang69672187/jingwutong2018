@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+
+</head>
+
+<body>
+    <link href="../Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../CSS/jquery.dataTables.css" rel="stylesheet" />
+    <link href="../css/window.css" rel="stylesheet" />
+    <div class="tablediv">
+   
+
+        
+        <div class="row">
+         <div class="Week_Label" > <img src="../image/飘窗图标.png" /> </div>
+        <div class="date" ><label class="start_form_datetime"></label></div>
+         <label>—</label>
+            <div class="date"><label class="end_form_datetime"></label></div>
+            <div class="date"><label id="L_BMMC"></label><label id="L_Type"></label><label>设备使用情况</label></div>
+         </div>
+
+               <div class="row">
+                   <div class="Week_Label" id="GO_back"> 返回上一级</div>
+                  </div>
+
+         <div class="row">
+            <div class="Week_Label" onclick="Next_Last_Week(true,false)"> 上周</div>
+            <div class="Week_Label" onclick="Next_Last_Week(false,true)">下周</div>
+             </div>
+
+
+        <div class="row">
+        <div class="cell-button" onclick="Divselect(2,this)">对讲机</div> 
+        <div class="cell-button" onclick="Divselect(5,this)">执法记录仪</div>
+
+        <div class="cell-button" onclick="Divselect(4,this)">警务通</div> 
+        <div class="cell-button" onclick="Divselect(6,this)">辅警通</div>
+        <div class="cell-button" onclick="Divselect(1,this)">车载视频</div> 
+        <div class="cell-button" onclick="Divselect(3,this)">拦截仪</div>
+        </div>
+
+                <label id="L_select" style="display:none"></label>
+
+           <label id="L_Url" style="display:none">#</label>
+        <div class="row">
+            <div class="progress progress-striped active progresshz" style="width:80%;margin:0 auto;"><div class="floot-zhbar progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div> </div>
+                         <table id="search-result-table" style="width:100%;border:none!important">
+                    <thead >
+                        <tr>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <!--<th></th>-->
+                      <!--      <th style="width:160px;">操作</th>-->
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+        </div>
+
+ 
+
+    </div>
+
+
+
+  
+
+    <script src="../comjs/jquery.js"></script>
+    <script src="../comjs/jquery.cookie.js"></script>
+    <script src="../comjs/bootstrap.min.js"></script>
+    <script src="../comjs/jquery.dataTables.js"></script>
+    <script src="../comjs/bootstrap-datetimepicker.js"></script>
+
+      <script type="text/javascript">
+
+          $("#GO_back").on("click", function () {
+
+              window.history.back(-1);
+
+          });
+
+          var loc = location.href;
+          var n1 = loc.length;//地址的总长度
+          var n2 = loc.indexOf("=");//取得=号的位置
+          var id = decodeURI(loc.substr(n2 + 1, n1 - n2));//从=号后面的内容
+          var Varryid = id.split("&");
+
+
+          $("#L_select").html(Varryid[0]);
+
+          $("#L_BMMC").html(Varryid[1]);
+
+        </script>
+
+    <script src="../js/Window2.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+E:\科技\JingWuTong\DbComponet\bin\Release\DbComponet.dll
+E:\科技\JingWuTong\DbComponet\bin\Release\DbComponet.pdb
+E:\科技\JingWuTong\DbComponet\obj\Release\DbComponet.dll
+E:\科技\JingWuTong\DbComponet\obj\Release\DbComponet.pdb
+E:\科技\JingWuTong\DbComponet\obj\Release\DbComponet.csprojResolveAssemblyReference.cache
+E:\单警科技\JingWuTong\DbComponet\bin\Release\DbComponet.dll
+E:\单警科技\JingWuTong\DbComponet\bin\Release\DbComponet.pdb
+E:\单警科技\JingWuTong\DbComponet\obj\Release\DbComponet.dll
+E:\单警科技\JingWuTong\DbComponet\obj\Release\DbComponet.pdb
+E:\单警科技\JingWuTong\DbComponet\obj\Release\DbComponet.csprojResolveAssemblyReference.cache
