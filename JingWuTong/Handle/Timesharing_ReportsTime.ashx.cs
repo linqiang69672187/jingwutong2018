@@ -252,8 +252,8 @@ namespace JingWuTong.Handle
                 switch (type)
                 {
                     case "5":
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT CONVERT(varchar(12) , ala.Time, 111 ) as Hour, en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小,datename(Hour,Time)as Time,UploadCnt,GFUploadCnt from (" +
-                        "    SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by Time,[devid]) " +
+                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT CONVERT(varchar(12) , ala.Time, 111 ) as Hour, en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小,datename(Hour,Time)as Time,UploadCnt,GFUploadCnt,GFSCL from (" +
+                        "    SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt,sum(GFSCL) as GFSCL from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by Time,[devid]) " +
                         "as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
                         dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "  select distinct CONVERT(varchar(12) , Time, 111 ) as Hour from EverydayInfo_Hour  where Time >='" + begintime + "' and Time  <='" + endtime + "' ORDER  BY Hour", "2");
 
@@ -374,6 +374,7 @@ namespace JingWuTong.Handle
                 Int64 处理量 = 0;
                 Int64 文件大小 = 0;
                 Int64 查询量 = 0;
+                double 规范上传率 = 0.0;
                 int 无查询量 = 0;
                 int 无处罚量 = 0;
                 int 未使用 = 0;
@@ -429,7 +430,8 @@ namespace JingWuTong.Handle
                                         DevId = p.Field<string>("DevId"),
 
                                         UploadCnt = p.Field<int>("UploadCnt"),
-                                        GFUploadCnt = p.Field<int>("GFUploadCnt")
+                                        GFUploadCnt = p.Field<int>("GFUploadCnt"),
+                                        GFSCL = p.Field<double>("GFSCL")
 
 
 
@@ -473,8 +475,10 @@ namespace JingWuTong.Handle
                                 在线时长 += Convert.ToInt32(item.在线时长);
                               
                                 在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
+                                规范上传率 += item.GFSCL;
                                 文件大小 += Convert.ToInt32(item.文件大小);
                                 tmpzxsj += Convert.ToInt32(item.在线时长);
+
                                 break;
                             case "2":
                                 在线时长 += Convert.ToInt32(item.在线时长);
@@ -964,6 +968,7 @@ namespace JingWuTong.Handle
             public int GFUploadCnt = 0;
             public int HandleCnt = 0;
             public int CXCnt = 0;
+            public double GFSCL = 0.0;
 
         }
 
