@@ -46,6 +46,7 @@ namespace JingWuTong.Handle
             int tmpRows = 0;
             int tmpcxl = 0;
             int tmpcll = 0;
+            int tmpzxsj = 0;
             DataTable dtEntity = null;  //单位信息表
 
             DataTable Alarm_EveryDayInfo = null; //每日告警
@@ -386,6 +387,7 @@ namespace JingWuTong.Handle
                          tmpRows = 0;
                          tmpcxl = 0;
                          tmpcll = 0;
+                         tmpzxsj = 0;
                          在线时长 = 0;
                          处理量 = 0;
                          文件大小 = 0;
@@ -399,15 +401,15 @@ namespace JingWuTong.Handle
                             {
                                 case "1":
                                     在线时长 += Convert.ToInt32(item.在线时长);
-                                    未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
+                                    tmpzxsj += Convert.ToInt32(item.在线时长);
                                     在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
                                     文件大小 += Convert.ToInt32(item.文件大小);
                                
                                     break;
                                 case "2":
                                     在线时长 += Convert.ToInt32(item.在线时长);
-                                    未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
-                                    在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
+                                    tmpzxsj += Convert.ToInt32(item.在线时长);
+
                                     处理量 += Convert.ToInt32(item.HandleCnt);
                                     查询量 += Convert.ToInt32(item.CXCnt);
                                     tmpcxl += Convert.ToInt32(item.CXCnt);
@@ -422,10 +424,14 @@ namespace JingWuTong.Handle
                                 allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
                                 if (tmpDevid != "")
                                 {
+                                    未使用 += ((tmpzxsj - statusvalue) <= 0) ? 1 : 0;
+                                    在线 += ((tmpzxsj - zxstatusvalue) > 0) ? 1 : 0;
+
                                     无处罚量 += (tmpcll == 0) ? 1 : 0;
                                     无查询量 += (tmpcxl == 0) ? 1 : 0;
                                     tmpcll = 0;
                                     tmpcxl = 0;
+                                    tmpzxsj = 0;
                                 }
                             }
 
@@ -651,6 +657,7 @@ namespace JingWuTong.Handle
                     tmpRows = 0;
                          tmpcxl = 0;
                         tmpcll = 0;
+                        tmpzxsj = 0;
                         foreach (dataStruct item in rows)
                     {
 
@@ -658,16 +665,16 @@ namespace JingWuTong.Handle
                         {
                             case "1":
                                 在线时长 += Convert.ToInt32(item.在线时长);
-                                未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
-                                在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
                                 文件大小 += Convert.ToInt32(item.文件大小);
+                                tmpzxsj += Convert.ToInt32(item.在线时长);
+
                                 上传总数 += item.UploadCnt;
                                 规范上传总数 += item.GFUploadCnt;
                                 break;
                             case "2":
                                 在线时长 += Convert.ToInt32(item.在线时长);
-                                未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
-                                在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
+                                tmpzxsj += Convert.ToInt32(item.在线时长);
+
                                 处理量 += Convert.ToInt32(item.HandleCnt);
                                 查询量 += Convert.ToInt32(item.CXCnt);
                                 tmpcxl += Convert.ToInt32(item.CXCnt);
@@ -687,8 +694,12 @@ namespace JingWuTong.Handle
                                 {
                                     无处罚量 += (tmpcll == 0) ? 1 : 0;
                                     无查询量 += (tmpcxl == 0) ? 1 : 0;
+                                    未使用 += ((tmpzxsj - statusvalue) <= 0) ? 1 : 0;
+                                    在线 += ((tmpzxsj - zxstatusvalue) > 0) ? 1 : 0;
                                     tmpcll = 0;
                                     tmpcxl = 0;
+                                    tmpzxsj = 0;
+                               
                                 }
                            
                         }
