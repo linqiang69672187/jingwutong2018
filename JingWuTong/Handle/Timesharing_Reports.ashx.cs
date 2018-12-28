@@ -44,6 +44,8 @@ namespace JingWuTong.Handle
 
             string tmpDevid = "";
             int tmpRows = 0;
+            int tmpcxl = 0;
+            int tmpcll = 0;
             DataTable dtEntity = null;  //单位信息表
 
             DataTable Alarm_EveryDayInfo = null; //每日告警
@@ -249,14 +251,14 @@ namespace JingWuTong.Handle
                 switch (type)
                 {
                     case "5":
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小,datename(Hour,Time)as Time,UploadCnt,GFUploadCnt from (" +
-                        "    SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time,UploadCnt,GFUploadCnt from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by [DevId],Time,UploadCnt,GFUploadCnt ) " +
+                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小, Time,UploadCnt,GFUploadCnt from (" +
+                        "    SELECT 1 as [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,datename(Hour,Time) as Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt  from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by [DevId],datename(Hour,Time) ) " +
                         "as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
                         dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
                         break;
                     default:
 
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.DevType as AlarmType,0 as 文件大小,datename(Hour,Time)as Time from (" +"select DevId,DevType,Time,SUM(OnlineTime) as 在线时长 from EverydayInfo_Hour  where DevType <>6 and  Time >='" + begintime + "' and Time  <='" + endtime + "'  group by DevId,DevType,Time"+") as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
+                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM,  en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,0 as 文件大小,ala.处理量,ala.查询量, Time,2 as AlarmType from (" + "select DevId,datename(Hour,Time) as Time,SUM(OnlineTime) as 在线时长,SUM(HandleCnt) as 处理量,SUM(CXCnt) as 查询量 from EverydayInfo_Hour  where DevType <>6 and  Time >='" + begintime + "' and Time  <='" + endtime + "'  group by DevId,datename(Hour,Time) " + ") as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
 
 
                         dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' AND BMDM <> '33100000000x' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -276,7 +278,7 @@ namespace JingWuTong.Handle
                     {
                         case "5":
                             Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + ssdd + "' OR BMDM = '" + ssdd + "' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) "+
-                                "  SELECT en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小,datename(Hour,Time)as Time,UploadCnt,GFUploadCnt  from (SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time,UploadCnt,GFUploadCnt  from EveryDayInfo_ZFJLY_Hour  where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by [DevId],Time,UploadCnt,GFUploadCnt ) as ala " +
+                                "  SELECT en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小, Time,UploadCnt,GFUploadCnt  from (SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,datename(Hour,Time) as Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt  from EveryDayInfo_ZFJLY_Hour  where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by [DevId],datename(Hour,Time) ) as ala " +
                                 " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]   left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
 
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as [ID] ,BMJC as [Name] ,SJBM as [ParentID],BMJB as [Depth] from [Entity] where [SJBM] ='" + ssdd + "' or [BMDM]='" + ssdd + "'    order BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -284,7 +286,7 @@ namespace JingWuTong.Handle
 
                             break;
                         default:
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + ssdd + "' OR BMDM = '" + ssdd + "' " +" UNION ALL "+" SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM )"+" SELECT en.BMDM,  en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],ala.在线时长,ala.DevType as AlarmType,0 as 文件大小,datename(Hour,Time)as Time from " +"( select DevId,DevType,Time,SUM(OnlineTime) as 在线时长 from EverydayInfo_Hour where  DevType <>6 and  Time >='" + begintime + "' and Time <='" + endtime + "'   group by DevId,DevType,Time ) as ala "+" left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]    left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + ssdd + "' OR BMDM = '" + ssdd + "' " +" UNION ALL "+" SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM )"+" SELECT en.BMDM,  en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,ala.查询量,ala.处理量, Time from " + "( select DevId,datename(Hour,Time) as Time,SUM(OnlineTime) as 在线时长,SUM(HandleCnt) as 处理量,SUM(CXCnt) as 查询量 from EverydayInfo_Hour where  DevType <>6 and  Time >='" + begintime + "' and Time <='" + endtime + "'   group by DevId,datename(Hour,Time) ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]    left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
 
 
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as [ID] ,BMJC as [Name] ,SJBM as [ParentID],BMJB as [Depth] from [Entity] where [SJBM] ='" + ssdd + "' or [BMDM]='" + ssdd + "'   order BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -302,15 +304,19 @@ namespace JingWuTong.Handle
                     switch (type)
                     {
                         case "5":
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "  SELECT us.JYBH,en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小,datename(Hour,Time)as Time from ( SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'   group by [DevId],Time  ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' and us.XM  IS NOT NULL", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "  SELECT us.JYBH,en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小, Time from ( SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,datename(Hour,Time) as Time from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'   group by [DevId],datename(Hour,Time)  ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "'" , "Alarm_EveryDayInfo");
+                            dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "  SELECT us.JYBH,en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId] from ( SELECT [DevId]  from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'   group by [DevId] ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "'" , "Alarm_EveryDayInfo");
+
                             break;
                         default:
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.DevType as AlarmType,0 as 文件大小,datename(Hour,Time)as Time from  " +"(select DevId,DevType,Time,SUM(OnlineTime) as 在线时长 from EverydayInfo_Hour  where DevType <>6 and  Time  >='" + begintime + "' and Time <='" + endtime + "'   group by DevId,DevType,Time ) as ala " +" left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' and us.XM  IS NOT NULL", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小, Time,ala.处理量,ala.查询量 from  " + "(select DevId,datename(Hour,Time) as Time,SUM(OnlineTime) as 在线时长,SUM(HandleCnt) as 处理量,SUM(CXCnt) as 查询量  from EverydayInfo_Hour  where DevType <>6 and  Time  >='" + begintime + "' and Time <='" + endtime + "'   group by DevId,datename(Hour,Time) ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
+                            dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId] from  " + "(select DevId  from EverydayInfo_Hour  where DevType <>6 and  Time  >='" + begintime + "' and Time <='" + endtime + "'   group by DevId ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
+
                             break;
                     }
 
-                    dtEntity = SQLHelper.ExecuteRead(CommandType.Text, " SELECT B.xm,B.JYBH,A.BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] as A  left join ACL_USER  as B on A.BMDM=B.BMDM  where A.[BMDM]  = '" + sszd + "'", "2");
-                  
+                   // dtEntity = SQLHelper.ExecuteRead(CommandType.Text, " SELECT B.xm,B.JYBH,A.BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth,de.DevId from [Entity] as A  left join ACL_USER  as B on A.BMDM=B.BMDM  left join Device as de on de.JYBH = B.JYBH where A.[BMDM]  = '" + sszd + "'", "2");
+
 
                 }
             }
@@ -347,9 +353,9 @@ namespace JingWuTong.Handle
                     int 在线 = 0;
                     int status = 0;//设备使用正常、周1次，月4次，季度12次
 
-                    dr["cloum1"] = dtEntity.Rows[i1]["xm"].ToString();
+                    dr["cloum1"] = dtEntity.Rows[i1]["Contacts"].ToString();
                     dr["cloum2"] = dtEntity.Rows[i1]["JYBH"].ToString();
-   
+                    dr["cloum3"] = dtEntity.Rows[i1]["DevId"].ToString();
 
 
 
@@ -361,7 +367,7 @@ namespace JingWuTong.Handle
 
                      
                         var rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                    where int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) <= Stime
+                                    where p.Field<string>("DevId") == dtEntity.Rows[i1]["DevId"].ToString() && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) <= Stime
                                     orderby p.Field<string>("DevId")
                                     select new dataStruct
                                     {
@@ -377,7 +383,13 @@ namespace JingWuTong.Handle
 
 
                         //获得设备数量，及正常使用设备
-                        tmpRows = 0;
+                         tmpRows = 0;
+                         tmpcxl = 0;
+                         tmpcll = 0;
+                         在线时长 = 0;
+                         处理量 = 0;
+                         文件大小 = 0;
+                         查询量 = 0;
                         foreach (dataStruct item in rows)
                         {
 
@@ -390,14 +402,16 @@ namespace JingWuTong.Handle
                                     未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
                                     在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
                                     文件大小 += Convert.ToInt32(item.文件大小);
+                               
                                     break;
                                 case "2":
-                                    处理量 += Convert.ToInt32(item.在线时长);
-                                    无处罚量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
-                                    break;
-                                case "5":
-                                    查询量 += Convert.ToInt32(item.在线时长);
-                                    无查询量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
+                                    在线时长 += Convert.ToInt32(item.在线时长);
+                                    未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
+                                    在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
+                                    处理量 += Convert.ToInt32(item.HandleCnt);
+                                    查询量 += Convert.ToInt32(item.CXCnt);
+                                    tmpcxl += Convert.ToInt32(item.CXCnt);
+                                    tmpcll += Convert.ToInt32(item.HandleCnt);
                                     break;
                             }
                             if (item.DevId.ToString() != tmpDevid)
@@ -406,6 +420,13 @@ namespace JingWuTong.Handle
                                 tmpDevid = item.DevId.ToString();
                                 status += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
                                 allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
+                                if (tmpDevid != "")
+                                {
+                                    无处罚量 += (tmpcll == 0) ? 1 : 0;
+                                    无查询量 += (tmpcxl == 0) ? 1 : 0;
+                                    tmpcll = 0;
+                                    tmpcxl = 0;
+                                }
                             }
 
 
@@ -416,10 +437,13 @@ namespace JingWuTong.Handle
 
                         tmpList.Clear();
 
-     
+                       
 
-                        int countdevices = tmpRows;
+
+                       int countdevices = tmpRows;
                         double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
+
+
 
                         //dr["cloum2"] = countdevices;
                         devicescount += countdevices;
@@ -432,7 +456,6 @@ namespace JingWuTong.Handle
                                 switch (i)
                                 {
                                     case 0:
-                                        dr["cloum3"] = tmpDevid;
                                         dr["cloum4"] = 处理量;
                                         dr["cloum5"] = 查询量;
                                         break;
@@ -461,7 +484,6 @@ namespace JingWuTong.Handle
                                 switch (i)
                                 {
                                     case 0:
-                                        dr["cloum3"] = tmpDevid;
                                         dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
                                         break;
 
@@ -487,7 +509,6 @@ namespace JingWuTong.Handle
                                 switch (i)
                                 {
                                     case 0:
-                                        dr["cloum3"] = tmpDevid;
                                         dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
                                         dr["cloum5"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
                                         break;
@@ -569,11 +590,12 @@ namespace JingWuTong.Handle
                                select p;
                 usercount = userrows.Count();
 
-
+                    int countdevices=0;
                 for (int i = 0; i < arryList.Count; i++)
                 {
+                        无处罚量 = 0;
+                        无查询量 = 0;
 
-                   
                         int Ftime = int.Parse(arryList[i][0].Split(':')[0]);
                         int Stime = int.Parse(arryList[i][1].Split(':')[0]);
                         List<dataStruct> rows;
@@ -613,8 +635,9 @@ namespace JingWuTong.Handle
                                         在线时长 = p.Field<int>("在线时长"),
                                         文件大小 = p.Field<int>("文件大小"),
                                         AlarmType = p.Field<int>("AlarmType"),
-                                        DevId = p.Field<string>("DevId")
-
+                                        DevId = p.Field<string>("DevId"),
+                                        HandleCnt = p.Field<int>("处理量"),
+                                        CXCnt = p.Field<int>("查询量")
 
                                     }).ToList<dataStruct>();
                     
@@ -626,7 +649,9 @@ namespace JingWuTong.Handle
 
                     //获得设备数量，及正常使用设备
                     tmpRows = 0;
-                    foreach (dataStruct item in rows)
+                         tmpcxl = 0;
+                        tmpcll = 0;
+                        foreach (dataStruct item in rows)
                     {
 
                         switch (item.AlarmType.ToString())
@@ -640,13 +665,17 @@ namespace JingWuTong.Handle
                                 规范上传总数 += item.GFUploadCnt;
                                 break;
                             case "2":
-                                处理量 += Convert.ToInt32(item.在线时长);
-                                无处罚量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
-                                break;
-                            case "5":
-                                查询量 += Convert.ToInt32(item.在线时长);
-                                无查询量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
-                                break;
+                                在线时长 += Convert.ToInt32(item.在线时长);
+                                未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
+                                在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
+                                处理量 += Convert.ToInt32(item.HandleCnt);
+                                查询量 += Convert.ToInt32(item.CXCnt);
+                                tmpcxl += Convert.ToInt32(item.CXCnt);
+                                tmpcll += Convert.ToInt32(item.HandleCnt);
+
+
+                                    break;
+                          
                         }
                         if (item.DevId.ToString() != tmpDevid)
                         {
@@ -654,12 +683,20 @@ namespace JingWuTong.Handle
                             tmpDevid = item.DevId.ToString();
                             status += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
                             allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
+                                if (tmpDevid != "")
+                                {
+                                    无处罚量 += (tmpcll == 0) ? 1 : 0;
+                                    无查询量 += (tmpcxl == 0) ? 1 : 0;
+                                    tmpcll = 0;
+                                    tmpcxl = 0;
+                                }
+                           
                         }
+                          
 
+                       
 
-
-
-                    }//循环结束
+                        }//循环结束
           
 
                 tmpList.Clear();
@@ -667,13 +704,13 @@ namespace JingWuTong.Handle
 
           
 
-                int countdevices = tmpRows;
+                countdevices = (countdevices==0)?tmpRows:countdevices;
                 double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
 
-                sumdevices += countdevices;
+                sumdevices += (i==0)?tmpRows:0;
                 dr["cloum2"] = sumdevices;//配发数
 
-                devicescount += countdevices;
+                devicescount += (i == 0)?countdevices:0;
 
 
                 switch (type)
@@ -965,8 +1002,8 @@ namespace JingWuTong.Handle
                         dr2["cloum4"] = sbwsyl0;
                         dr2["cloum5"] = spsc0.ToString("0.00");
                         dr2["cloum6"] = spdx0.ToString("0.00");                 
-                        dr2["cloum7"] = Math.Round(gfscl0 / rowcout0);                   
-                        dr2["cloum8"] = Math.Round(usagerate0, 2);//设备使用率汇总
+                        dr2["cloum7"] = Math.Round(gfscl0 / rowcout0);
+                        dr2["cloum8"] = (sbsyl0 * 100 / devicescount).ToString("0.00"); //Math.Round(usagerate0, 2);//设备使用率汇总
 
                         dr2["cloum9"] = sbsyl1;
                         dr2["cloum10"] = sbwsyl1;
@@ -976,7 +1013,7 @@ namespace JingWuTong.Handle
                      
                             dr2["cloum13"] = Math.Round(gfscl1 / rowcout0);
                       
-                        dr2["cloum14"] = Math.Round(usagerate1, 2);//设备使用率汇总
+                        dr2["cloum14"] = (sbsyl1 * 100 / devicescount).ToString("0.00"); //Math.Round(usagerate1, 2);//设备使用率汇总
 
 
                         dr2["cloum15"] = sbsyl2;
@@ -985,8 +1022,8 @@ namespace JingWuTong.Handle
                         dr2["cloum18"] = spdx2.ToString("0.00");
               
                             dr2["cloum19"] = Math.Round(gfscl2 / rowcout0);
-                     
-                        dr2["cloum20"] = Math.Round(usagerate2, 2);//设备使用率汇总
+
+                        dr2["cloum20"] = (sbsyl2 * 100 / devicescount).ToString("0.00");//Math.Round(usagerate2, 2);//设备使用率汇总
 
 
                         dr2["cloum21"] = sbsyl3;
@@ -997,8 +1034,8 @@ namespace JingWuTong.Handle
                        
                      
                        dr2["cloum25"] = Math.Round(gfscl3 / rowcout0);
-                     
-                        dr2["cloum26"] = Math.Round(usagerate3, 2);//设备使用率汇总
+
+                        dr2["cloum26"] = (sbsyl3 * 100 / devicescount).ToString("0.00");// Math.Round(usagerate3, 2);//设备使用率汇总
 
 
                         dr2["cloum27"] = sbsyl4;
@@ -1008,8 +1045,8 @@ namespace JingWuTong.Handle
               
     
                         dr2["cloum31"] = Math.Round(gfscl4 / rowcout0);
-                    
-                        dr2["cloum32"] = Math.Round(usagerate4, 2);//设备使用率汇总
+
+                        dr2["cloum32"] = (sbsyl4 * 100 / devicescount).ToString("0.00");// Math.Round(usagerate4, 2);//设备使用率汇总
 
 
 
@@ -1020,23 +1057,23 @@ namespace JingWuTong.Handle
                     case "7":
                         dr2["cloum3"] = status0;
                         dr2["cloum4"] = zxsc0.ToString("0.00");
-                        dr2["cloum5"] = Math.Round(usagerate0, 2);//设备使用率汇总
+                        dr2["cloum5"] = (status0*100 / devicescount).ToString("0.00");//设备使用率汇总
 
                         dr2["cloum6"] = status1;
                         dr2["cloum7"] = zxsc1.ToString("0.00");
-                        dr2["cloum8"] = Math.Round(usagerate1, 2);//设备使用率汇总
+                        dr2["cloum8"] = (status1 * 100 / devicescount).ToString("0.00");//设备使用率汇总
 
                         dr2["cloum9"] = status2;
                         dr2["cloum10"] = zxsc2.ToString("0.00");
-                        dr2["cloum11"] = Math.Round(usagerate2, 2);//设备使用率汇总
+                        dr2["cloum11"] = (status2 * 100 / devicescount).ToString("0.00");//设备使用率汇总
 
                         dr2["cloum12"] = status3;
                         dr2["cloum13"] = zxsc3.ToString("0.00");
-                        dr2["cloum14"] = Math.Round(usagerate3, 2);//设备使用率汇总
+                        dr2["cloum14"] = (status3 * 100 / devicescount).ToString("0.00");//设备使用率汇总
 
                         dr2["cloum15"] = status4;
                         dr2["cloum16"] = zxsc4.ToString("0.00");
-                        dr2["cloum17"] = Math.Round(usagerate4, 2);//设备使用率汇总
+                        dr2["cloum17"] = (status4 * 100 / devicescount).ToString("0.00");//设备使用率汇总
 
 
                         break;
@@ -1116,6 +1153,8 @@ namespace JingWuTong.Handle
             public string DevId = "DevId";
             public int UploadCnt = 0;
             public int GFUploadCnt = 0;
+            public int HandleCnt = 0;
+            public int CXCnt = 0;
 
         }
 
