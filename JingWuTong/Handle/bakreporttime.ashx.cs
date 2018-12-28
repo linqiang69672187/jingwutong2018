@@ -14,7 +14,7 @@ namespace JingWuTong.Handle
     /// <summary>
     /// Timesharing_ReportsTime 的摘要说明
     /// </summary>
-    public class Timesharing_ReportsTime : IHttpHandler
+    public class bakreporttime : IHttpHandler
     {
 
         DataTable allEntitys = null;  //递归单位信息表
