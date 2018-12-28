@@ -44,9 +44,6 @@ namespace JingWuTong.Handle
 
             string tmpDevid = "";
             int tmpRows = 0;
-            int tmpcxl = 0;
-            int tmpcll = 0;
-            int tmpzxsj = 0;
             DataTable dtEntity = null;  //单位信息表
 
             DataTable Alarm_EveryDayInfo = null; //每日告警
@@ -252,8 +249,8 @@ namespace JingWuTong.Handle
                 switch (type)
                 {
                     case "5":
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT CONVERT(varchar(12) , ala.Time, 111 ) as Hour, en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小,datename(Hour,Time)as Time,UploadCnt,GFUploadCnt,GFSCL from (" +
-                        "    SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt,sum(GFSCL) as GFSCL from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by Time,[devid]) " +
+                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT CONVERT(varchar(12) , ala.Time, 111 ) as Hour, en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小,datename(Hour,Time)as Time,UploadCnt,GFUploadCnt from (" +
+                        "    SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,Time,UploadCnt,GFUploadCnt from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by [DevId],Time,UploadCnt,GFUploadCnt ) " +
                         "as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
                         dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "  select distinct CONVERT(varchar(12) , Time, 111 ) as Hour from EverydayInfo_Hour  where Time >='" + begintime + "' and Time  <='" + endtime + "' ORDER  BY Hour", "2");
 
@@ -374,7 +371,6 @@ namespace JingWuTong.Handle
                 Int64 处理量 = 0;
                 Int64 文件大小 = 0;
                 Int64 查询量 = 0;
-                double 规范上传率 = 0.0;
                 int 无查询量 = 0;
                 int 无处罚量 = 0;
                 int 未使用 = 0;
@@ -406,7 +402,7 @@ namespace JingWuTong.Handle
                                select p;
                 usercount = userrows.Count();
 
-                int countdevices = 0;
+
                 for (int i = 0; i < arryList.Count; i++)
                 {
 
@@ -430,8 +426,7 @@ namespace JingWuTong.Handle
                                         DevId = p.Field<string>("DevId"),
 
                                         UploadCnt = p.Field<int>("UploadCnt"),
-                                        GFUploadCnt = p.Field<int>("GFUploadCnt"),
-                                        GFSCL = p.Field<double>("GFSCL")
+                                        GFUploadCnt = p.Field<int>("GFUploadCnt")
 
 
 
@@ -463,9 +458,6 @@ namespace JingWuTong.Handle
 
                     //获得设备数量，及正常使用设备
                     tmpRows = 0;
-                    tmpcxl = 0;
-                    tmpcll = 0;
-                    tmpzxsj = 0;
                     foreach (dataStruct item in rows)
                     {
 
@@ -473,38 +465,27 @@ namespace JingWuTong.Handle
                         {
                             case "1":
                                 在线时长 += Convert.ToInt32(item.在线时长);
-                              
+                                未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
                                 在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
-                                规范上传率 += item.GFSCL;
                                 文件大小 += Convert.ToInt32(item.文件大小);
-                                tmpzxsj += Convert.ToInt32(item.在线时长);
-
+                                上传总数 += item.UploadCnt;
+                                规范上传总数 += item.GFUploadCnt;
                                 break;
                             case "2":
-                                在线时长 += Convert.ToInt32(item.在线时长);
-                                在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
-                                处理量 += Convert.ToInt32(item.HandleCnt);
-                                查询量 += Convert.ToInt32(item.CXCnt);
-                                tmpcxl += Convert.ToInt32(item.CXCnt);
-                                tmpcll += Convert.ToInt32(item.HandleCnt);
+                                处理量 += Convert.ToInt32(item.在线时长);
+                                无处罚量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
+                                break;
+                            case "5":
+                                查询量 += Convert.ToInt32(item.在线时长);
+                                无查询量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
                                 break;
                         }
                         if (item.DevId.ToString() != tmpDevid)
                         {
                             tmpRows += 1;  //新设备ID不重复
                             tmpDevid = item.DevId.ToString();
-                        
-                            if (tmpDevid != "")
-                            {
-                                status += (tmpzxsj - statusvalue > 0) ? 1 : 0;
-                                allstatu_device += (tmpzxsj - statusvalue > 0) ? 1 : 0;
-                                无处罚量 += (tmpcll == 0) ? 1 : 0;
-                                无查询量 += (tmpcxl == 0) ? 1 : 0;
-                                未使用 += (tmpzxsj - statusvalue <= 0) ? 1 : 0;
-                                tmpcll = 0;
-                                tmpcxl = 0;
-                                tmpzxsj = 0;
-                            }
+                            status += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
+                            allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
                         }
 
 
@@ -516,17 +497,18 @@ namespace JingWuTong.Handle
                 tmpList.Clear();
 
 
+          
 
-                    countdevices = (countdevices == 0) ? tmpRows : countdevices;
-                    double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
+                int countdevices = tmpRows;
+                double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
 
-                    sumdevices += (i == 0) ? tmpRows : 0;
-                    dr["cloum2"] = sumdevices;//配发数
+                sumdevices += countdevices;
+                dr["cloum2"] = sumdevices;//配发数
 
-                    devicescount += (i == 0) ? countdevices : 0;
+                devicescount += countdevices;
 
 
-                    switch (type)
+                switch (type)
                 {
                     case "4"://警务通
                     case "6"://辅警通
@@ -817,40 +799,40 @@ namespace JingWuTong.Handle
 
                         dr2["cloum3"] = sbsyl0;
                         dr2["cloum4"] = sbwsyl0;
-                        dr2["cloum5"] = spsc0.ToString("0.00");
-                        dr2["cloum6"] = spdx0.ToString("0.00");
+                        dr2["cloum5"] = spsc0;
+                        dr2["cloum6"] = spdx0;
                         dr2["cloum7"] = Math.Round(gfscl0 / rowcout0);
                         dr2["cloum8"] = Math.Round(usagerate0, 2);//设备使用率汇总
 
 
                         dr2["cloum9"] = sbsyl1;
                         dr2["cloum10"] = sbwsyl1;
-                        dr2["cloum11"] = spsc1.ToString("0.00");
-                        dr2["cloum12"] = spdx1.ToString("0.00");
+                        dr2["cloum11"] = spsc1;
+                        dr2["cloum12"] = spdx1;
                         dr2["cloum13"] = Math.Round(gfscl1 / rowcout1);
                         dr2["cloum14"] = Math.Round(usagerate1, 2);//设备使用率汇总
 
 
                         dr2["cloum15"] = sbsyl2;
                         dr2["cloum16"] = sbwsyl2;
-                        dr2["cloum17"] = spsc2.ToString("0.00");
-                        dr2["cloum18"] = spdx2.ToString("0.00");
+                        dr2["cloum17"] = spsc2;
+                        dr2["cloum18"] = spdx2;
                         dr2["cloum19"] = Math.Round(gfscl2 / rowcout2);
                         dr2["cloum20"] = Math.Round(usagerate2, 2);//设备使用率汇总
 
 
                         dr2["cloum21"] = sbsyl3;
                         dr2["cloum22"] = sbwsyl3;
-                        dr2["cloum23"] = spsc3.ToString("0.00");
-                        dr2["cloum24"] = spdx3.ToString("0.00");
+                        dr2["cloum23"] = spsc3;
+                        dr2["cloum24"] = spdx3;
                         dr2["cloum25"] = Math.Round(gfscl3 / rowcout3);
                         dr2["cloum26"] = Math.Round(usagerate3, 2);//设备使用率汇总
 
 
                         dr2["cloum27"] = sbsyl4;
                         dr2["cloum28"] = sbwsyl4;
-                        dr2["cloum29"] = spsc4.ToString("0.00");
-                        dr2["cloum30"] = spdx4.ToString("0.00");
+                        dr2["cloum29"] = spsc4;
+                        dr2["cloum30"] = spdx4;
                         dr2["cloum31"] = Math.Round(gfscl4 / rowcout4);
                         dr2["cloum32"] = Math.Round(usagerate4, 2);//设备使用率汇总
 
@@ -966,9 +948,6 @@ namespace JingWuTong.Handle
             public string DevId = "DevId";
             public int UploadCnt = 0;
             public int GFUploadCnt = 0;
-            public int HandleCnt = 0;
-            public int CXCnt = 0;
-            public double GFSCL = 0.0;
 
         }
 

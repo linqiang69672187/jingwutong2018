@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -536,6 +537,9 @@
     </Compile>
     <Compile Include="Equipment\Equipment_Register_Add.aspx.designer.cs">
       <DependentUpon>Equipment_Register_Add.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Handle\bakreporttime.ashx.cs">
+      <DependentUpon>bakreporttime.ashx</DependentUpon>
     </Compile>
     <Compile Include="Handle\dataManagement.ashx.cs">
       <DependentUpon>dataManagement.ashx</DependentUpon>
@@ -1162,6 +1166,7 @@
     <Content Include="Handle\report\5.xls" />
     <Content Include="Handle\report\6-6.xls" />
     <Content Include="Handle\report\6.xls" />
+    <Content Include="Handle\bakreporttime.ashx" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
     <Content Include="Static_Seed_Project\css\bootstrap.css.map" />
     <Content Include="Static_Seed_Project\css\bootstrap.min.css.map" />
