@@ -42,3 +42,14 @@ E:\工作\jingwutong2018\BLL\bin\Debug\TOOL.pdb
 E:\工作\jingwutong2018\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
 E:\工作\jingwutong2018\BLL\obj\Debug\BLL.dll
 E:\工作\jingwutong2018\BLL\obj\Debug\BLL.pdb
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\BLL.dll
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\BLL.pdb
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\DAL.dll
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\Model.dll
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\TOOL.dll
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\DAL.pdb
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\Model.pdb
+C:\工作\jingwutong2018\jingwutong2018\BLL\bin\Debug\TOOL.pdb
+C:\工作\jingwutong2018\jingwutong2018\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+C:\工作\jingwutong2018\jingwutong2018\BLL\obj\Debug\BLL.dll
+C:\工作\jingwutong2018\jingwutong2018\BLL\obj\Debug\BLL.pdb

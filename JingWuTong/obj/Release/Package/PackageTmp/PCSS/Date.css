@@ -1,0 +1,15 @@
+﻿.date,.date input{
+display:inline-block;
+height:25px;
+border-radius:4px;
+background-color:transparent;
+    
+}
+.date input{
+border: 1px  solid #fff;
+text-align:left;
+padding-left:2px;
+}
+.date .fa-calendar,.date .fa-search{
+margin-left:-16px;
+}

@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>单警科技装备管理系统</title>
+	<meta charset="utf-8" />
+
+</head>
+
+<body>
+    <link href="../Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="../CSS/jquery.dataTables.css" rel="stylesheet" />
+    <link href="../css/window.css" rel="stylesheet" />
+    <div class="tablediv">
+   
+
+        
+        <div class="row">
+
+           <div class="Week_Label" > <img src="../image/飘窗图标.png" /> </div>
+        <div class="date" ><label class="start_form_datetime"></label></div>
+         <label>—</label>
+            <div class="date"><label class="end_form_datetime"></label></div>
+            <div class="date"><label id="L_Type"></label><label>设备使用情况</label></div>
+         </div>
+       
+             <div class="row" style="display:none;">
+                   <div class="Week_Label" id="GO_back"> 返回上一级</div>
+                  </div>
+
+         <div class="row">
+            <div class="Week_Label" onclick="Next_Last_Week(true,false)"> 上周</div>
+            <div class="Week_Label" onclick="Next_Last_Week(false,true)">下周</div>
+             </div>
+
+
+        <div class="row">
+        <div class="cell-button" onclick="Divselect(2,this)">对讲机</div> 
+        <div class="cell-button" onclick="Divselect(5,this)">执法记录仪</div>
+
+        <div class="cell-button" onclick="Divselect(4,this)">警务通</div> 
+        <div class="cell-button" onclick="Divselect(6,this)">辅警通</div>
+        <div class="cell-button" onclick="Divselect(1,this)">车载视频</div> 
+        <div class="cell-button" onclick="Divselect(3,this)">拦截仪</div>
+        </div>
+
+                <label id="L_select" style="display:none">331000000000</label>
+
+               <label id="L_Url" style="display:none">Drigade.html</label>
+
+
+ 
+        <div class="row">
+
+            <div class="progress progress-striped active progresshz" style="width:80%;margin:0 auto;"><div class="floot-zhbar progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div> </div>
+                <table id="search-result-table" style="width:100%;border:none!important">
+                    <thead >
+                        <tr>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <th style="border:none!important"></th>
+                            <!--<th></th>-->
+                      <!--      <th style="width:160px;">操作</th>-->
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+        </div>
+    </div>
+
+      <div class="modal fade custom-modal in" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mydeleModeNo" style="display: none">
+        <div class="modal-backdrop fade in" style="height: 955px;z-index: -1;"></div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">告警</h4><input style="display:none;" />
+                </div>
+                <div class="modal-body">
+                    结束时间不能小于起始时间！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-qx" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+ 
+
+    <script src="../comjs/jquery.js"></script>
+    <script src="../comjs/jquery.cookie.js"></script>
+    <script src="../comjs/bootstrap.min.js"></script>
+    <script src="../comjs/jquery.dataTables.js"></script>
+    <script src="../comjs/bootstrap-datetimepicker.js"></script>
+    <script src="../js/window1.js"></script>
+</body>
+</html>

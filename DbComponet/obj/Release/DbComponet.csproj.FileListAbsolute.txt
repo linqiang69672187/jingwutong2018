@@ -12,3 +12,7 @@ E:\工作\jingwutong2018\DbComponet\bin\Release\DbComponet.dll
 E:\工作\jingwutong2018\DbComponet\bin\Release\DbComponet.pdb
 E:\工作\jingwutong2018\DbComponet\obj\Release\DbComponet.dll
 E:\工作\jingwutong2018\DbComponet\obj\Release\DbComponet.pdb
+C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Release\DbComponet.dll
+C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Release\DbComponet.pdb
+C:\工作\jingwutong2018\jingwutong2018\DbComponet\obj\Release\DbComponet.dll
+C:\工作\jingwutong2018\jingwutong2018\DbComponet\obj\Release\DbComponet.pdb

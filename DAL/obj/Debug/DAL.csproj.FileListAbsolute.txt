@@ -34,3 +34,12 @@ E:\工作\jingwutong2018\DAL\bin\Debug\TOOL.pdb
 E:\工作\jingwutong2018\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
 E:\工作\jingwutong2018\DAL\obj\Debug\DAL.dll
 E:\工作\jingwutong2018\DAL\obj\Debug\DAL.pdb
+C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Debug\DAL.dll
+C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Debug\DAL.pdb
+C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Debug\Model.dll
+C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Debug\TOOL.dll
+C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Debug\Model.pdb
+C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Debug\TOOL.pdb
+C:\工作\jingwutong2018\jingwutong2018\DAL\obj\Debug\DAL.csprojResolveAssemblyReference.cache
+C:\工作\jingwutong2018\jingwutong2018\DAL\obj\Debug\DAL.dll
+C:\工作\jingwutong2018\jingwutong2018\DAL\obj\Debug\DAL.pdb

@@ -17,3 +17,7 @@ E:\工作\jingwutong2018\TOOL\bin\Debug\TOOL.pdb
 E:\工作\jingwutong2018\TOOL\obj\Debug\TOOL.csprojResolveAssemblyReference.cache
 E:\工作\jingwutong2018\TOOL\obj\Debug\TOOL.dll
 E:\工作\jingwutong2018\TOOL\obj\Debug\TOOL.pdb
+C:\工作\jingwutong2018\jingwutong2018\TOOL\bin\Debug\TOOL.dll
+C:\工作\jingwutong2018\jingwutong2018\TOOL\bin\Debug\TOOL.pdb
+C:\工作\jingwutong2018\jingwutong2018\TOOL\obj\Debug\TOOL.dll
+C:\工作\jingwutong2018\jingwutong2018\TOOL\obj\Debug\TOOL.pdb

@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>单警科技装备管理系统</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+<link href="Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+<link href="CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<link href="CSS/ol.css" rel="stylesheet" />
+<link href="CSS/map.css" rel="stylesheet" />
+<div id="header"></div>
+<div class="progress progress-striped active progresshz" style="width:80%;margin:0 auto;"><div class="floot-zhbar progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;"></div> </div>
+<div id="mapdraw"></div>
+<div class="boxleft">
+<div class="row">
+    <div>
+    <ul>
+    <li><div><i class="fa fa-arrow-circle-o-left"></i></div></li>
+    <li><a><div id="ry" class="leftactive"/></a></li>
+    <li><a><div id="czsp" /></a></li>
+    <li><a><div id="zfjly" /></a></li>
+    <li><a><div id="fjt" /></a></li>
+    <li><a><div id="jwt" /></a></li>
+    <li><a><div id="ljy" /></a></li>
+    <li><a><div id="djj" /></a> </li>
+     </ul>
+    </div>
+<!--右边内容-->
+    <div class="boxleft_right">
+    <div class="row "><div class="col-md-12"><i class="fa fa-ellipsis-v"></i>设备搜索</div></div>
+    <div class="row ">
+        <div>
+            <select class="form-control" id="deviceselect">
+                <option value="0">人员</option>
+               
+            </select>
+        </div>
+        <div>
+            <div class="input-group seach-box" style="z-index:0;">
+                <input type="text" class="form-control " placeholder="请输入姓名或警员编号">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div></div>
+    <div class="row ">
+        <div><label>所属大队</label><select class="form-control" id="brigadeselect">
+           <option value="all">全部</option>
+         
+           </select>
+        </div>
+        <div>
+            <label>所属中队</label>
+            <select class="form-control " id="squadronselect" disabled="disabled">
+                <option value="all" >全部</option>
+            </select>
+
+        </div>
+    </div>
+    <div class="row">
+        <div><label>设备状态</label><select class="form-control" id="sbstate">
+          <option value="all" selected="selected">全部</option>
+          <option value="1" >在线</option>
+          <option value="0">离线</option>
+        </select>
+        </div>
+        <div><div class="cell-button bt2 shishi" id="cz-ck">查看</div></div>
+    </div>
+    <div class="row ">
+        <div class="col-md-6"><i class="fa fa-ellipsis-v"></i>结果列表</div>
+        <div class="col-md-6"><div class="cell-button bt2 shishi" id="cz-bianji"  disabled="disabled">历史轨迹</div></div>
+    </div>
+    <div class="row">
+        <div class="classtablerespone table-responsive  tab-maxh1 ">
+            <table class="table">
+                <thead>
+                    <tr></tr>
+                </thead>
+            </table>
+        </div>
+        <div class="table-responsive tab-maxh tab-maxh1">
+            <table class="table">
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="tab-maxh-flooter">
+            <div class="equipmentNumb">
+
+            </div>
+        
+            <div class="data-details">
+                <!--<button class="btn" id="ckTrajectory" >查看数据详情</button>-->
+            </div>
+        </div>
+
+    </div>
+        </div>
+
+
+</div>
+</div>    
+<!--历史轨迹查询-->
+<div id="histrorysearch">
+<div class="row"><input class="bh" type="hidden" /><input class="leixing" type="hidden" /><i class="fa fa-close"></i></div>
+<div class="row"><div>使用人：</div><div></div></div> 
+<div class="row"><div>配发设备：</div><div><ul></ul></div></div>
+<div class="row"><div>选择时间：</div>
+    <div>
+    <div class="input-group date" id="start-data">
+    <input type="text" class="form-control start_form_datetime">
+    <i class="glyphicon glyphicon-calendar calendar1"></i>
+</div>
+    </div>
+    </div>
+<div class="row"><div class="cell-button bt2 shishi" id="cz-cx">查询</div></div>
+</div>
+
+<!--信息窗口-->
+    <div class="zq1">
+        <div class="zq-tl1 clearfix">
+            <div class="zq-title1">设备信息<span class="close"><i class="glyphicon glyphicon-remove"></i></span></div>
+        </div>
+        <div class="zq-cwrap1" style="background-color:#fff">
+            <div class="row">
+                <div class="col-md-5"><span> 设备编号:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span> IMEI:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span> 警号:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span> 联系人:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span> 车牌号:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span>联系电话:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span>所属部门:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span>人员身份:</span></div>
+                <div class="col-md-7"><span></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-5"><span>设备状态:</span></div>
+                <div class="col-md-7"><span>离线</span></div>
+            </div>
+        </div>
+        <div class="zq-floot1" style="margin-top:-10px"><button class="btn weekly" style="visibility:hidden;">周报</button></div>
+        <div class="zq-bottom"></div>
+    </div>
+<!--告警窗口-->
+    <div class="modal fade custom-modal in" id="alertmodal" tabindex="-1" role="dialog" aria-labelledby="mydeleModeNo" style="display: none">
+        <div class="modal-backdrop fade in" style="height: 955px;z-index: -1;"></div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">提示</h4><input style="display:none;" />
+                </div>
+                <div class="modal-body">
+                  当日没有GPS轨迹！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-qx" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<script src="comjs/jquery.js"></script>
+<script src="comjs/jquery.cookie.js"></script>
+<script src="comjs/bootstrap.min.js"></script>   
+<script src="build/ol-debug.js"></script>
+<script src="comjs/bootstrap-datetimepicker.js"></script>
+<script src="Ol/baidu.js"></script>
+<script src="Js/markpic.js"></script>
+<script src="Js/vertor.js"></script>
+<script src="Js/map.js"></script>
+
+</body>
+</html>

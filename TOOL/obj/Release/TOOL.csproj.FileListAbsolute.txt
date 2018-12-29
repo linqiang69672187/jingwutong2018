@@ -12,3 +12,7 @@ E:\工作\jingwutong2018\TOOL\bin\Release\TOOL.dll
 E:\工作\jingwutong2018\TOOL\bin\Release\TOOL.pdb
 E:\工作\jingwutong2018\TOOL\obj\Release\TOOL.dll
 E:\工作\jingwutong2018\TOOL\obj\Release\TOOL.pdb
+C:\工作\jingwutong2018\jingwutong2018\TOOL\bin\Release\TOOL.dll
+C:\工作\jingwutong2018\jingwutong2018\TOOL\bin\Release\TOOL.pdb
+C:\工作\jingwutong2018\jingwutong2018\TOOL\obj\Release\TOOL.dll
+C:\工作\jingwutong2018\jingwutong2018\TOOL\obj\Release\TOOL.pdb
