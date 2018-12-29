@@ -446,7 +446,7 @@ function myRealtimeChart(label, value, index, chartnum, rebuildchar, histroytemp
     var chart;
     var containerId;
     var minvalue = value;
-    var titlevalue = '<span  class="realup">' + value+'</span>';
+    var titlevalue = '<span  class="realup">' + value + '</span>';
     switch (index) {
         case 0:
             if (chartnum > 1) return;
@@ -548,38 +548,47 @@ function myRealtimeChart(label, value, index, chartnum, rebuildchar, histroytemp
         case "在线总时长":
             areacolor = '#5d3b9d';
             maxvalue = value * 1.5;
+            label+="(h)"
             break;
         case "设备配发数":
             areacolor = '#3d4a82';
             maxvalue = value * 1.5;
+            label += "(个)"
             break;
         case "设备使用率":
             areacolor = '#51e97c';
             maxvalue = 1;
+            label += "(%)"
             break;
         case "今日在线量":
             areacolor = '#884646';
             maxvalue = value * 1.5;
+            label += "(个)"
             break;
         case "处理量":
             areacolor = '#806e47';
             maxvalue = value * 1.5;
+            label += "(个)"
             break;
         case "查询量":
             areacolor = '#5c389a';
             maxvalue = value * 1.5;
+            label += "(个)"
             break;
         case "视频长度":
             areacolor = '#823f76';
             maxvalue = value * 1.5;
+            label += "(h)"
             break;
         case "视频文件大小":
             areacolor = '#2c559b';
             maxvalue = value * 1.5;
+            label += "(G)"
             break;
         case "规范上传率":
             areacolor = '#2c559b';
             maxvalue = 1;
+            label += "(%)"
             break;
     }
    
