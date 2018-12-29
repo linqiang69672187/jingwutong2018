@@ -20,3 +20,14 @@ E:\单警科技\JingWuTong\BLL\bin\Release\TOOL.pdb
 E:\单警科技\JingWuTong\BLL\obj\Release\BLL.csprojResolveAssemblyReference.cache
 E:\单警科技\JingWuTong\BLL\obj\Release\BLL.dll
 E:\单警科技\JingWuTong\BLL\obj\Release\BLL.pdb
+E:\工作\jingwutong2018\BLL\bin\Release\BLL.dll
+E:\工作\jingwutong2018\BLL\bin\Release\BLL.pdb
+E:\工作\jingwutong2018\BLL\bin\Release\DAL.dll
+E:\工作\jingwutong2018\BLL\bin\Release\Model.dll
+E:\工作\jingwutong2018\BLL\bin\Release\TOOL.dll
+E:\工作\jingwutong2018\BLL\bin\Release\DAL.pdb
+E:\工作\jingwutong2018\BLL\bin\Release\Model.pdb
+E:\工作\jingwutong2018\BLL\bin\Release\TOOL.pdb
+E:\工作\jingwutong2018\BLL\obj\Release\BLL.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\BLL\obj\Release\BLL.dll
+E:\工作\jingwutong2018\BLL\obj\Release\BLL.pdb

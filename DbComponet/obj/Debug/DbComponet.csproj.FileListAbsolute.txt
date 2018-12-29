@@ -15,3 +15,9 @@ E:\工作\JingWuTong\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
 E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.csprojResolveAssemblyReference.cache
 E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.dll
 E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.pdb
+E:\工作\jingwutong2018\DbComponet\bin\Debug\DbComponet.dll
+E:\工作\jingwutong2018\DbComponet\bin\Debug\DbComponet.pdb
+E:\工作\jingwutong2018\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
+E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.dll
+E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.pdb

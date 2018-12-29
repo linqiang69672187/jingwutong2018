@@ -8,3 +8,7 @@ E:\单警科技\JingWuTong\Model\bin\Release\Model.pdb
 E:\单警科技\JingWuTong\Model\obj\Release\Model.dll
 E:\单警科技\JingWuTong\Model\obj\Release\Model.pdb
 E:\单警科技\JingWuTong\Model\obj\Release\Model.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\Model\bin\Release\Model.dll
+E:\工作\jingwutong2018\Model\bin\Release\Model.pdb
+E:\工作\jingwutong2018\Model\obj\Release\Model.dll
+E:\工作\jingwutong2018\Model\obj\Release\Model.pdb

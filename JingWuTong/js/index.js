@@ -1210,7 +1210,7 @@ function loadTotalDevices() {
         dataType: "json",
         success: function (data) {
             $(".count-time").each(function (index, element) {
-                var from = $(this).attr("data-to");
+                var from = $(this).data("to");
                 var to;
                 switch (index) {
                     case 0:
@@ -1233,8 +1233,8 @@ function loadTotalDevices() {
                         break;
                 }
                 if (to != from){
-                $(this).attr("data-from", from);
-                $(this).attr("data-to", to);
+                $(this).data("from", from);
+                $(this).data("to", to);
                 $(this).each(count);
                 }
 
@@ -1266,6 +1266,7 @@ function loadTotalDevices() {
         }
     });
 }
+
 $(function () {
     loadindexconfigdata();//加载仪表盘数据
  //   loadHistoryData();

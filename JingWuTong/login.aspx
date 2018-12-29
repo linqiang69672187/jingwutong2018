@@ -6,7 +6,7 @@
 <head runat="server">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>单警科技装备管理系统</title>
       <style type="text/css">  
         body, html, form
         {
@@ -14,6 +14,7 @@
             margin: 0px; 
             color: White;
             font-size: 12px;
+            overflow:hidden;
         }
         #div1
         {
@@ -82,6 +83,11 @@
         .style1
         {
             width: 54px;
+        }
+       a{
+           color:white !important;
+           text-decoration:underline !important;
+           margin-left:10px;
         }
     </style>
 
@@ -159,9 +165,9 @@
                                                                   <div class="col-sm-10 col-sm-push-2" >
                                                               <input type="checkbox" id="maintain" value="option1" runat="server" > 保持登录状态
                                                                  &nbsp; &nbsp; &nbsp;
-
                                                             <%--     <input type="checkbox" id="certificate" value="option1"  runat="server"> 数字证书登录--%>
-                                                                      </div>
+                                                                      <span>推荐使用 <a href="APP/69.0.3497.100_chrome_installer.exe">谷歌Chrome</a></span>
+                                                                  </div>
                                                             </td>
                                                         
 

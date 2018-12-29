@@ -8,3 +8,7 @@ E:\单警科技\JingWuTong\DbComponet\bin\Release\DbComponet.pdb
 E:\单警科技\JingWuTong\DbComponet\obj\Release\DbComponet.dll
 E:\单警科技\JingWuTong\DbComponet\obj\Release\DbComponet.pdb
 E:\单警科技\JingWuTong\DbComponet\obj\Release\DbComponet.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\DbComponet\bin\Release\DbComponet.dll
+E:\工作\jingwutong2018\DbComponet\bin\Release\DbComponet.pdb
+E:\工作\jingwutong2018\DbComponet\obj\Release\DbComponet.dll
+E:\工作\jingwutong2018\DbComponet\obj\Release\DbComponet.pdb

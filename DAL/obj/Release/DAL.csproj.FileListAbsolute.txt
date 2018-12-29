@@ -16,3 +16,12 @@ E:\单警科技\JingWuTong\DAL\bin\Release\TOOL.pdb
 E:\单警科技\JingWuTong\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
 E:\单警科技\JingWuTong\DAL\obj\Release\DAL.dll
 E:\单警科技\JingWuTong\DAL\obj\Release\DAL.pdb
+E:\工作\jingwutong2018\DAL\bin\Release\DAL.dll
+E:\工作\jingwutong2018\DAL\bin\Release\DAL.pdb
+E:\工作\jingwutong2018\DAL\bin\Release\Model.dll
+E:\工作\jingwutong2018\DAL\bin\Release\TOOL.dll
+E:\工作\jingwutong2018\DAL\bin\Release\Model.pdb
+E:\工作\jingwutong2018\DAL\bin\Release\TOOL.pdb
+E:\工作\jingwutong2018\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\DAL\obj\Release\DAL.dll
+E:\工作\jingwutong2018\DAL\obj\Release\DAL.pdb

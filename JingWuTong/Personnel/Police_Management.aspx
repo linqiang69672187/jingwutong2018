@@ -6,7 +6,7 @@
 <head id="Head1" runat="server">
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title></title>
+    <title>单警科技装备管理系统</title>
       <style type="text/css"> 
 
          html,body{margin:0px; height:100%;width:100%}

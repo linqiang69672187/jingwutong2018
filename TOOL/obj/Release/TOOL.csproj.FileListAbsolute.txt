@@ -8,3 +8,7 @@ E:\单警科技\JingWuTong\TOOL\bin\Release\TOOL.pdb
 E:\单警科技\JingWuTong\TOOL\obj\Release\TOOL.dll
 E:\单警科技\JingWuTong\TOOL\obj\Release\TOOL.pdb
 E:\单警科技\JingWuTong\TOOL\obj\Release\TOOL.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\TOOL\bin\Release\TOOL.dll
+E:\工作\jingwutong2018\TOOL\bin\Release\TOOL.pdb
+E:\工作\jingwutong2018\TOOL\obj\Release\TOOL.dll
+E:\工作\jingwutong2018\TOOL\obj\Release\TOOL.pdb
