@@ -554,6 +554,9 @@
     <Compile Include="Handle\entitymanage.ashx.cs">
       <DependentUpon>entitymanage.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Handle\exportAll_datamanagement.ashx.cs">
+      <DependentUpon>exportAll_datamanagement.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handle\getAlarmdays.ashx.cs">
       <DependentUpon>getAlarmdays.ashx</DependentUpon>
     </Compile>
@@ -883,6 +886,8 @@
     <Content Include="Handle\report\6-6.xls" />
     <Content Include="Handle\report\6.xls" />
     <Content Include="Handle\bakreporttime.ashx" />
+    <Content Include="Handle\exportAll_datamanagement.ashx" />
+    <Content Include="Handle\templet\0.xls" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
     <Content Include="Static_Seed_Project\css\bootstrap.css.map" />
     <Content Include="Static_Seed_Project\css\bootstrap.min.css.map" />

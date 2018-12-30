@@ -366,3 +366,7 @@ table.dataTable tbody th, table.dataTable tbody td{
 .daochu{
     margin-left:0px !important;
 }
+
+#search-result-table{
+    min-width:1200px;border:none!important;display:none;width:100%;
+}
