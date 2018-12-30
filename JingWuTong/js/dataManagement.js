@@ -270,6 +270,44 @@ $(document).on('click.bs.carousel.data-api', '#requestbtn', function (e) {
         $("#search-result-table").DataTable().ajax.reload();
     }
 });
+
+$(document).on('click.bs.carousel.data-api', '.daochuall', function (e) {
+    if ($('.end_form_datetime').val() < $('.start_form_datetime').val()) {
+        $("#alertmodal").modal("show");
+        return;
+    };
+    var data =
+   {
+       search: $(".search input").val(),
+       type: $("#deviceselect").val(),
+       ssdd: $("#brigadeselect").val(),
+       sszd: $("#squadronselect").val(),
+       begintime: $(".start_form_datetime").val(),
+       endtime: $(".end_form_datetime").val(),
+       hbbegintime: hbdatetime($(".start_form_datetime").val()),
+       hbendtime: hbdatetime($(".end_form_datetime").val()),
+       dates: datecompare($(".end_form_datetime").val(), $(".start_form_datetime").val()),
+       requesttype: "查询汇总"
+   }
+    $.ajax({
+        type: "POST",
+        url: "../Handle/exportAll_datamanagement.ashx",
+        data: data,
+        dataType: "json",
+        success: function (data) {
+            if (data.r == "0") {
+
+
+            }
+
+        },
+        error: function (msg) {
+            console.debug("错误:ajax");
+        }
+    });
+    
+});
+
 $(document).on('click.bs.carousel.data-api', '#addedit', function (e) {
     var $doc = $(this).parents('tr');
     //var data = $('#search-result-table').DataTable().row($doc).data();

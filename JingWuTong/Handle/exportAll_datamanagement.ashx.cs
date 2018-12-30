@@ -94,263 +94,42 @@ namespace JingWuTong.Handle
             statusvalue = days * usedvalue;//超过10分钟算使用
             zxstatusvalue = days * onlinevalue;//在线参考值
 
-            allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM from [Entity] ", "11");
+            allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,Sort from [Entity] ", "11");
             DataTable devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM", "user");
+            DataTable zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  sum(CONVERT(bigint,[VideLength])) as 视频长度, sum(CONVERT(bigint,[FileSize])) as 文件大小,sum([UploadCnt]) as 上传量,sum([GFUploadCnt]) as 规范上传量,de.BMDM,de.DevId FROM [EveryDayInfo_ZFJLY] al left join Device de on de.DevId = al.DevId where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by de.DevId,de.BMDM", "Alarm_EveryDayInfo");
+            DataTable zxscData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=1 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+            DataTable cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=2 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+            DataTable cxlData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=5 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+
 
             //所有大队
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-
-
-            }
-
-                switch (type)
-                {
-                    case "5":
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小 from (SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType from [EveryDayInfo_ZFJLY]   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'   group by [DevId] ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
-                        dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMMC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
-                        break;
-                    default:
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],0 as 文件大小 from (SELECT [DevId],[AlarmType],sum([Value]) as 在线时长 from [Alarm_EveryDayInfo]   where [AlarmType] <>6 and  [AlarmDay ] >='" + begintime + "' and [AlarmDay ] <='" + endtime + "'   group by [DevId],[AlarmType] ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
-                        dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMMC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' AND BMDM <> '33100000000x' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
-
-                        break;
-                }
-                //  hbAlarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.[ParentID],de.[Contacts],de.[DevId],ala.在线时长 from (SELECT [DevId]  ,sum([Value]) as 在线时长 from [Alarm_EveryDayInfo]   where [AlarmType] = 1 and  [AlarmDay ] >='" + hbbegintime + "' and [AlarmDay ] <='" + hbendtime + "'   group by [DevId] ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[ID] = de.[EntityId] where de.[DevType]=1", "Alarm_EveryDayInfo");
-          
-
-
-            for (int i1 = 0; i1 < dtEntity.Rows.Count; i1++)
-            {
-                DataRow dr = dtreturns.NewRow();
-                dr["cloum1"] = (i1 + 1).ToString(); ;
-                dr["cloum2"] = dtEntity.Rows[i1]["Name"].ToString();
-
-                dr["cloum13"] = (i1 + 1);
-                Int64 在线时长 = 0;
-                Int64 处理量 = 0;
-                Int64 文件大小 = 0;
-                Int64 查询量 = 0;
-                int 无查询量 = 0;
-                int 无处罚量 = 0;
-                int 未使用 = 0;
-                int usercount = 0;
-                int 在线 = 0;
-                int status = 0;//设备使用正常、周1次，月4次，季度12次
-
-
-                var entityids = GetSonID(dtEntity.Rows[i1]["ID"].ToString());
-                List<string> strList = new List<string>();
-
-                strList.Add(dtEntity.Rows[i1]["ID"].ToString());
-
-                if (!(ssdd != "all" && sszd == "all") || !(dtEntity.Rows[i1]["ParentID"].ToString() == "331000000000"))
-                {
-                    foreach (entityStruct item in entityids)
+                var rows = from p in allEntitys.AsEnumerable()
+                           where (p.Field<string>("BMDM")== "331000000000")
+                           orderby p.Field<double>("Sort") descending
+                           select p;
+                    foreach (var entityitem in rows)
                     {
-                        strList.Add(item.BMDM);
-                    }
-                }
+                        if (devtypes.Rows[h]["TypeName"].ToString() != "执法记录仪") continue;
 
-                var rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                            where strList.ToArray().Contains(p.Field<string>("BMDM"))
-                            orderby p.Field<string>("DevId")
-                            select new dataStruct
-                            {
-                                BMDM = p.Field<string>("BMDM"),
-                                ParentID = p.Field<string>("ParentID"),
-                                在线时长 = p.Field<int>("在线时长"),
-                                文件大小 = p.Field<int>("文件大小"),
-                                AlarmType = p.Field<int>("AlarmType"),
-                                DevId = p.Field<string>("DevId")
-                            }).ToList<dataStruct>();
 
-            
-                tmpRows = 0;
-                foreach (dataStruct item in rows)
-                {
 
-                    switch (item.AlarmType.ToString())
-                    {
-                        case "1":
-                            在线时长 += Convert.ToInt32(item.在线时长);
-                            未使用 += ((Convert.ToInt32(item.在线时长) - statusvalue) <= 0) ? 1 : 0;
-                            在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
-                            文件大小 += Convert.ToInt32(item.文件大小);
-                            break;
-                        case "2":
-                            处理量 += Convert.ToInt32(item.在线时长);
-                            无处罚量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
-                            break;
-                        case "5":
-                            查询量 += Convert.ToInt32(item.在线时长);
-                            无查询量 += (Convert.ToInt32(item.在线时长) == 0) ? 1 : 0;
-                            break;
-                    }
-                    if (item.DevId.ToString() != tmpDevid)
-                    {
-                        tmpRows += 1;  //新设备ID不重复
-                        tmpDevid = item.DevId.ToString();
-                        status += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
-                        allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
+
                     }
 
 
 
 
+
                 }
 
-                tmpList.Clear();
-
-                var userrows = from p in dUser.AsEnumerable()
-                               where strList.ToArray().Contains(p.Field<string>("BMDM"))
-                               select p;
-                usercount = userrows.Count();
-
-                int countdevices = tmpRows;
-                double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
-
-                dr["cloum3"] = countdevices;
-                devicescount += countdevices;
+               
 
 
-                switch (type)
-                {
-                    case "4":
-                    case "6":
-                        dr["cloum4"] = usercount;   // dr["cloum4"] = 处理量;
-                        hzusecount += usercount;
-                        zxsc += 处理量;
-                        cxl += 查询量;
-                        dr["cloum5"] = (usercount != 0) ? Math.Round((double)处理量 / usercount, 2) : 0;
-                        dr["cloum7"] = 查询量;
-                        dr["cloum11"] = 无处罚量;
-                        dr["cloum9"] = 处理量;//无处罚量;
-                        dr["cloum6"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2);
-                        wcxl += 无查询量;
-                        wcfl += 无处罚量;
-                        dr["cloum10"] = 未使用;
-                        jwtzxsc += 在线时长;
-                        wsysb += 未使用;
-                        pxstring = "cloum6";
-                        break;
-                    case "1":
-                    case "2":
-                    case "3":
-                        dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00");
-
-                        dr["cloum5"] = status;
-                        dr["cloum6"] = countdevices - status;
-                        dr["cloum9"] = ((double)文件大小 / 1048576).ToString("0.00"); //转换为GB
-                        spdx += ((double)文件大小 / 1048576);
-                        dr["cloum7"] = (countdevices != 0) ? (deviceuse) : 0;
-                        zxsc += (double)在线时长 / 3600;
-                        pxstring = "cloum7";
-                        break;
-                    case "5":
-                        dr["cloum5"] = ((double)在线时长 / 3600).ToString("0.00"); //第4列，视频时长
-
-                        dr["cloum4"] = status;
-                        dr["cloum9"] = countdevices - status; //设备未使用项目，第8列
-                        dr["cloum7"] = ((double)文件大小 / 1048576).ToString("0.00"); //转换为GB，第5列
-                        spdx += ((double)文件大小 / 1048576);
-                        dr["cloum6"] = (countdevices != 0) ? (deviceuse) : 0; //使用数量，第6列
-                        zxsc += (double)在线时长 / 3600;
-                        pxstring = "cloum6";
-                        break;
-                    default:
-                        break;
-                }
-                dr["cloum13"] = 在线时长 / 3600;
-                zxsb += 在线;
-                dr["cloum14"] = zxsb;
-                dr["cloum12"] = dtEntity.Rows[i1]["ID"].ToString();
-                dtreturns.Rows.Add(dr);
-            }
-            if (sszd != "all")
-            {
-                goto end;
-            }
-            int orderno = 1;
-            var query = (from p in dtreturns.AsEnumerable()
-                         orderby p.Field<double>(pxstring) descending
-                         select p) as IEnumerable<DataRow>;
-            double temsyl = 0.0;
-            int temorder = 1;
-            foreach (var item in query)
-            {
-                if (temsyl == double.Parse(item[pxstring].ToString()))
-                {
-                    item["cloum8"] = temorder;
-                }
-                else
-                {
-                    item["cloum8"] = orderno;
-
-                    temsyl = double.Parse((item[pxstring].ToString()));
-                    temorder = orderno;
-                }
-                orderno += 1;
-            }
-
-            //  query=query.OrderBy(p =>p["cloum13"]);
-            //  dtreturns =query.CopyToDataTable<DataRow>();
-            DataRow drtz = dtreturns.NewRow();
-            drtz["cloum1"] = dtreturns.Rows.Count + 1;
-            drtz["cloum2"] = "合计";//ddtitle;
-            drtz["cloum3"] = devicescount;
-
-            drtz["cloum5"] = allstatu_device;
-            Double sbsyl;
-            switch (type)
-            {
-                case "4":
-                case "6":
-                    drtz["cloum7"] = cxl;
-                    drtz["cloum4"] = hzusecount;
-                    drtz["cloum5"] = (hzusecount == 0) ? "0" : (zxsc / hzusecount).ToString("0.00"); ;
-                    drtz["cloum11"] = wcfl;
-                    drtz["cloum9"] = zxsc;//wcfl;
-                    drtz["cloum10"] = wsysb;
-                    drtz["cloum6"] = (devicescount == 0) ? "0" : (zxsc / devicescount).ToString("0.00");
-                    drtz["cloum13"] = zxsc;// jwtzxsc;//zxsc;
-
-                    break;
-                case "1":
-                case "2":
-                case "3":
-                    drtz["cloum6"] = devicescount - allstatu_device;
-                    drtz["cloum4"] = zxsc.ToString("0.00");
-                    drtz["cloum9"] = spdx.ToString("0.00");
-                    sbsyl = (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                    drtz["cloum7"] = Math.Round(sbsyl, 2);
-                    drtz["cloum13"] = zxsc;
-
-                    break;
-                case "5":
-                    drtz["cloum5"] = allstatu_device;// devicescount - allstatu_device;
-                    drtz["cloum5"] = zxsc.ToString("0.00");
-                    drtz["cloum7"] = spdx.ToString("0.00");
-                    sbsyl = (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                    drtz["cloum6"] = Math.Round(sbsyl, 2);
-                    drtz["cloum4"] = allstatu_device;
-                    drtz["cloum9"] = devicescount - allstatu_device; //设备未使用项目，第8列
-                    drtz["cloum13"] = zxsc;
-
-                    break;
-                default:
-                    break;
-            }
-            drtz["cloum14"] = zxsb;
-            drtz["cloum12"] = bmdm;
-            drtz["cloum8"] = "/";
-            // drtz["环比"] = (hbhb.Contains("数字")) ? "-" : hbhb;
-            dtreturns.Rows.Add(drtz);
-            // dtreturns.Rows.InsertAt(drtz, 0);
-
-            end:
+        
 
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
           
