@@ -282,12 +282,15 @@ $(document).on('click.bs.carousel.data-api', '.daochuall', function (e) {
        type: $("#deviceselect").val(),
        ssdd: $("#brigadeselect").val(),
        sszd: $("#squadronselect").val(),
+       ssdd1: eachbrigadeselect(),
        begintime: $(".start_form_datetime").val(),
        endtime: $(".end_form_datetime").val(),
-       hbbegintime: hbdatetime($(".start_form_datetime").val()),
-       hbendtime: hbdatetime($(".end_form_datetime").val()),
        dates: datecompare($(".end_form_datetime").val(), $(".start_form_datetime").val()),
-       requesttype: "查询汇总"
+       ssddtext: $("#brigadeselect").find("option:selected").text(),
+       sszdtext: $("#squadronselect").find("option:selected").text(),
+       requesttype: "查询报表",
+       onlinevalue: $("#configmodal input:eq(1)").val(),
+       usedvalue: $("#configmodal input:eq(0)").val()
    }
     $.ajax({
         type: "POST",

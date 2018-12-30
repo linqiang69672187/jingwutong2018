@@ -42,11 +42,8 @@ namespace JingWuTong.Handle
                // sreachcondi = " (de.[DevId] like '%" + search + "%' or us.[XM] like '%" + search + "%' or us.[JYBH] like '%" + search + "%' ) and ";
             }
 
-            string tmpDevid = "";
-            int tmpRows = 0;
-            DataTable dtEntity = null;  //单位信息表
+  
 
-            DataTable Alarm_EveryDayInfo = null; //每日告警
             DataTable dUser = null;
      
 
@@ -89,12 +86,12 @@ namespace JingWuTong.Handle
             string bmdm = ""; //汇总的部门代码
             int allstatu_device = 0;  //汇总使用率不为空数量
             string ddtitle;//大队标题
-
+            int sheetrows = 0;
 
             statusvalue = days * usedvalue;//超过10分钟算使用
             zxstatusvalue = days * onlinevalue;//在线参考值
 
-            allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,Sort from [Entity] ", "11");
+            allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             DataTable devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM", "user");
             DataTable zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  sum(CONVERT(bigint,[VideLength])) as 视频长度, sum(CONVERT(bigint,[FileSize])) as 文件大小,sum([UploadCnt]) as 上传量,sum([GFUploadCnt]) as 规范上传量,de.BMDM,de.DevId FROM [EveryDayInfo_ZFJLY] al left join Device de on de.DevId = al.DevId where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by de.DevId,de.BMDM", "Alarm_EveryDayInfo");
@@ -102,23 +99,30 @@ namespace JingWuTong.Handle
             DataTable cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=2 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
             DataTable cxlData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=5 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
 
-
+            ExcelFile excelFile = new ExcelFile();
+            var tmpath = "";
+            tmpath = HttpContext.Current.Server.MapPath("templet\\0.xls");
+            excelFile.LoadXls(tmpath);
             //所有大队
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
+                sheetrows = 0;
                 var rows = from p in allEntitys.AsEnumerable()
-                           where (p.Field<string>("BMDM")== "331000000000")
-                           orderby p.Field<double>("Sort") descending
+                           where (p.Field<string>("SJBM")== "331000000000"&& (p.Field<int>("id") <71|| p.Field<int>("id") ==180))
+                           orderby p.Field<int>("Sort") descending
                            select p;
                     foreach (var entityitem in rows)
                     {
-                        if (devtypes.Rows[h]["TypeName"].ToString() != "执法记录仪") continue;
+                        if (devtypes.Rows[h]["TypeName"].ToString() != "执法记录仪"&& entityitem["BMDM"].ToString()== "33100000000x") continue;
+                         sheetrows += 1;
+                         ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
+                         sheet.Rows[sheetrows + 2].Cells["A"].Value = entityitem["BMMC"].ToString();
+                       
 
+                       
 
-
-
-                    }
+                   }
 
 
 
@@ -126,13 +130,13 @@ namespace JingWuTong.Handle
 
                 }
 
-               
 
+            tmpath = HttpContext.Current.Server.MapPath("upload\\一键报表.xls");
+            excelFile.SaveXls(tmpath);
 
-        
 
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
-          
+
         }
 
         public IEnumerable<entityStruct> GetSonID(string p_id)
