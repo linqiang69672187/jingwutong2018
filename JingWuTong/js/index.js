@@ -1792,5 +1792,43 @@ var scroll1 = new Scroll({
     delay: 3000            //时间间隔单位ms
 });
 scroll1.run();
+var scroll2 = new Scroll({
+    dom: $(".dc-scroll:eq(2)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll2.run();
+var scroll3 = new Scroll({
+    dom: $(".dc-scroll:eq(3)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll3.run();
+
+var scroll4 = new Scroll({
+    dom: $(".dc-scroll:eq(4)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll4.run();
+var scroll5 = new Scroll({
+    dom: $(".dc-scroll:eq(5)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll5.run();
+var scroll6 = new Scroll({
+    dom: $(".dc-scroll:eq(6)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll6.run();
+var scroll7 = new Scroll({
+    dom: $(".dc-scroll:eq(7)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll7.run();
+
 
 

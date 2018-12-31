@@ -1206,11 +1206,18 @@ padding:2px 5px 0 0;
     color:#FF0000;
 }
 .dc-ul{
-    display:inline;
+    display: inline-block;
+}
+.dc-ul li{
+    text-align:left;
 }
 .dc-ul>li:nth-child(3){
     display:block;
+    margin-top: -25px;
+    font-size:12px;
+    margin-left:-15px;
 }
-.dc-ul li:nth-child(2){
-     margin-right:0px !important;
+
+.dc-ul>li:nth-child(2){
+     margin-left:-5px;
 }
