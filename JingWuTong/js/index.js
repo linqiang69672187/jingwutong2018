@@ -1786,4 +1786,11 @@ var scroll = new Scroll({
     delay: 3000            //时间间隔单位ms
 });
 scroll.run();
+var scroll1 = new Scroll({
+    dom: $(".dc-scroll:eq(1)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll1.run();
+
 

@@ -21,7 +21,7 @@
         },
         //数据生成器 ———— 配合后台则需要异步接收到数据
         dataGet : function () {
-            return Math.floor(Math.random() * 99999);
+            return this.oldData + 2;
         },
         //数据处理
         dataSolve : function () {
@@ -72,8 +72,10 @@
             var _self = this;           
             var $li = this.option.dom.find('li');
             
-            $li.each(function(i){
-                $li.eq(i).css("transition", 0.5 * ($li.length - i) + "s").attr("class","s-" + _self.direction[i]);
+            $li.each(function (i) {
+                if(i==4){
+                    $li.eq(i).css("transition", 0.5 * ($li.length - i) + "s").attr("class","s-" + _self.direction[i]);
+                }
             });
         },
         //样式归原

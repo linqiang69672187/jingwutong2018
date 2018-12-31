@@ -683,7 +683,7 @@
      .qjxinxi>div:nth-child(2){
          margin-top:-10px;
      }
-       .qjxinxi div:nth-child(3){
+       .qjxinxi>div:nth-child(3){
          margin-top:10px;
      }
     .qjxinxi>div:nth-child(2), .qjxinxi div:nth-child(3) {
@@ -712,18 +712,18 @@
        font-size:24px;
        font-family:'alarm clock' !important;
    }
-    .qjxinxi li {
+    .qjxinxi>li {
         position: relative;
         width:18%;
     }
-     .qjxinxi li:nth-child(1) {
+     .qjxinxi>li:nth-child(1) {
         position: relative;
         width:60px;
         margin-right: 20px;
         margin-top:0px;
     }
 
-    .qjxinxi li i:nth-child(1) {
+    .qjxinxi>li i:nth-child(1) {
         position: absolute;
         margin-top: 0px;
         margin-left: -20px !important;
@@ -732,7 +732,7 @@
         margin-left:15px;
     }
 
-    .qjxinxi li label:nth-child(2) {
+    .qjxinxi>li label:nth-child(2) {
         position: absolute;
         margin-top: -12px;
         margin-left: 18px !important;

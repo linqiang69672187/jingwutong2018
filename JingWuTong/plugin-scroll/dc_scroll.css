@@ -5,16 +5,16 @@
 ***/
 
 .dc-scroll {
-  height: 90px;
+  height: 40px;
   overflow: hidden;
 }
 .dc-scroll li {
-  width: 55px;
-  height: 90px;
+  width: 12px;
+  height: 40px;
   float: left;
-  font: 56px "SimHei";
+  font: 24px "SimHei";
   font-weight: 600;
-  line-height: 90px;
+  line-height: 40px;
   text-align: center;
   position: relative;
 }
