@@ -413,7 +413,7 @@ namespace JingWuTong.Handle
                     if (type == "5")
                     {
                          rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                 where p.Field<string>("Hour") == dtEntity.Rows[i1]["Hour"].ToString() && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) <= Stime
+                                 where p.Field<string>("Hour") == dtEntity.Rows[i1]["Hour"].ToString() && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) < Stime
                                     orderby p.Field<string>("DevId")
 
                                     select new dataStruct

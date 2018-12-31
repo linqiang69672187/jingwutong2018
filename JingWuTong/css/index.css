@@ -1185,8 +1185,7 @@ padding:2px 5px 0 0;
 .qjxinxi ul li {
  vertical-align:top;
  font-size:20px;
- margin-right:20px;
- margin-top:5px;
+
 }
 
 .leftbox .highcharts-container {
@@ -1205,4 +1204,13 @@ padding:2px 5px 0 0;
 }
 .fa-exclamation-circle{
     color:#FF0000;
+}
+.dc-ul{
+    display:inline;
+}
+.dc-ul>li:nth-child(3){
+    display:block;
+}
+.dc-ul li:nth-child(2){
+     margin-right:0px !important;
 }

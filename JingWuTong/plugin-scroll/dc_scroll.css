@@ -17,6 +17,9 @@
   line-height: 40px;
   text-align: center;
   position: relative;
+  vertical-align: top;
+    margin-right: 0px !important;
+    margin-top: 0px !important;
 }
 .dc-scroll li div {
   position: absolute;
@@ -47,3 +50,4 @@ html,body,div,ul,li{
         .fr{
             float:right;
         }
+

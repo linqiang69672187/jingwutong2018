@@ -73,9 +73,7 @@
             var $li = this.option.dom.find('li');
             
             $li.each(function (i) {
-                if(i==4){
                     $li.eq(i).css("transition", 0.5 * ($li.length - i) + "s").attr("class","s-" + _self.direction[i]);
-                }
             });
         },
         //样式归原
