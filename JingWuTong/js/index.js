@@ -1219,6 +1219,7 @@ function loadTotalDevices() {
         dataType: "json",
         success: function (data) {
             $(".count-time").each(function (index, element) {
+                /**
                 var from = $(this).data("to");
                 var to;
                 switch (index) {
@@ -1246,6 +1247,7 @@ function loadTotalDevices() {
                 $(this).data("to", to);
                 $(this).each(count);
                 }
+                **/
 
             })
             switch (data.title) {
@@ -1777,5 +1779,11 @@ function createcloumdiv(data) {
     }
 }
 
-
+//卷轴模块
+var scroll = new Scroll({
+    dom: $(".dc-scroll:eq(0)"),  //操作的节点
+    num: 5,                //几个卷轮
+    delay: 3000            //时间间隔单位ms
+});
+scroll.run();
 

@@ -668,7 +668,7 @@
          border: 1px solid #29599b;
          border-radius: 2px;
      }
-   .qjxinxi div:nth-child(1) {
+   .qjxinxi>div:nth-child(1) {
         font-size: 14px;
         color: #fff;
         height: 22px;
@@ -680,20 +680,20 @@
        font-size:30px;
        color:#116bf2;
    }
-     .qjxinxi div:nth-child(2){
+     .qjxinxi>div:nth-child(2){
          margin-top:-10px;
      }
        .qjxinxi div:nth-child(3){
          margin-top:10px;
      }
-    .qjxinxi div:nth-child(2), .qjxinxi div:nth-child(3) {
+    .qjxinxi>div:nth-child(2), .qjxinxi div:nth-child(3) {
         font-size: 24px !important;
         color: #fff !important;
         height: 35px !important;
         background-color: transparent !important;
     }
 
-    .qjxinxi ul {
+    .textxinxi1,.textxinxi2 {
         width: 100%;
         margin-left:6%;
         display:inline-block;
