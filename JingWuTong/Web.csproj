@@ -442,6 +442,11 @@
     <Content Include="PImage\sort_desc.png" />
     <Content Include="PImage\sort_desc_disabled.png" />
     <Content Include="PImage\topbannerbg.png" />
+    <Content Include="plugin-scroll\dc_scroll.css" />
+    <Content Include="plugin-scroll\dc_scroll.js" />
+    <Content Include="plugin-scroll\index.html" />
+    <Content Include="plugin-scroll\jquery.min.js" />
+    <Content Include="plugin-scroll\scroll.png" />
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="SQL\sql.txt" />
