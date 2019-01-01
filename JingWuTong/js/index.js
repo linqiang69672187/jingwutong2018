@@ -12,6 +12,7 @@ var carouselEntity;//轮播单位
 var color = ['#4c8afa', '#f2ab22', '#43db89', '#38e8e8', '#a24cfa', '#fa4cae', '#59bfa1', '#d7ce56', '#b45538', '#c48b6c', '#c56377', '#86c36a'];
 var historydetype;
 var historycurrentTime;
+var TotalData;
 
 Highcharts.setOptions({ global: { useUTC: false } });
 setInterval(function () {
@@ -1218,7 +1219,7 @@ function loadTotalDevices() {
         data: "",
         dataType: "json",
         success: function (data) {
-            $(".count-time").each(function (index, element) {
+            //$(".count-time").each(function (index, element) {
                 /**
                 var from = $(this).data("to");
                 var to;
@@ -1249,7 +1250,8 @@ function loadTotalDevices() {
                 }
                 **/
 
-            })
+            // })
+            if (!TotalData){
             switch (data.title) {
                 case "331000000000":
                     $(".textxinxi1 label:eq(0)").text("全市");
@@ -1267,8 +1269,10 @@ function loadTotalDevices() {
                     $(".textxinxi2 label:eq(0)").text("中队");
                     break;
 
+                    }
             }
 
+            TotalData = data.data;
 
 
         },
@@ -1783,50 +1787,58 @@ function createcloumdiv(data) {
 var scroll = new Scroll({
     dom: $(".dc-scroll:eq(0)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:0
 });
 scroll.run();
 var scroll1 = new Scroll({
     dom: $(".dc-scroll:eq(1)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:1
 });
 scroll1.run();
 var scroll2 = new Scroll({
     dom: $(".dc-scroll:eq(2)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:2
 });
 scroll2.run();
 var scroll3 = new Scroll({
     dom: $(".dc-scroll:eq(3)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:3
 });
 scroll3.run();
 
 var scroll4 = new Scroll({
     dom: $(".dc-scroll:eq(4)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:4
 });
 scroll4.run();
 var scroll5 = new Scroll({
     dom: $(".dc-scroll:eq(5)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:5
 });
 scroll5.run();
 var scroll6 = new Scroll({
     dom: $(".dc-scroll:eq(6)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:6
 });
 scroll6.run();
 var scroll7 = new Scroll({
     dom: $(".dc-scroll:eq(7)"),  //操作的节点
     num: 5,                //几个卷轮
-    delay: 3000            //时间间隔单位ms
+    delay: 3000,            //时间间隔单位ms
+    index:7
 });
 scroll7.run();
 
