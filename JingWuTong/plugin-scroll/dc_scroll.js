@@ -12,16 +12,40 @@
     Scroll.prototype = {
         //初始化
         init : function(){
-            this.oldData = 900;
-            this.newData = 800;
+            this.oldData = 0;
+            this.newData = 0;
             this.arrOld = [0,0,0,0,0];
             this.arrNew = [0,0,0,0,0];
             this.direction = [];
             this.styleReturn();
         },
         //数据生成器 ———— 配合后台则需要异步接收到数据
-        dataGet : function () {
-            return this.oldData + 2;
+        dataGet: function () {
+            if(!TotalData) return 0;
+            var to = 0
+            var index = this.option.index;
+            switch (this.option.index) {
+                case 0:
+                case 1:
+                case 2:
+                    to = TotalData[index].value;
+                    break;
+                case 3:
+                    to = formatSeconds(TotalData[1].value2, 1);
+                    break;
+                case 4:
+                case 5:
+                case 6:
+                    to = TotalData[index - 1].value;
+                    break;
+                case 7:
+                    to = formatSeconds(TotalData[4].value2, 1);
+                    break;
+                default:
+                    break;
+            }
+            //this.option.index
+            return to;
         },
         //数据处理
         dataSolve : function () {
