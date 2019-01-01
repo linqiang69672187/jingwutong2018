@@ -1005,35 +1005,35 @@ namespace JingWuTong.Handle
                     case "4":
                     case "6":
                         dr2["cloum4"] = cfs0;
-                        dr2["cloum5"] = (jys > 0) ? ((double)cfs0 / jys).ToString("0.00") : "0";//rjcf0;
+                        dr2["cloum5"] = (jys > 0) ? Math.Round(((double)cfs0 / jys),2) : 0;//rjcf0;
                         dr2["cloum6"] = cxl0;
                             // dr2["cloum7"] = pjcf0;
-                        dr2["cloum7"] = (devicescount > 0)?((double)cfs0 / devicescount).ToString("0.00"):"0";
+                        dr2["cloum7"] = (devicescount > 0) ? Math.Round(((double)cfs0 / devicescount),2):0;
                         dr2["cloum8"] = wcfl0;
 
                         dr2["cloum9"] = cfs1;
                         dr2["cloum10"] = (jys > 0) ? ((double)cfs1 / jys).ToString("0.00") : "0";//rjcf1;
                         dr2["cloum11"] = cxl1;
-                        dr2["cloum12"] = (devicescount > 0) ? ((double)cfs1 / devicescount).ToString("0.00") : "0";
+                        dr2["cloum12"] = (devicescount > 0) ? Math.Round(((double)cfs1 / devicescount),2) : 0;
                         dr2["cloum13"] = wcfl1;
 
 
                         dr2["cloum14"] = cfs2;
                         dr2["cloum15"] = (jys > 0) ? ((double)cfs2 / jys).ToString("0.00") : "0";//rjcf2;
                             dr2["cloum16"] = cxl2;
-                        dr2["cloum17"] = (devicescount > 0) ? ((double)cfs2 / devicescount).ToString("0.00") : "0";
+                        dr2["cloum17"] = (devicescount > 0) ? Math.Round(((double)cfs2 / devicescount),2) : 0;
                         dr2["cloum18"] = wcfl2;
 
 
                         dr2["cloum19"] = cfs3;
                         dr2["cloum20"] = (jys > 0) ? ((double)cfs3 / jys).ToString("0.00") : "0";//rjcf3;
                             dr2["cloum21"] = cxl3;
-                        dr2["cloum22"] = (devicescount > 0) ? ((double)cfs3 / devicescount).ToString("0.00") : "0";
+                        dr2["cloum22"] = (devicescount > 0) ? Math.Round(((double)cfs3 / devicescount),2) : 0;
                         dr2["cloum23"] = wcfl3;
                         dr2["cloum24"] = cfs4;
                         dr2["cloum25"] = (jys > 0) ? ((double)cfs4 / jys).ToString("0.00") : "0";//rjcf4;
                             dr2["cloum26"] = cxl4;
-                        dr2["cloum27"] = (devicescount > 0) ? ((double)cfs4 / devicescount).ToString("0.00") : "0";
+                        dr2["cloum27"] = (devicescount > 0) ? Math.Round(((double)cfs4 / devicescount),2) : 0;
                         dr2["cloum28"] = wcfl4;
 
 
@@ -1045,8 +1045,8 @@ namespace JingWuTong.Handle
                         dr2["cloum4"] = sbwsyl0;
                         dr2["cloum5"] = spsc0.ToString("0.00");
                         dr2["cloum6"] = spdx0.ToString("0.00");                 
-                        dr2["cloum7"] = (scl0 > 0) ? (gfscl0*100 / scl0).ToString("0.00"):"0";
-                        dr2["cloum8"] = (sbsyl0 * 100 / devicescount).ToString("0.00"); //Math.Round(usagerate0, 2);//设备使用率汇总
+                        dr2["cloum7"] = (scl0 > 0) ? Math.Round((gfscl0*100 / scl0),2):0;
+                        dr2["cloum8"] = (devicescount == 0) ? 0 : Math.Round(((double)sbsyl0 * 100 / devicescount), 2); ; //Math.Round(usagerate0, 2);//设备使用率汇总
 
                         dr2["cloum9"] = sbsyl1;
                         dr2["cloum10"] = sbwsyl1;
@@ -1055,18 +1055,18 @@ namespace JingWuTong.Handle
 
 
                         // dr2["cloum13"] = Math.Round(gfscl1 / rowcout0);
-                        dr2["cloum13"] = (scl1 > 0) ? (gfscl1 * 100 / scl1).ToString("0.00"):"0";
-                        dr2["cloum14"] = (sbsyl1 * 100 / devicescount).ToString("0.00"); //Math.Round(usagerate1, 2);//设备使用率汇总
+                        dr2["cloum13"] = (scl1 > 0) ? Math.Round((gfscl1 * 100 / scl1),2):0;
+                        dr2["cloum14"] = (devicescount == 0) ? 0 : Math.Round(((double)sbsyl1 * 100 / devicescount),2);//Math.Round(usagerate1, 2);//设备使用率汇总
 
 
-                        dr2["cloum15"] = sbsyl2;
+                            dr2["cloum15"] = sbsyl2;
                         dr2["cloum16"] = sbwsyl2;
                         dr2["cloum17"] = spsc2.ToString("0.00");
                         dr2["cloum18"] = spdx2.ToString("0.00");
 
                         //  dr2["cloum19"] = Math.Round(gfscl2 / rowcout0);
-                        dr2["cloum19"] = (scl2 > 0) ? (gfscl2 * 100 / scl2).ToString("0.00"):"0";
-                        dr2["cloum20"] = (sbsyl2 * 100 / devicescount).ToString("0.00");//Math.Round(usagerate2, 2);//设备使用率汇总
+                        dr2["cloum19"] = (scl2 > 0) ? Math.Round((gfscl2 * 100 / scl2),2):0;
+                        dr2["cloum20"] = (devicescount == 0) ? 0 : Math.Round(((double)sbsyl2 * 100 / devicescount), 2);//Math.Round(usagerate2, 2);//设备使用率汇总
 
 
                         dr2["cloum21"] = sbsyl3;
@@ -1077,8 +1077,8 @@ namespace JingWuTong.Handle
 
 
                         // dr2["cloum25"] = Math.Round(gfscl3 / rowcout0);
-                        dr2["cloum25"] = (scl3 > 0) ? (gfscl3 * 100 / scl3).ToString("0.00"):"0";
-                        dr2["cloum26"] = (sbsyl3 * 100 / devicescount).ToString("0.00");// Math.Round(usagerate3, 2);//设备使用率汇总
+                        dr2["cloum25"] = (scl3 > 0) ? Math.Round((gfscl3 * 100 / scl3),2):0;
+                        dr2["cloum26"] = (devicescount == 0) ? 0 : Math.Round(((double)sbsyl3 * 100 / devicescount), 2);// Math.Round(usagerate3, 2);//设备使用率汇总
 
 
                         dr2["cloum27"] = sbsyl4;
@@ -1088,8 +1088,8 @@ namespace JingWuTong.Handle
 
 
                         // dr2["cloum31"] = Math.Round(gfscl4 / rowcout0);
-                        dr2["cloum31"] = (scl4 > 0) ? (gfscl4 * 100 / scl4).ToString("0.00"):"0";
-                        dr2["cloum32"] = (sbsyl4 * 100 / devicescount).ToString("0.00");// Math.Round(usagerate4, 2);//设备使用率汇总
+                        dr2["cloum31"] = (scl4 > 0) ? Math.Round((gfscl4 * 100 / scl4),2):0;
+                        dr2["cloum32"] = (devicescount == 0) ? 0 : Math.Round(((double)sbsyl4 * 100 / devicescount), 2);// Math.Round(usagerate4, 2);//设备使用率汇总
 
 
 
@@ -1100,23 +1100,23 @@ namespace JingWuTong.Handle
                     case "7":
                         dr2["cloum3"] = status0;
                         dr2["cloum4"] = zxsc0.ToString("0.00");
-                        dr2["cloum5"] = (status0*100 / devicescount).ToString("0.00");//设备使用率汇总
+                        dr2["cloum5"] = (devicescount == 0) ? 0 : Math.Round(((double)status0 *100 / devicescount),2);//设备使用率汇总
 
                         dr2["cloum6"] = status1;
                         dr2["cloum7"] = zxsc1.ToString("0.00");
-                        dr2["cloum8"] = (status1 * 100 / devicescount).ToString("0.00");//设备使用率汇总
+                        dr2["cloum8"] = (devicescount == 0) ? 0 : Math.Round(((double)status1 * 100 / devicescount), 2);//设备使用率汇总
 
                         dr2["cloum9"] = status2;
                         dr2["cloum10"] = zxsc2.ToString("0.00");
-                        dr2["cloum11"] = (status2 * 100 / devicescount).ToString("0.00");//设备使用率汇总
+                        dr2["cloum11"] = (devicescount == 0) ? 0 : Math.Round(((double)status2 * 100 / devicescount), 2);//设备使用率汇总
 
                         dr2["cloum12"] = status3;
                         dr2["cloum13"] = zxsc3.ToString("0.00");
-                        dr2["cloum14"] = (status3 * 100 / devicescount).ToString("0.00");//设备使用率汇总
+                        dr2["cloum14"] = (devicescount == 0) ? 0 : Math.Round(((double)status3 * 100 / devicescount), 2);//设备使用率汇总
 
                         dr2["cloum15"] = status4;
                         dr2["cloum16"] = zxsc4.ToString("0.00");
-                        dr2["cloum17"] = (status4 * 100 / devicescount).ToString("0.00");//设备使用率汇总
+                        dr2["cloum17"] = (devicescount == 0) ? 0 : Math.Round(((double)status4 * 100 / devicescount), 2);//设备使用率汇总
 
 
                         break;

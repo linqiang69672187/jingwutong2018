@@ -1097,7 +1097,7 @@ function createDataTable() {
   "<th colspan='13' style='text-align:center'>" + $(".start_form_datetime").val() + "-" + $(".end_form_datetime").val() + "" + brigade + "" + squadron + "" + $("#deviceselect").find("option:selected").text() + "分时段统计汇总</th>" +
                  "</tr>" +
                   "<tr>" +
-                        "<th rowspan='2' style='text-align:center'>设备编号</th>" +
+                        "<th rowspan='2' style='text-align:center'>警员姓名</th>" +
                         "<th rowspan='2' style='text-align:center'>警员编号</th>" +
                       "<th rowspan='2' style='text-align:center'>设备编号</th>" +
                        "<th colspan='2' style='text-align:center'>" + arry[0] + "</th>" +
@@ -1214,7 +1214,7 @@ function createDataTable() {
   "<th colspan='13' style='text-align:center'>" + $(".start_form_datetime").val() + "-" + $(".end_form_datetime").val() + "" + brigade + "" + squadron + "" + $("#deviceselect").find("option:selected").text() + "分时段统计汇总</th>" +
                  "</tr>" +
                   "<tr>" +
-                        "<th rowspan='2' style='text-align:center'>设备编号</th>" +
+                        "<th rowspan='2' style='text-align:center'>警员姓名</th>" +
                         "<th rowspan='2' style='text-align:center'>警员编号</th>" +
                       "<th rowspan='2' style='text-align:center'>设备编号</th>" +
                        "<th colspan='2' style='text-align:center'>" + arry[0] + "</th>" +
@@ -1329,7 +1329,7 @@ function createDataTable() {
   "<th colspan='13' style='text-align:center'>" + $(".start_form_datetime").val() + "-" + $(".end_form_datetime").val() + "" + brigade + "" + squadron + "" + $("#deviceselect").find("option:selected").text() + "分时段统计汇总</th>" +
                  "</tr>" +
                   "<tr>" +
-                        "<th rowspan='2' style='text-align:center'>设备编号</th>" +
+                        "<th rowspan='2' style='text-align:center'>警员姓名</th>" +
                         "<th rowspan='2' style='text-align:center'>警员编号</th>" +
                       "<th rowspan='2' style='text-align:center'>PDAID</th>" +
                        "<th colspan='2' style='text-align:center'>" + arry[0] + "</th>" +
