@@ -73,6 +73,7 @@
         //数据展示
         dataDisplay : function (){
             var _self = this;
+            if (_self.arrNew.toString() == _self.arrOld.toString()) return;
             var $li = _self.option.dom.find("li");
             _self.direction = [];
 
@@ -123,7 +124,9 @@
         run : function () {
             var _self = this;
             _self.init();
-            
+            _self.dataSolve();
+            _self.dataDisplay();    //数据展示
+            _self.animate();
             setInterval(function(){
                 //这里暂时想不到更好的办法，先勉强这样
                 _self.styleReturn();    //数据还原

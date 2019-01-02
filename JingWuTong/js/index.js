@@ -554,7 +554,7 @@ function myRealtimeChart(label, value, index, chartnum, rebuildchar, histroytemp
         case "设备配发数":
             areacolor = '#3d4a82';
             maxvalue = value * 1.5;
-            label += "(个)"
+            label += "(台)"
             break;
         case "设备使用率":
             areacolor = '#51e97c';
@@ -564,17 +564,17 @@ function myRealtimeChart(label, value, index, chartnum, rebuildchar, histroytemp
         case "今日在线量":
             areacolor = '#884646';
             maxvalue = value * 1.5;
-            label += "(个)"
+            label += "(台)"
             break;
         case "处理量":
             areacolor = '#806e47';
             maxvalue = value * 1.5;
-            label += "(个)"
+            label += "(例)"
             break;
         case "查询量":
             areacolor = '#5c389a';
             maxvalue = value * 1.5;
-            label += "(个)"
+            label += "(次)"
             break;
         case "视频长度":
             areacolor = '#823f76';
@@ -1251,7 +1251,8 @@ function loadTotalDevices() {
                 **/
 
             // })
-            if (!TotalData){
+            if (!TotalData) {
+                TotalData = data.data;
             switch (data.title) {
                 case "331000000000":
                     $(".textxinxi1 label:eq(0)").text("全市");
@@ -1269,11 +1270,23 @@ function loadTotalDevices() {
                     $(".textxinxi2 label:eq(0)").text("中队");
                     break;
 
-                    }
             }
 
-            TotalData = data.data;
+            scroll.run();
+            scroll1.run();
+            scroll2.run();
+            scroll3.run();
+            scroll4.run();
+            scroll5.run();
+            scroll6.run();
+            scroll7.run();
+            }
+            else {
+                TotalData = data.data;
+            }
 
+          
+           
 
         },
         error: function (msg) {
@@ -1783,64 +1796,64 @@ function createcloumdiv(data) {
     }
 }
 
-//卷轴模块
-var scroll = new Scroll({
-    dom: $(".dc-scroll:eq(0)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:0
-});
-scroll.run();
-var scroll1 = new Scroll({
-    dom: $(".dc-scroll:eq(1)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:1
-});
-scroll1.run();
-var scroll2 = new Scroll({
-    dom: $(".dc-scroll:eq(2)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:2
-});
-scroll2.run();
-var scroll3 = new Scroll({
-    dom: $(".dc-scroll:eq(3)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:3
-});
-scroll3.run();
 
-var scroll4 = new Scroll({
-    dom: $(".dc-scroll:eq(4)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:4
-});
-scroll4.run();
-var scroll5 = new Scroll({
-    dom: $(".dc-scroll:eq(5)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:5
-});
-scroll5.run();
-var scroll6 = new Scroll({
-    dom: $(".dc-scroll:eq(6)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:6
-});
-scroll6.run();
-var scroll7 = new Scroll({
-    dom: $(".dc-scroll:eq(7)"),  //操作的节点
-    num: 5,                //几个卷轮
-    delay: 3000,            //时间间隔单位ms
-    index:7
-});
-scroll7.run();
+    //卷轴模块
+    var scroll = new Scroll({
+        dom: $(".dc-scroll:eq(0)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:0
+    });
+
+    var scroll1 = new Scroll({
+        dom: $(".dc-scroll:eq(1)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:1
+    });
+    var scroll2 = new Scroll({
+        dom: $(".dc-scroll:eq(2)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:2
+    });
+
+    var scroll3 = new Scroll({
+        dom: $(".dc-scroll:eq(3)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:3
+    });
+    var scroll4 = new Scroll({
+        dom: $(".dc-scroll:eq(4)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:4
+    });
+
+   
+    var scroll5 = new Scroll({
+        dom: $(".dc-scroll:eq(5)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:5
+    });
+   
+    var scroll6 = new Scroll({
+        dom: $(".dc-scroll:eq(6)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:6
+    });
+   
+    var scroll7 = new Scroll({
+        dom: $(".dc-scroll:eq(7)"),  //操作的节点
+        num: 5,                //几个卷轮
+        delay: 3000,            //时间间隔单位ms
+        index:7
+    });
+ 
+
 
 
 
