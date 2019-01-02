@@ -61,8 +61,3 @@ html,body,div,ul,li{
         .fr{
             float:right;
         }
-
-
-.dc-scroll li div:empty{
-    display:none;
-}

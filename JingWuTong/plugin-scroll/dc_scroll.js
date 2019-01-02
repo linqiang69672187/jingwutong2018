@@ -28,10 +28,10 @@
                 case 0:
                 case 1:
                 case 2:
-                    to = TotalData[index].value;
+                    to = parseInt(TotalData[index].value);
                     break;
                 case 3:
-                    to = formatSeconds(TotalData[1].value2, 1);
+                    to = parseInt(formatSeconds(TotalData[1].value2, 1));
                     break;
                 case 4:
                 case 5:
@@ -39,7 +39,7 @@
                     to = TotalData[index - 1].value;
                     break;
                 case 7:
-                    to = formatSeconds(TotalData[4].value2, 1);
+                    to = parseInt(formatSeconds(TotalData[4].value2, 1));
                     break;
                 default:
                     break;
@@ -51,19 +51,20 @@
         dataSolve : function () {
 
             var num = this.option.num;
-            var newData = this.dataGet(),
-                oldData = this.newData;
+            var newData = this.dataGet()+"",
+                oldData = this.newData+"";
 
             this.newData = newData;
-            var arrOld = [],arrNew = [];
-            for(var i = 0 ; i < num ; i ++) {
-                arrOld[num - 1 - i] = (parseInt(oldData) % 10);
-                // if(parseInt(newData) % 10 !== parseInt(oldData) % 10){
-                arrNew[num - 1 - i] = (parseInt(newData) % 10);
-                // }
-                newData = Math.floor(newData / 10);
-                oldData = Math.floor(oldData / 10);
+            var arrOld = ["", "", "", "", ""], arrNew = ["", "", "", "", ""];
+            var newarry = newData.split('');
+            var oldarry = oldData.split('');
+            for (var i = 0 ; i < newarry.length ; i++) {
+                arrNew[num - 1 - i] = newarry[newarry.length-1-i];
             }
+            for (var i = 0 ; i < oldData.length ; i++) {
+                arrOld[num - 1 - i] = oldData[oldData.length-1-i];
+            }
+
             this.arrOld = arrOld;
             this.arrNew = arrNew;
             this.oldData = this.newData;
@@ -93,11 +94,15 @@
         },
         //添加动画
         animate : function () {
-            var _self = this;           
+            var _self = this;
+            if (_self.arrNew.toString() == _self.arrOld.toString()) return;
             var $li = this.option.dom.find('li');
             
             $li.each(function (i) {
+                if (_self.arrNew[i] == "") { $li.eq(i).hide(); }
+                if (_self.arrNew[i] != _self.arrOld[i]){
                     $li.eq(i).css("transition", 0.5 * ($li.length - i) + "s").attr("class","s-" + _self.direction[i]);
+                }
             });
         },
         //样式归原

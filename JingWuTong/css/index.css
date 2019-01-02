@@ -1223,5 +1223,7 @@ padding:2px 5px 0 0;
 }
 .textxinxi1>li:nth-child(n+2),.textxinxi2>li:nth-child(n+2){
     margin-top:-10px;
-    margin-right:100px;
+}
+.textxinxi1>li:nth-child(n+2),.textxinxi2>li:nth-child(n+2){
+    width:22%;
 }
