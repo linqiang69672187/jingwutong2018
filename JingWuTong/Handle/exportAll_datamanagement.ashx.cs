@@ -196,9 +196,9 @@ namespace JingWuTong.Handle
                 dr["cloum1"] = dataindex;// entityitem["BMMC"].ToString();  //序号
                 dr["cloum2"] = entityitem["BMMC"].ToString();  //部门名称
 
-                var entityids = GetSonID(entityid);
+                var entityids = GetSonID(entityitem["BMDM"].ToString());
                 List<string> strList = new List<string>();
-                strList.Add(entityid);
+                strList.Add(entityitem["BMDM"].ToString());
                 if (reporttype == "大队汇总")
                 {
                     foreach (entityStruct item in entityids)
