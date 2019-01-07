@@ -189,7 +189,7 @@ namespace JingWuTong.Handle
                        select p;
             foreach (var entityitem in rows)
             {
-                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;
+                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
                 DataRow dr = dtreturns.NewRow();
                 sheetrows += 1;
                 dataindex += 1;
@@ -246,7 +246,11 @@ namespace JingWuTong.Handle
 
 
             }
-
+            DataRow drtz = dtreturns.NewRow();
+         
+            int all_pf = 0;
+            int all_use = 0;
+            double all_time = 0.0;
             int orderno = 1;
             var query = (from p in dtreturns.AsEnumerable()
                          orderby p.Field<double>(pxstring) descending
@@ -255,19 +259,32 @@ namespace JingWuTong.Handle
             int temorder = 1;
             foreach (var item in query)
             {
+                all_pf += (int)item["cloum3"];
+                all_use += (int)item["cloum4"];
+                all_time += (int)item["cloum5"];
                 if (temsyl == double.Parse(item[pxstring].ToString()))
                 {
-                    item["cloum8"] = temorder;
+                    item["cloum7"] = temorder;
                 }
                 else
                 {
-                    item["cloum8"] = orderno;
+                    item["cloum7"] = orderno;
 
                     temsyl = double.Parse((item[pxstring].ToString()));
                     temorder = orderno;
                 }
                 orderno += 1;
             }
+
+            drtz["cloum1"] = dtreturns.Rows.Count + 1;
+            drtz["cloum2"] = "合计";//ddtitle;
+            drtz["cloum3"] = all_pf;
+            drtz["cloum4"] = all_use;
+            drtz["cloum5"] = all_time;
+            drtz["cloum6"]=(all_pf == 0) ? 0 : Math.Round((double)all_use * 100 / all_pf, 2);//设备使用率
+            drtz["cloum7"] = "/";//设备使用率
+            dtreturns.Rows.Add(drtz);
+
 
 
             return 0;
