@@ -17,15 +17,23 @@ namespace JingWuTong.Handle
     public class exportAll_datamanagement : IHttpHandler
     {
 
+
         List<dataStruct> tmpList = new List<dataStruct>();
 
-        DataTable allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
-        DataTable devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
-        DataTable dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM", "user");
-        DataTable zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  sum(CONVERT(bigint,[VideLength])) as 视频长度, sum(CONVERT(bigint,[FileSize])) as 文件大小,sum([UploadCnt]) as 上传量,sum([GFUploadCnt]) as 规范上传量,de.BMDM,de.DevId FROM [EveryDayInfo_ZFJLY] al left join Device de on de.DevId = al.DevId where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by de.DevId,de.BMDM", "Alarm_EveryDayInfo");
-        DataTable zxscData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=1 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
-        DataTable cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=2 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
-        DataTable cxlData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=5 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+        DataTable allEntitys = null;
+        DataTable devtypes = null;
+        DataTable dUser = null;
+        DataTable zfData = null;
+        DataTable zxscData = null;
+        DataTable cllData = null;
+        DataTable cxlData = null;
+
+
+        int statusvalue = 0;  //正常参考值
+        int zxstatusvalue = 0;//在线参考值
+
+        int sheetrows = 0;
+        int dataindex = 0;
 
         public void ProcessRequest(HttpContext context)
         {
@@ -33,8 +41,6 @@ namespace JingWuTong.Handle
             string type = context.Request.Form["type"];
             string begintime = context.Request.Form["begintime"];
             string endtime = context.Request.Form["endtime"];
-            string hbbegintime = context.Request.Form["hbbegintime"];
-            string hbendtime = context.Request.Form["hbendtime"];
             string ssdd = context.Request.Form["ssdd"];
             string sszd = context.Request.Form["sszd"];
             string requesttype = context.Request.Form["requesttype"];
@@ -50,10 +56,17 @@ namespace JingWuTong.Handle
                // sreachcondi = " (de.[DevId] like '%" + search + "%' or us.[XM] like '%" + search + "%' or us.[JYBH] like '%" + search + "%' ) and ";
             }
 
-  
 
-     
 
+
+
+             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
+             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
+             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM", "user");
+             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  sum(CONVERT(bigint,[VideLength])) as 视频长度, sum(CONVERT(bigint,[FileSize])) as 文件大小,sum([UploadCnt]) as 上传量,sum([GFUploadCnt]) as 规范上传量,de.BMDM,de.DevId FROM [EveryDayInfo_ZFJLY] al left join Device de on de.DevId = al.DevId where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by de.DevId,de.BMDM", "Alarm_EveryDayInfo");
+             zxscData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=1 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+             cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=2 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+             cxlData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=5 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
 
 
 
@@ -62,10 +75,8 @@ namespace JingWuTong.Handle
 
 
             int days = Convert.ToInt16(context.Request.Form["dates"]);
-            int statusvalue = 10;  //正常参考值
-            int zxstatusvalue = 30;//在线参考值
-            int sheetrows = 0;
-            int dataindex = 0;
+           
+          
 
             statusvalue = days * usedvalue;//超过10分钟算使用
             zxstatusvalue = days * onlinevalue;//在线参考值
@@ -79,11 +90,7 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-                sheetrows = 0;
-                var rows = from p in allEntitys.AsEnumerable()
-                           where (p.Field<string>("SJBM")== "331000000000")
-                           orderby p.Field<int>("Sort") descending
-                           select p;
+              
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
                     CellRange range = sheet.Cells.GetSubrange("A1", "G1");
                     range.Value = "台州交警局对讲机报表";
@@ -91,18 +98,7 @@ namespace JingWuTong.Handle
                     range.Style = Titlestyle();
                     InsertTitle(sheet, devtypes.Rows[h]["id"].ToString(),1);//标题添加
 
-                foreach (var entityitem in rows)
-                        {
-                            if (devtypes.Rows[h]["TypeName"].ToString() != "执法记录仪"&& entityitem["BMDM"].ToString()== "33100000000x") continue;
-                             sheetrows += 1;
-                             dataindex += 1;
-                             sheet.Rows[sheetrows + 1].Cells["A"].Value = dataindex;// entityitem["BMMC"].ToString();
-                             sheet.Rows[sheetrows + 1].Cells["B"].Value = entityitem["BMMC"].ToString();
-                      
-
-
-
-                        }
+               
 
 
 
@@ -167,35 +163,112 @@ namespace JingWuTong.Handle
 
         }
 
-        public int InsertRowdata(ExcelWorksheet sheet, string type, int rowindex,DataTable dt,string entityid,string reporttype)
+        public int InsertRowdata(ExcelWorksheet sheet, string type, int rowindex,string sjbm,string reporttype)
         {
+            DataTable dtreturns = new DataTable(); //返回数据表
+            dtreturns.Columns.Add("cloum1");
+            dtreturns.Columns.Add("cloum2");
+            dtreturns.Columns.Add("cloum3");
+            dtreturns.Columns.Add("cloum4");
+            dtreturns.Columns.Add("cloum5");
+            dtreturns.Columns.Add("cloum6", typeof(double));
+            dtreturns.Columns.Add("cloum7", typeof(double));
+            dtreturns.Columns.Add("cloum8");
+            dtreturns.Columns.Add("cloum9");
+            dtreturns.Columns.Add("cloum10");
+            dtreturns.Columns.Add("cloum11");
+            dtreturns.Columns.Add("cloum12");
+            dtreturns.Columns.Add("cloum13", typeof(int));
+            dtreturns.Columns.Add("cloum14");
 
-            var entityids = GetSonID(entityid);
-            List<string> strList = new List<string>();
-            strList.Add(entityid);
-            if (reporttype == "大队汇总") { 
-                foreach (entityStruct item in entityids)
-                {
-                    strList.Add(item.BMDM);
-                }
-            }
-            switch (type)
+            sheetrows = 0;
+            string pxstring = "";
+            var rows = from p in allEntitys.AsEnumerable()
+                       where (p.Field<string>("SJBM") == sjbm)
+                       orderby p.Field<int>("Sort") descending
+                       select p;
+            foreach (var entityitem in rows)
             {
-                case "1":
-                case "2":
-                case "3":
+                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;
+                DataRow dr = dtreturns.NewRow();
+                sheetrows += 1;
+                dataindex += 1;
+                dr["cloum1"] = dataindex;// entityitem["BMMC"].ToString();  //序号
+                dr["cloum2"] = entityitem["BMMC"].ToString();  //部门名称
+
+                var entityids = GetSonID(entityid);
+                List<string> strList = new List<string>();
+                strList.Add(entityid);
+                if (reporttype == "大队汇总")
+                {
+                    foreach (entityStruct item in entityids)
+                    {
+                        strList.Add(item.BMDM);
+                    }
+                }
+                switch (type)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                        var zxrow = (from p in zxscData.AsEnumerable()
+                                   where strList.ToArray().Contains(p.Field<string>("BMDM"))
+                                   select new dataStruct
+                                   {
+                                       BMDM = p.Field<string>("BMDM"),
+                                       在线时长 = p.Field<int>("value"),
+                                       DevId = p.Field<string>("DevId")
+                                   }).ToList<dataStruct>();
+                        dr["cloum3"] = zxrow.Count.ToString();  //配发数
+                        int 在线时长=0;
+                        int 设备使用台数=0;
+                        foreach (var row in zxrow)
+                        {
+                            在线时长 += row.在线时长;  
+                            设备使用台数+=((Convert.ToInt32(row.在线时长) - statusvalue) > 0) ? 1 : 0;
+                        }
+                        dr["cloum4"] = 设备使用台数;//设备使用数量
+                        dr["cloum5"] =  Math.Round((double)在线时长 / 3600, 2);//设备使用数量
+                        dr["cloum6"] = (zxrow.Count==0)?0: Math.Round((double)设备使用台数* 100 / zxrow.Count, 2);//设备使用率
+                        dtreturns.Rows.Add(dr);
+                        pxstring = "cloum6";
+                        break;
+                    case "4":
+                    case "6":
+
+                        break;
+                    case "5":
+
+                        break;
+
+                }
 
 
-                    break;
-                case "4":
-                case "6":
-
-                    break;
-                case "5":
-
-                    break;
 
             }
+
+            int orderno = 1;
+            var query = (from p in dtreturns.AsEnumerable()
+                         orderby p.Field<double>(pxstring) descending
+                         select p) as IEnumerable<DataRow>;
+            double temsyl = 0.0;
+            int temorder = 1;
+            foreach (var item in query)
+            {
+                if (temsyl == double.Parse(item[pxstring].ToString()))
+                {
+                    item["cloum8"] = temorder;
+                }
+                else
+                {
+                    item["cloum8"] = orderno;
+
+                    temsyl = double.Parse((item[pxstring].ToString()));
+                    temorder = orderno;
+                }
+                orderno += 1;
+            }
+
 
             return 0;
         }
@@ -261,6 +334,10 @@ namespace JingWuTong.Handle
             public int 文件大小 = 0;
             public int AlarmType = 0;
             public string DevId = "DevId";
+            public int UploadCnt = 0;
+            public int GFUploadCnt = 0;
+            public int HandleCnt = 0;
+            public int CXCnt = 0;
         }
 
 
