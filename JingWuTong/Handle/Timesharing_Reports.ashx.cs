@@ -280,7 +280,7 @@ namespace JingWuTong.Handle
             else
             {
                 if (sszd == "all")//所有中队
-                {
+                {  
                     bmdm = ssdd;
                     ddtitle = context.Request.Form["ssddtext"];
                     switch (type)
