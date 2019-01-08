@@ -64,9 +64,9 @@ namespace JingWuTong.Handle
              devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
              dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM", "user");
              zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  sum(CONVERT(bigint,[VideLength])) as 视频长度, sum(CONVERT(bigint,[FileSize])) as 文件大小,sum([UploadCnt]) as 上传量,sum([GFUploadCnt]) as 规范上传量,de.BMDM,de.DevId FROM [EveryDayInfo_ZFJLY] al left join Device de on de.DevId = al.DevId where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by de.DevId,de.BMDM", "Alarm_EveryDayInfo");
-             zxscData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=1 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
-             cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=2 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
-             cxlData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=5 group by de.DevId,de.BMDM ", "Alarm_EveryDayInfo");
+             zxscData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as value ,de.DevId,de.devtype  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=1 group by de.DevId,de.BMDM,de.devtype ", "Alarm_EveryDayInfo");
+             cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId ,de.devtype FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=2 group by de.DevId,de.BMDM,de.devtype", "Alarm_EveryDayInfo");
+             cxlData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId ,de.devtype FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId where al.AlarmType=5 group by de.DevId,de.BMDM,de.devtype", "Alarm_EveryDayInfo");
 
 
 
@@ -92,14 +92,8 @@ namespace JingWuTong.Handle
             {
               
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
-                    CellRange range = sheet.Cells.GetSubrange("A1", "G1");
-                    range.Value = "台州交警局对讲机报表";
-                    range.Merged = true;
-                    range.Style = Titlestyle();
-                    InsertTitle(sheet, devtypes.Rows[h]["id"].ToString(),1);//标题添加
-
-                InsertRowdata(sheet, devtypes.Rows[h]["id"].ToString(), 2, "331000000000", "支队");
-
+                sheetrows = 0;
+                InsertRowdata(sheet, devtypes.Rows[h]["id"].ToString(), devtypes.Rows[h]["TypeName"].ToString(), "331000000000", "支队","台州交警局");
 
 
 
@@ -109,7 +103,7 @@ namespace JingWuTong.Handle
 
             tmpath = HttpContext.Current.Server.MapPath("upload\\一键报表数据统计.xls");
             excelFile.SaveXls(tmpath);
-
+            context.Response.Redirect(tmpath);
 
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
 
@@ -131,21 +125,21 @@ namespace JingWuTong.Handle
             return style;
         }
 
-        public void InsertTitle(ExcelWorksheet sheet,string type,int rowindex)
+        public void InsertTitle(ExcelWorksheet sheet,string type)
         {
             switch (type)
             {
                 case "1":
                 case "2":
                 case "3":
-                    sheet.Rows[rowindex].Cells["A"].Value = "序号";
-                    sheet.Rows[rowindex].Cells["B"].Value = "部门";
-                    sheet.Rows[rowindex].Cells["C"].Value = "设备配发数(台)";
-                    sheet.Rows[rowindex].Cells["D"].Value = "设备使用数量（台）";
-                    sheet.Rows[rowindex].Cells["E"].Value = "在线时长总和(小时)";
-                    sheet.Rows[rowindex].Cells["F"].Value = "设备使用率";
-                    sheet.Rows[rowindex].Cells["G"].Value = "使用率排名";
-                     CellRange range = sheet.Cells.GetSubrange("A2", "G2");
+                    sheet.Rows[sheetrows].Cells["A"].Value = "序号";
+                    sheet.Rows[sheetrows].Cells["B"].Value = "部门";
+                    sheet.Rows[sheetrows].Cells["C"].Value = "设备配发数(台)";
+                    sheet.Rows[sheetrows].Cells["D"].Value = "设备使用数量（台）";
+                    sheet.Rows[sheetrows].Cells["E"].Value = "在线时长总和(小时)";
+                    sheet.Rows[sheetrows].Cells["F"].Value = "设备使用率";
+                    sheet.Rows[sheetrows].Cells["G"].Value = "使用率排名";
+                    CellRange range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, 6);
                     CellStyle style = new CellStyle();
                     style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     range.Style = style;
@@ -160,10 +154,10 @@ namespace JingWuTong.Handle
                     break;
 
             }
-
+            sheetrows += 1;
         }
 
-        public int InsertRowdata(ExcelWorksheet sheet, string type, int rowindex,string sjbm,string reporttype)
+        public void InsertRowdata(ExcelWorksheet sheet, string type,string typename,string sjbm,string reporttype,string title)
         {
             DataTable dtreturns = new DataTable(); //返回数据表
             dtreturns.Columns.Add("cloum1");
@@ -172,7 +166,7 @@ namespace JingWuTong.Handle
             dtreturns.Columns.Add("cloum4");
             dtreturns.Columns.Add("cloum5");
             dtreturns.Columns.Add("cloum6", typeof(double));
-            dtreturns.Columns.Add("cloum7", typeof(double));
+            dtreturns.Columns.Add("cloum7");
             dtreturns.Columns.Add("cloum8");
             dtreturns.Columns.Add("cloum9");
             dtreturns.Columns.Add("cloum10");
@@ -181,7 +175,7 @@ namespace JingWuTong.Handle
             dtreturns.Columns.Add("cloum13", typeof(int));
             dtreturns.Columns.Add("cloum14");
 
-            sheetrows = 0;
+            dataindex = 0;
             string pxstring = "";
             var rows = from p in allEntitys.AsEnumerable()
                        where (p.Field<string>("SJBM") == sjbm)
@@ -191,7 +185,6 @@ namespace JingWuTong.Handle
             {
                 if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
                 DataRow dr = dtreturns.NewRow();
-                sheetrows += 1;
                 dataindex += 1;
                 dr["cloum1"] = dataindex;// entityitem["BMMC"].ToString();  //序号
                 dr["cloum2"] = entityitem["BMMC"].ToString();  //部门名称
@@ -212,8 +205,8 @@ namespace JingWuTong.Handle
                     case "2":
                     case "3":
                         var zxrow = (from p in zxscData.AsEnumerable()
-                                   where strList.ToArray().Contains(p.Field<string>("BMDM"))
-                                   select new dataStruct
+                                   where strList.ToArray().Contains(p.Field<string>("BMDM")) && p.Field<int>("devtype").ToString()==type
+                                     select new dataStruct
                                    {
                                        BMDM = p.Field<string>("BMDM"),
                                        在线时长 = p.Field<int>("value"),
@@ -299,12 +292,39 @@ namespace JingWuTong.Handle
 
             }
             dtreturns.Rows.Add(drtz);
-
-
-
-            return 0;
+            insertSheet(dtreturns,  sheet,type,typename,reporttype,title);
+            if (reporttype != "支队") return;
+            foreach (var entityitem in rows)
+            {
+                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
+                InsertRowdata(sheet, type,typename, entityitem["BMDM"].ToString(), "大队",entityitem["BMMC"].ToString());
+            }
+                
         }
 
+        public void insertSheet(DataTable dt,  ExcelWorksheet sheet,string type,string typename, string reporttype,string title)
+        {
+          
+            CellRange range = sheet.Rows[sheetrows].Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, 6);//GetSubrange("A1", "G1");
+            range.Value = title +typename+ "报表";
+            range.Merged = true;
+            range.Style = Titlestyle();
+            sheetrows += 1;
+            InsertTitle(sheet, type);//标题添加
+
+       
+            for (int h = 0; h < dt.Rows.Count; h++)
+            {
+                for (int n = 0; n< dt.Columns.Count; n++)
+                {
+                    sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
+                    if(dt.Rows[h][n].ToString()!="") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
+
+                }
+
+            }
+            sheetrows += dt.Rows.Count+1;
+         }
 
 
         public IEnumerable<entityStruct> GetSonID(string p_id)
