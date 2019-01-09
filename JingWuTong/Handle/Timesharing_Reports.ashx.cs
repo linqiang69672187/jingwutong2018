@@ -338,10 +338,10 @@ namespace JingWuTong.Handle
             arryList.Add(ConfigurationManager.AppSettings["time3"].Split('-'));
             arryList.Add(ConfigurationManager.AppSettings["time4"].Split('-'));
             arryList.Add(ConfigurationManager.AppSettings["time5"].Split('-'));
-
+                
             #region//个人
 
-            if (ssdd != "all" && sszd != "all")
+                if (ssdd != "all" && sszd != "all")
             {
 
 

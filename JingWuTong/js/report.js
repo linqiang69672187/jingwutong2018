@@ -825,6 +825,50 @@ function HeadcreateDataTable()
 
 
 
+$(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', function (e) {
+    if ($('.end_form_datetime').val() < $('.start_form_datetime').val()) {
+        $("#alertmodal").modal("show");
+        return;
+    };
+    var arry = time1.split(',');
+    var chansu = arry[5].split('|');
+    var data =
+   {
+       search: $(".search input").val(),
+       type: $("#deviceselect").val(),
+       ssdd: $("#brigadeselect").val(),
+       sszd: $("#squadronselect").val(),
+       ssdd1: eachbrigadeselect(),
+       begintime: $(".start_form_datetime").val(),
+       endtime: $(".end_form_datetime").val(),
+       dates: datecompare($(".end_form_datetime").val(), $(".start_form_datetime").val()),
+       ssddtext: $("#brigadeselect").find("option:selected").text(),
+       sszdtext: $("#squadronselect").find("option:selected").text(),
+       requesttype: this.innerText,
+       onlinevalue: chansu[0],
+       usedvalue: chansu[1]
+
+   }
+    $.ajax({
+        type: "POST",
+        url: "../Handle/exportAll_Timesharing_Reports.ashx",
+        data: data,
+        dataType: "json",
+        success: function (data) {
+            if (data.r == "0") {
+
+
+            }
+
+        },
+        error: function (msg) {
+            console.debug("错误:ajax");
+        }
+    });
+
+});
+
+
 function createDataTable() {
 
     try
