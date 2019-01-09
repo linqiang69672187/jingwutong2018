@@ -131,6 +131,8 @@ namespace JingWuTong.Handle
         public void InsertTitle(ExcelWorksheet sheet, string type)
         {
             CellRange range;
+            CellRange rangebm;
+            CellRange rangepf;
             CellStyle style;
             int mergedint = 0;
             int h = 0;
@@ -140,23 +142,35 @@ namespace JingWuTong.Handle
                 case "2":
                 case "3":
                     mergedint = 1 + countTime * 3;
-                    sheet.Rows[sheetrows].Cells["A"].Value = "部门";
-                    sheet.Rows[sheetrows].Cells["B"].Value = "配发数";
+                    range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows+1, mergedint);
+                    style = new CellStyle();
+                    style.FillPattern.SetPattern(FillPatternStyle.Solid, ColorTranslator.FromHtml("#ccffcc"), Color.Empty);
+                    style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
+                    style.HorizontalAlignment = HorizontalAlignmentStyle.Center;
+                    //设置垂直对齐模式
+                    style.VerticalAlignment = VerticalAlignmentStyle.Center;
+                    range.Style = style;
+
+                    rangebm = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows+1, 0);//GetSubrange("A1", "G1");
+                    rangepf = sheet.Cells.GetSubrangeAbsolute(sheetrows, 1, sheetrows + 1, 1);//GetSubrange("A1", "G1");
+                    rangebm.Value = "部门";
+                    rangepf.Value = "设备配发数（台）";
+                    rangebm.Merged = true;
+                    rangepf.Merged = true;
+                    
                     foreach (var key in ConfigurationManager.AppSettings.AllKeys)
                     {
                         if (!key.Contains("Time")) continue;
-                        sheet.Rows[sheetrows].Cells[2 + h].Value = "设备使用数量（台）";
-                        sheet.Rows[sheetrows].Cells[3 + h].Value = "在线时长总和(小时)";
-                        sheet.Rows[sheetrows].Cells[4 + h].Value = "设备使用率";
+                        CellRange timerange = sheet.Cells.GetSubrangeAbsolute(sheetrows, 2+h, sheetrows , 4 + h );
+                        timerange.Merged = true;
+                        timerange.Value = ConfigurationManager.AppSettings[key];
+                        sheet.Rows[sheetrows+1].Cells[2 + h].Value = "设备使用数量（台）";
+                        sheet.Rows[sheetrows+1].Cells[3 + h].Value = "在线时长总和(小时)";
+                        sheet.Rows[sheetrows+1].Cells[4 + h].Value = "设备使用率";
                         h += 3;
                     }
-                
-                 
-                    range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);
-                    style = new CellStyle();
-                    style.Font.Size = 12 * 20; //PT=20
-                    style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
-                    range.Style = style;
+
+                    sheetrows += 1;
                     //      range.Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     break;
                 case "4":
@@ -323,7 +337,7 @@ namespace JingWuTong.Handle
                     mergedint = 1 + countTime * 6;
                     break;
             }
-            CellRange range = sheet.Rows[sheetrows].Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);//GetSubrange("A1", "G1");
+            CellRange range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);//GetSubrange("A1", "G1");
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
