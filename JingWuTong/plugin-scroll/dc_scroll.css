@@ -11,53 +11,139 @@
              url('../font/alarm clock.ttf')  format('truetype'), /* Safari, Android, iOS */
              url('../font/alarm clock.svg#alarm clock') format('svg'); /* Legacy iOS */
    }
-.dc-scroll {
-  height: 40px;
-  overflow: hidden;
-}
-.dc-scroll li {
-  width: 12px;
-  height: 40px;
-  float: left;
-  font: 24px "alarm clock";
-  font-weight: 600;
-  line-height: 40px;
-  text-align: left;
-  position: relative;
-  vertical-align: top;
-    margin-right: 0px !important;
-    margin-top: 0px !important;
-}
-.dc-scroll li div {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size:100% 100%;
-}
-.dc-scroll .s-top {
-  transform: translateY(-100%);
-}
-.dc-scroll .s-bottom {
-  transform: translateY(100%);
-}
-.dc-ul>li:nth-child(2){
-      font-family:"alarm clock";
-      font-weight:700;
+
+    .dc-ul  {
+        font-family: "alarm clock";
+        font-weight: 700;
+        color:#fff;
+    }
+
+@media screen and (min-width: 2600px) {
+    .dc-scroll {
+        height: 80px;
+        overflow: hidden;
+    }
+
+        .dc-scroll li {
+            width: 30px;
+            height: 80px;
+            float: left;
+            font: 40px "alarm clock";
+            font-weight: 600;
+            line-height: 80px;
+            text-align: left;
+            position: relative;
+            vertical-align: top;
+            margin-right: 0px !important;
+            margin-top: 0px !important;
+        }
+
+            .dc-scroll li div {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+            }
+
+        .dc-scroll .s-top {
+            transform: translateY(-100%);
+        }
+
+        .dc-scroll .s-bottom {
+            transform: translateY(100%);
+        }
+      .dc-ul > li:nth-child(1) {
+        margin-top:-10px;
+      }
+
+    html, body, div, ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: rgba(0,0,255,.3);
+    }
+       .textxinxi2 .dc-ul:nth-child(15)>li{
+       margin-left:-10px !important;
+   }
+         .textxinxi2>li:nth-child(3){
+      margin-left:5px;
+  }
+  .textxinxi2>li:nth-child(4){
+      margin-left:10px;
+  }
+    .textxinxi2>li:nth-child(5){
+      margin-left:3px;
+  }
+    ul, li {
+        list-style: none;
+    }
+
+    .fl {
+        float: left;
+    }
+
+    .fr {
+        float: right;
+    }
 }
 
-html,body,div,ul,li{
-            margin:0;padding:0;
+
+@media screen and (max-width: 2600px) {
+    .dc-scroll {
+        height: 40px;
+        overflow: hidden;
+    }
+
+        .dc-scroll li {
+            width: 12px;
+            height: 40px;
+            float: left;
+            font: 24px "alarm clock";
+            font-weight: 600;
+            line-height: 40px;
+            text-align: left;
+            position: relative;
+            vertical-align: top;
+            margin-right: 0px !important;
+            margin-top: 0px !important;
         }
-        body{
-            background-color:rgba(0,0,255,.3);
+
+            .dc-scroll li div {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-size: 100% 100%;
+            }
+
+        .dc-scroll .s-top {
+            transform: translateY(-100%);
         }
-        ul,li{
-            list-style: none;
+
+        .dc-scroll .s-bottom {
+            transform: translateY(100%);
         }
-        
-        .fl{
-            float:left;
-        }
-        .fr{
-            float:right;
-        }
+
+
+    html, body, div, ul, li {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-color: rgba(0,0,255,.3);
+    }
+
+    ul, li {
+        list-style: none;
+    }
+
+    .fl {
+        float: left;
+    }
+
+    .fr {
+        float: right;
+    }
+}
