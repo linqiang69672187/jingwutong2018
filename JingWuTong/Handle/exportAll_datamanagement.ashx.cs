@@ -105,8 +105,19 @@ namespace JingWuTong.Handle
 
             tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "日报表.xls");
             excelFile.SaveXls(tmpath);
-            context.Response.Redirect(tmpath);
 
+            StringBuilder retJson = new StringBuilder();
+
+
+            retJson.Append("{\"");
+            retJson.Append("data");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "日报表.xls");
+            retJson.Append('"');
+            retJson.Append("}");
+            context.Response.Write(retJson);
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
 
         }

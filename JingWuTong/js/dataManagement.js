@@ -276,6 +276,9 @@ $(document).on('click.bs.carousel.data-api', '.daochuall', function (e) {
         $("#alertmodal").modal("show");
         return;
     };
+    $("#loadingModal").modal("show");
+    $('.creating').show();
+    $('.createok').hide();
     var data =
    {
        search: $(".search input").val(),
@@ -298,9 +301,10 @@ $(document).on('click.bs.carousel.data-api', '.daochuall', function (e) {
         data: data,
         dataType: "json",
         success: function (data) {
-            if (data.r == "0") {
-
-
+            if (data.data) {
+                $('.createok a').attr('href', '../Handle/upload/' + data.data );
+                $('.createok').show();
+                $('.creating').hide();
             }
 
         },
@@ -310,6 +314,11 @@ $(document).on('click.bs.carousel.data-api', '.daochuall', function (e) {
     });
     
 });
+
+$(document).on('click.bs.carousel.data-api', '.createok a', function (e) {
+    $("#loadingModal").modal("hide");
+});
+
 
 $(document).on('click.bs.carousel.data-api', '#addedit', function (e) {
     var $doc = $(this).parents('tr');
@@ -767,7 +776,7 @@ function createDataTable() {
                  $('.btnsjx').removeAttr("disabled");
 
                  seltype = $("#deviceselect").val();
-
+                 let gongshi;
                  switch ($("#deviceselect").val()) {
                      case "1":   //车载视频
                      case "2":  
@@ -793,7 +802,7 @@ function createDataTable() {
                          $('#search-result-table tr:eq(0) th:eq(4)').text("在线时长（小时）");
                          $('#search-result-table tr:eq(0) th:eq(5)').text("设备使用率（%）");
                          $('#search-result-table tr:eq(0) th:eq(6)').text("使用率排名");
-                       
+                         gongshi = "设备使用率=设备使用数÷设备配发数量";
                          break;
 
                      case "5":
@@ -820,6 +829,7 @@ function createDataTable() {
                          $('#search-result-table tr:eq(0) th:eq(8)').text("设备使用率（%）");
                          $('#search-result-table tr:eq(0) th:eq(9)').text("使用率排名");
                          table.column(6).visible(false);
+                         gongshi = "设备使用率=设备使用数÷设备配发数量";
 
                          break;
                      case "4":
@@ -846,6 +856,8 @@ function createDataTable() {
                          $('#search-result-table tr:eq(0) th:eq(7)').text("设备平均处罚量");
                          $('#search-result-table tr:eq(0) th:eq(8)').text("排名");
                          $('#search-result-table tr:eq(0) th:eq(9)').text("无处罚数量");
+                         gongshi = "人均处罚量=警务通处罚数÷警员数，设备平均处罚量=警务通处罚数÷配发数";
+
                          break;
                      case "6":
                          table.column(0).visible(true);
@@ -871,11 +883,13 @@ function createDataTable() {
                          $('#search-result-table tr:eq(0) th:eq(7)').text("设备平均处罚量");
                          $('#search-result-table tr:eq(0) th:eq(8)').text("排名");
                          $('#search-result-table tr:eq(0) th:eq(9)').text("无违停采集设备（台）");
+                         gongshi = "人均处罚量=违停采集(例)÷辅警数，设备平均处罚量=违停采集(例)÷配发数";
+
                          break;
                      default:
                          break;
                  }
-                 $('.infodiv').html("<span>共 " + json.data.length + " 条记录</span>");
+                 $('.infodiv').html("<span>共 " + json.data.length + " 条记录</span><span>"+gongshi+"</span>");
                  $('.daochu').html("<a class='buttons-excel'  href='../Handle/upload/" + json.title + "'><span>导 出</span></a>");
                  rebuildsjx();
                  loadTatolData();

@@ -337,6 +337,16 @@ table.dataTable tbody th, table.dataTable tbody td{
 .progress{
     display:none;
 }
+#loadingModal h4 i{
+        margin-right:10px
+}
+#loadingModal a{
+       color:#fff;
+       text-decoration: none;
+}
+#loadingModal .createok{
+      display:none;
+}
 #shujuxiang{
     display:none;
 }
@@ -369,4 +379,7 @@ table.dataTable tbody th, table.dataTable tbody td{
 
 #search-result-table{
     min-width:1200px;border:none!important;display:none;width:100%;
+}
+.infodiv span{
+    margin-right:10px;
 }

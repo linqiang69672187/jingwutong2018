@@ -106,8 +106,18 @@ namespace JingWuTong.Handle
 
             tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
             excelFile.SaveXls(tmpath);
-            context.Response.Redirect(tmpath);
+            StringBuilder retJson = new StringBuilder();
 
+
+            retJson.Append("{\"");
+            retJson.Append("data");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
+            retJson.Append('"');
+            retJson.Append("}");
+            context.Response.Write(retJson);
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
 
         }
@@ -392,7 +402,7 @@ namespace JingWuTong.Handle
                                 drtz[2 + h] = (drtz[2 + h].ToString() == "") ? usedevices : int.Parse(drtz[2 + h].ToString()) + usedevices; 
                                 dr[3 + h] = Math.Round((double)onlinetime / 3600, 2);
                                 drtz[3 + h] = (drtz[3 + h].ToString() == "") ? Math.Round((double)onlinetime / 3600, 2) : double.Parse(drtz[3 + h].ToString()) + Math.Round((double)onlinetime / 3600, 2);
-                                dr[4 + h] =(queryrows.Count==0)?0:Math.Round((double)usedevices / queryrows.Count, 2); ;
+                                dr[4 + h] =(queryrows.Count==0)?0:Math.Round((double)usedevices *100/ queryrows.Count, 2); ;
                                 if (h == 0) {
                                     dr["1"] = queryrows.Count;
                                     drtz["1"] =(drtz["1"].ToString()=="")? queryrows.Count: int.Parse(drtz["1"].ToString())+queryrows.Count;

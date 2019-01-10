@@ -93,7 +93,7 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-                Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType=" + devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
+                Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM]  in (select BMDM from childtable) and de.devType=" + devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
 
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
                 sheetrows = 0;
@@ -107,7 +107,18 @@ namespace JingWuTong.Handle
 
             tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
             excelFile.SaveXls(tmpath);
-            context.Response.Redirect(tmpath);
+            StringBuilder retJson = new StringBuilder();
+
+
+            retJson.Append("{\"");
+            retJson.Append("data");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
+            retJson.Append('"');
+            retJson.Append("}");
+            context.Response.Write(retJson);
 
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
 
@@ -324,11 +335,20 @@ namespace JingWuTong.Handle
             dataindex = 0;
             string pxstring = "";
             OrderedEnumerableRowCollection<DataRow> rows;
-          
+            if (reporttype == "支队")
+            {
+                rows = from p in allEntitys.AsEnumerable()
+                       where (p.Field<string>("SJBM") == sjbm)
+                       orderby p.Field<int>("Sort") descending
+                       select p;
+            }
+            else
+            {
                 rows = from p in allEntitys.AsEnumerable()
                        where (p.Field<string>("SJBM") == sjbm || p.Field<string>("BMDM") == sjbm)
                        orderby p.Field<int>("Sort") descending
                        select p;
+            }
             DateTime enddt = Convert.ToDateTime(endtime.Replace('/', '-'));
             for (int hn = 0; hn < daystb.Rows.Count; hn++)
             {

@@ -375,3 +375,17 @@ table.dataTable tbody th, table.dataTable tbody td{
 .daochu{
     margin-left:0px !important;
 }
+
+#loadingModal h4 i{
+        margin-right:10px
+}
+#loadingModal a{
+       color:#fff;
+       text-decoration: none;
+}
+#loadingModal .createok{
+      display:none;
+}
+.infodiv span{
+    margin-right:10px;
+}

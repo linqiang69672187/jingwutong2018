@@ -33,7 +33,7 @@
             <div class="sentity"> <select id="squadronselect" disabled="disabled"><option value="all">全部</option></select></div>
         </div>
         <div class="row">
-         <label>统计时间:</label>
+         <label>统计时间段:</label>
         <div class="date" ><input type="text" class=" start_form_datetime"><i class="fa fa-calendar"></i></div>
          <label>—</label>
          <div class="date"><input type="text" class=" end_form_datetime"><i class="fa fa-calendar"></i></div>
@@ -127,6 +127,22 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-qx" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade custom-modal in" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="mydeleModeNo" style="display: none">
+        <div class="modal-backdrop fade in" style="height: 955px;z-index: -1;"></div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <h4 class="modal-title creating"><i class="fa fa-refresh fa-spin"></i>正在生成报表.....</h4>
+                    <h4 class="modal-title createok"><a href="#">报表已生成点击下载</a></h4>
+                 </div>
+                <div class="modal-footer">
                 </div>
             </div>
         </div>

@@ -401,6 +401,7 @@ function createDataTableTime() {
 
              }
 
+             let gongshi;
 
              switch ($("#deviceselect").val()) {
                  case "1"://车载视频
@@ -455,6 +456,7 @@ function createDataTableTime() {
                          "</tr>"
 
                          $("#head2").html(html);
+                    gongshi = "设备使用率=设备使用数÷设备配发数量";
 
                      break;
 
@@ -517,6 +519,7 @@ function createDataTableTime() {
                          "</tr>"
 
                          $("#head2").html(html);
+                         gongshi = "人均处罚量=警务通处罚数÷警员数，设备平均处罚量=警务通处罚数÷配发数";
 
 
                      break;
@@ -584,6 +587,7 @@ function createDataTableTime() {
                          "</tr>"
 
                          $("#head2").html(html);
+                         gongshi = "设备使用率=设备使用数÷设备配发数量";
 
                      break;
                  case "6"://辅警通
@@ -647,7 +651,7 @@ function createDataTableTime() {
                          "</tr>"
 
                          $("#head2").html(html);
-
+                         gongshi = "人均处罚量=违停采集(例)÷辅警数，设备平均处罚量=违停采集(例)÷配发数";
       
                      break;
                  default:
@@ -669,7 +673,7 @@ function createDataTableTime() {
                      break;
 
              }
-             $('.infodiv').html("<span>共 " + json.data.length + " 条记录</span>");
+             $('.infodiv').html("<span>共 " + json.data.length + " 条记录</span><span>" + gongshi + "</span>");
              $('.daochu').html("<a class='buttons-excel'  href='../Handle/upload/" + json.title + "'><span>导 出</span></a>");
 
              //loadTatolData();
@@ -830,6 +834,9 @@ $(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', funct
         $("#alertmodal").modal("show");
         return;
     };
+    $("#loadingModal").modal("show");
+    $('.creating').show();
+    $('.createok').hide();
     var arry = time1.split(',');
     var chansu = arry[5].split('|');
     var data =
@@ -855,9 +862,10 @@ $(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', funct
         data: data,
         dataType: "json",
         success: function (data) {
-            if (data.r == "0") {
-
-
+            if (data.data) {
+                $('.createok a').attr('href', '../Handle/upload/' + data.data);
+                $('.createok').show();
+                $('.creating').hide();
             }
 
         },
@@ -866,6 +874,9 @@ $(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', funct
         }
     });
 
+});
+$(document).on('click.bs.carousel.data-api', '.createok a', function (e) {
+    $("#loadingModal").modal("hide");
 });
 
 
@@ -951,7 +962,7 @@ function createDataTable() {
 
                  }
           
-               
+                 let gongshi;
                  switch ($("#deviceselect").val()) {
                      case "1"://车载视频
                      case "3":   //拦截仪
@@ -1118,6 +1129,8 @@ function createDataTable() {
                              }
 
                          }
+                         gongshi = "设备使用率=设备使用数÷设备配发数量";
+
                          break;
 
                 
@@ -1236,6 +1249,7 @@ function createDataTable() {
 
                          }
                
+                         gongshi = "人均处罚量=警务通处罚数÷警员数，设备平均处罚量=警务通处罚数÷配发数";
 
                          break;
                      case "5"://执法记录仪
@@ -1352,6 +1366,9 @@ function createDataTable() {
                              $("#head").html(html);
 
                          }
+
+                         gongshi = "设备使用率=设备使用数÷设备配发数量";
+
                          break;
     
                      case "6"://辅警通
@@ -1462,6 +1479,9 @@ function createDataTable() {
                              $("#head").html(html);
 
                          }
+
+                         gongshi = "人均处罚量=违停采集(例)÷辅警数，设备平均处罚量=违停采集(例)÷配发数";
+
                          break;
                      default:
                          break;
@@ -1484,7 +1504,7 @@ function createDataTable() {
 
                  }
                  //alert(json.title);
-                 $('.infodiv').html("<span>共 " + json.data.length + " 条记录</span>");
+                 $('.infodiv').html("<span>共 " + json.data.length + " 条记录</span><span>" + gongshi + "</span>");
                  $('.daochu').html("<a class='buttons-excel'  href='../Handle/upload/" + json.title + "'><span>导 出</span></a>");
       
                  //loadTatolData();
