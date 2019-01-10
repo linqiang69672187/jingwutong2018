@@ -851,7 +851,7 @@ $(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', funct
    }
     $.ajax({
         type: "POST",
-        url: "../Handle/exportAll_Timesharing_Reports.ashx",
+        url: (this.innerText == "一键导出")?"../Handle/exportAll_Timesharing_Reports.ashx":"../Handle/exportAll_Timesharing_ReportsTime.ashx",
         data: data,
         dataType: "json",
         success: function (data) {

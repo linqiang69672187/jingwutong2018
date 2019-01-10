@@ -565,6 +565,9 @@
     <Compile Include="Handle\exportAll_Timesharing_Reports.ashx.cs">
       <DependentUpon>exportAll_Timesharing_Reports.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Handle\exportAll_Timesharing_ReportsTime.ashx.cs">
+      <DependentUpon>exportAll_Timesharing_ReportsTime.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handle\getAlarmdays.ashx.cs">
       <DependentUpon>getAlarmdays.ashx</DependentUpon>
     </Compile>
@@ -897,6 +900,7 @@
     <Content Include="Handle\exportAll_datamanagement.ashx" />
     <Content Include="Handle\templet\0.xls" />
     <Content Include="Handle\exportAll_Timesharing_Reports.ashx" />
+    <Content Include="Handle\exportAll_Timesharing_ReportsTime.ashx" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
     <Content Include="Static_Seed_Project\css\bootstrap.css.map" />
     <Content Include="Static_Seed_Project\css\bootstrap.min.css.map" />

@@ -6,17 +6,17 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
 
-
 namespace JingWuTong.Handle
 {
     /// <summary>
-    /// exportAll_Timesharing_Reports 的摘要说明
+    /// exportAll_Timesharing_ReportsTime 的摘要说明
     /// </summary>
-    public class exportAll_Timesharing_Reports : IHttpHandler
+    public class exportAll_Timesharing_ReportsTime : IHttpHandler
     {
         List<dataStruct> tmpList = new List<dataStruct>();
 
@@ -25,7 +25,7 @@ namespace JingWuTong.Handle
         DataTable dUser = null;
         DataTable zfData = null;
         DataTable Data = null;
-
+        DataTable days = null;
 
 
         int statusvalue = 0;  //正常参考值
@@ -67,8 +67,9 @@ namespace JingWuTong.Handle
 
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
-            zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
+            zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,,substring(convert(varchar,[Time],120),0,11) as date FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM where  en.[BMDM]  in (select BMDM from childtable)", "user");
+            days = SQLHelper.ExecuteRead(CommandType.Text, "  select distinct CONVERT(varchar(12) , Time, 111 ) as Hour from EverydayInfo_Hour  where Time >='" + begintime + "' and Time  <='" + endtime + "' ORDER  BY Hour", "2");
 
 
 
@@ -92,7 +93,7 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-                Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType="+ devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
+                Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,,substring(convert(varchar,[Time],120),0,11) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType=" + devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
 
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
                 sheetrows = 0;
@@ -104,7 +105,7 @@ namespace JingWuTong.Handle
             }
 
 
-            tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
+            tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
             excelFile.SaveXls(tmpath);
             context.Response.Redirect(tmpath);
 
@@ -122,7 +123,7 @@ namespace JingWuTong.Handle
             //设置字体
             style.Font.Size = 12 * 20; //PT=20
             style.Font.Weight = ExcelFont.BoldWeight;
-            style.FillPattern.SetPattern(FillPatternStyle.Solid,ColorTranslator.FromHtml("#ccffcc"), Color.Empty);
+            style.FillPattern.SetPattern(FillPatternStyle.Solid, ColorTranslator.FromHtml("#ccffcc"), Color.Empty);
             style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
             //  style.Font.Color = Color.Blue;
             return style;
@@ -143,7 +144,7 @@ namespace JingWuTong.Handle
                 case "2":
                 case "3":
                     mergedint = 1 + countTime * 3;
-                    range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows+1, mergedint);
+                    range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, mergedint);
                     style = new CellStyle();
                     style.FillPattern.SetPattern(FillPatternStyle.Solid, ColorTranslator.FromHtml("#ccffcc"), Color.Empty);
                     style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
@@ -154,22 +155,22 @@ namespace JingWuTong.Handle
                     style.VerticalAlignment = VerticalAlignmentStyle.Center;
                     range.Style = style;
 
-                    rangebm = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows+1, 0);//GetSubrange("A1", "G1");
+                    rangebm = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, 0);//GetSubrange("A1", "G1");
                     rangepf = sheet.Cells.GetSubrangeAbsolute(sheetrows, 1, sheetrows + 1, 1);//GetSubrange("A1", "G1");
                     rangebm.Value = "部门";
                     rangepf.Value = "设备配发数（台）";
                     rangebm.Merged = true;
                     rangepf.Merged = true;
-                    
+
                     foreach (var key in ConfigurationManager.AppSettings.AllKeys)
                     {
                         if (!key.Contains("Time")) continue;
-                        CellRange timerange = sheet.Cells.GetSubrangeAbsolute(sheetrows, 2+h, sheetrows , 4 + h );
+                        CellRange timerange = sheet.Cells.GetSubrangeAbsolute(sheetrows, 2 + h, sheetrows, 4 + h);
                         timerange.Merged = true;
                         timerange.Value = ConfigurationManager.AppSettings[key];
-                        sheet.Rows[sheetrows+1].Cells[2 + h].Value = "设备使用数量（台）";
-                        sheet.Rows[sheetrows+1].Cells[3 + h].Value = "在线时长总和(小时)";
-                        sheet.Rows[sheetrows+1].Cells[4 + h].Value = "设备使用率";
+                        sheet.Rows[sheetrows + 1].Cells[2 + h].Value = "设备使用数量（台）";
+                        sheet.Rows[sheetrows + 1].Cells[3 + h].Value = "在线时长总和(小时)";
+                        sheet.Rows[sheetrows + 1].Cells[4 + h].Value = "设备使用率";
                         h += 3;
                     }
 
@@ -253,7 +254,7 @@ namespace JingWuTong.Handle
                     sheetrows += 1;
                     break;
                 case "5":
-                    mergedint =1 + countTime * 6;
+                    mergedint = 1 + countTime * 6;
                     range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, mergedint);
                     style = new CellStyle();
                     style.Font.Size = 12 * 20; //PT=20
@@ -323,38 +324,27 @@ namespace JingWuTong.Handle
             dataindex = 0;
             string pxstring = "";
             OrderedEnumerableRowCollection<DataRow> rows;
-            if (reporttype == "支队")
-            {
-                rows = from p in allEntitys.AsEnumerable()
-                       where (p.Field<string>("SJBM") == sjbm)
-                       orderby p.Field<int>("Sort") descending
-                       select p;
-            }
-            else
-            {
+          
                 rows = from p in allEntitys.AsEnumerable()
                        where (p.Field<string>("SJBM") == sjbm || p.Field<string>("BMDM") == sjbm)
                        orderby p.Field<int>("Sort") descending
                        select p;
-            }
-
-            foreach (var entityitem in rows)
+            DateTime enddt = Convert.ToDateTime(endtime.Replace('/', '-'));
+            while (true)
             {
-                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
+             
                 DataRow dr = dtreturns.NewRow();
                 dataindex += 1;
-                dr["0"] = entityitem["BMMC"].ToString();  //部门名称
+                dr["0"] = begindt.ToString("yyyy-MM-dd"); //部门名称
 
-                var entityids = GetSonID(entityitem["BMDM"].ToString());
+                var entityids = GetSonID(sjbm);
                 List<string> strList = new List<string>();
-                strList.Add(entityitem["BMDM"].ToString());
-                if (!(reporttype != "支队" && entityitem["SJBM"].ToString() == "331000000000"))  //非支队报表下的大队单位，只显示本级
-                {
+                strList.Add(sjbm);
+            
                     foreach (entityStruct item in entityids)
                     {
                         strList.Add(item.BMDM);
                     }
-                }
                 List<dataStruct> queryrows;
                 int h = 0;
                 switch (type)
@@ -362,47 +352,50 @@ namespace JingWuTong.Handle
                     case "1":
                     case "2":
                     case "3":
-                        try {
-                        foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+                        try
                         {
-                            if (!key.Contains("Time")) continue;
+                            foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+                            {
+                                if (!key.Contains("Time")) continue;
 
-                            int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":",""));
-                            int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
-                            int usedevices = 0;
-                            Int64 onlinetime = 0;
-                            queryrows = (from p in Data.AsEnumerable()
-                                         where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":",""))>= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
-                                         group p by new
-                                         {
-                                             t1 = p.Field<string>("devid")
-                                        
+                                int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
+                                int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
+                                int usedevices = 0;
+                                Int64 onlinetime = 0;
+                                queryrows = (from p in Data.AsEnumerable()
+                                             where p.Field<string>("date")== begindt.ToString("yyyy-MM-dd") && strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             group p by new
+                                             {
+                                                 t1 = p.Field<string>("devid")
 
-                                         } into g
-                                         select new dataStruct
-                                         {
-                                             在线时长 = g.Sum(p => p.Field<int>("OnlineTime"))
-                                         }).ToList<dataStruct>();
+
+                                             } into g
+                                             select new dataStruct
+                                             {
+                                                 在线时长 = g.Sum(p => p.Field<int>("OnlineTime"))
+                                             }).ToList<dataStruct>();
                                 foreach (dataStruct item in queryrows)
                                 {
                                     onlinetime += item.在线时长;
                                     usedevices += ((item.在线时长) - statusvalue > 0) ? 1 : 0;
                                 }
                                 dr[2 + h] = usedevices;
-                                drtz[2 + h] = (drtz[2 + h].ToString() == "") ? usedevices : int.Parse(drtz[2 + h].ToString()) + usedevices; 
+                                drtz[2 + h] = (drtz[2 + h].ToString() == "") ? usedevices : int.Parse(drtz[2 + h].ToString()) + usedevices;
                                 dr[3 + h] = Math.Round((double)onlinetime / 3600, 2);
                                 drtz[3 + h] = (drtz[3 + h].ToString() == "") ? Math.Round((double)onlinetime / 3600, 2) : double.Parse(drtz[3 + h].ToString()) + Math.Round((double)onlinetime / 3600, 2);
-                                dr[4 + h] =(queryrows.Count==0)?0:Math.Round((double)usedevices / queryrows.Count, 2); ;
-                                if (h == 0) {
+                                dr[4 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)usedevices / queryrows.Count, 2); ;
+                                if (h == 0)
+                                {
                                     dr["1"] = queryrows.Count;
-                                    drtz["1"] =(drtz["1"].ToString()=="")? queryrows.Count: int.Parse(drtz["1"].ToString())+queryrows.Count;
+                                    drtz["1"] = (drtz["1"].ToString() == "") ? queryrows.Count : int.Parse(drtz["1"].ToString()) + queryrows.Count;
                                 }
 
-                            h += 3;
+                                h += 3;
 
+                            }
                         }
-                        }
-                        catch (Exception e) {
+                        catch (Exception e)
+                        {
 
                         }
                         break;
@@ -420,7 +413,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == begindt.ToString("yyyy-MM-dd") && strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -442,9 +435,9 @@ namespace JingWuTong.Handle
                                     NoneHandleCnt += (HandleCnt == 0) ? 1 : 0;
                                 }
                                 dr[3 + h] = HandleCnt;
-                                dr[4 + h] = (userrow.Count()==0)?0:Math.Round((double)HandleCnt / userrow.Count(), 2); 
+                                dr[4 + h] = (userrow.Count() == 0) ? 0 : Math.Round((double)HandleCnt / userrow.Count(), 2);
                                 dr[5 + h] = CXCnt;
-                                dr[6 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)HandleCnt / queryrows.Count, 2); 
+                                dr[6 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)HandleCnt / queryrows.Count, 2);
                                 dr[7 + h] = NoneHandleCnt;
                                 drtz[3 + h] = (drtz[3 + h].ToString() == "") ? HandleCnt : int.Parse(drtz[3 + h].ToString()) + HandleCnt;
                                 drtz[5 + h] = (drtz[5 + h].ToString() == "") ? CXCnt : int.Parse(drtz[5 + h].ToString()) + CXCnt;
@@ -479,7 +472,7 @@ namespace JingWuTong.Handle
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
 
                                 queryrows = (from p in zfData.AsEnumerable()
-                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == begindt.ToString("yyyy-MM-dd") && strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -508,9 +501,9 @@ namespace JingWuTong.Handle
                                 }
                                 dr[2 + h] = useCnt;
                                 dr[3 + h] = queryrows.Count - useCnt;
-                                dr[4 + h] = Math.Round((double)视频时长 / 3600, 2) ;
+                                dr[4 + h] = Math.Round((double)视频时长 / 3600, 2);
                                 dr[5 + h] = Math.Round((double)文件大小 / 1048576, 2);
-                                dr[6 + h] = (UploadCnt==0)?0:Math.Round((double)GFUploadCnt * 100 / UploadCnt, 2);
+                                dr[6 + h] = (UploadCnt == 0) ? 0 : Math.Round((double)GFUploadCnt * 100 / UploadCnt, 2);
                                 dr[7 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)useCnt * 100 / queryrows.Count, 2);
 
                                 drtz[2 + h] = (drtz[2 + h].ToString() == "") ? useCnt : int.Parse(drtz[2 + h].ToString()) + useCnt;
@@ -518,16 +511,16 @@ namespace JingWuTong.Handle
                                 drtz[4 + h] = (drtz[4 + h].ToString() == "") ? Math.Round((double)视频时长 / 3600, 2) : double.Parse(drtz[4 + h].ToString()) + Math.Round((double)视频时长 / 3600, 2);
                                 drtz[5 + h] = (drtz[5 + h].ToString() == "") ? Math.Round((double)文件大小 / 1048576, 2) : double.Parse(drtz[5 + h].ToString()) + Math.Round((double)文件大小 / 1048576, 2);
 
-                              if(drtz[6 + h].ToString() == "")
+                                if (drtz[6 + h].ToString() == "")
                                 {
                                     drtz[6 + h] = GFUploadCnt + "," + UploadCnt;
                                 }
-                              else
+                                else
                                 {
                                     int tempGFUploadCnt = 0;
                                     int tempUploadCnt = 0;
                                     tempGFUploadCnt = int.Parse(drtz[6 + h].ToString().Split(',')[0]) + GFUploadCnt;
-                                    tempUploadCnt = int.Parse(drtz[6 + h].ToString().Split(',')[1])+ UploadCnt;
+                                    tempUploadCnt = int.Parse(drtz[6 + h].ToString().Split(',')[1]) + UploadCnt;
                                     drtz[6 + h] = (tempGFUploadCnt) + "," + (tempUploadCnt);
                                 }
 
@@ -560,9 +553,9 @@ namespace JingWuTong.Handle
                 case "1":
                 case "2":
                 case "3":
-                   for (var h=0;h< countTime; h++)
+                    for (var h = 0; h < countTime; h++)
                     {
-                        drtz[4+ h*3] = Math.Round(double.Parse(drtz[2 + h*3].ToString())/ double.Parse(drtz["1"].ToString()),2);
+                        drtz[4 + h * 3] = Math.Round(double.Parse(drtz[2 + h * 3].ToString()) / double.Parse(drtz["1"].ToString()), 2);
                     }
                     break;
                 case "4":
@@ -576,13 +569,13 @@ namespace JingWuTong.Handle
                 case "5":
                     for (var h = 0; h < countTime; h++)
                     {
-                        drtz[6+ h * 6] =(double.Parse(drtz[6 + h * 6].ToString().Split(',')[1])==0)?0:Math.Round(double.Parse(drtz[6 + h * 6].ToString().Split(',')[0]) * 100 / double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]), 2);
-                        drtz[7 + h * 6] = Math.Round(double.Parse(drtz[2 + h * 6].ToString())*100 / double.Parse(drtz["1"].ToString()), 2);
+                        drtz[6 + h * 6] = (double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]) == 0) ? 0 : Math.Round(double.Parse(drtz[6 + h * 6].ToString().Split(',')[0]) * 100 / double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]), 2);
+                        drtz[7 + h * 6] = Math.Round(double.Parse(drtz[2 + h * 6].ToString()) * 100 / double.Parse(drtz["1"].ToString()), 2);
                     }
                     break;
             }
 
-          
+
 
 
             dtreturns.Rows.Add(drtz);
@@ -605,11 +598,11 @@ namespace JingWuTong.Handle
                 case "1":
                 case "2":
                 case "3":
-                    mergedint = 1+countTime*3;
+                    mergedint = 1 + countTime * 3;
                     break;
                 case "4":
                 case "6":
-                    mergedint = 2+ countTime*5;
+                    mergedint = 2 + countTime * 5;
                     break;
                 case "5":
                     mergedint = 1 + countTime * 6;
@@ -701,9 +694,6 @@ namespace JingWuTong.Handle
             public int HandleCnt = 0;
             public int CXCnt = 0;
         }
-
-
-
         public bool IsReusable
         {
             get
