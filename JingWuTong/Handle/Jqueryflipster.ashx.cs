@@ -60,6 +60,7 @@ namespace Policesystem.Handle
                 case "331002000000":
                 case "331003000000":
                 case "331004000000":
+                case "331005000000":
                     rows = (from p in allentitys.AsEnumerable()
                             where (p.Field<string>("SJBM") ==BMDM) || (p.Field<string>("BMDM") == BMDM)
                             orderby p.Field<int>("sort") descending

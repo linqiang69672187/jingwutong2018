@@ -257,7 +257,7 @@ function createChar() {
                             n = 0;
                             break;
                         case 1:
-                            n = 4;
+                            n = 5;
                             break;
                         case 2:
                             n = 1;
@@ -312,7 +312,7 @@ function createChar() {
                                 n = 0;
                                 break;
                             case 1:
-                                n = 4;
+                                n = 5;
                                 break;
                             case 2:
                                 n = 1;

@@ -575,22 +575,22 @@ namespace JingWuTong.Handle
                 case "3":
                     for (var h = 0; h < countTime; h++)
                     {
-                        drtz[4 + h * 3] = Math.Round(double.Parse(drtz[2 + h * 3].ToString()) / double.Parse(drtz["1"].ToString()), 2);
+                        drtz[4 + h * 3] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 3].ToString()) / double.Parse(drtz["1"].ToString()), 2);
                     }
                     break;
                 case "4":
                 case "6":
                     for (var h = 0; h < countTime; h++)
                     {
-                        drtz[4 + h * 5] = Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["2"].ToString()), 2);
-                        drtz[6 + h * 5] = Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["1"].ToString()), 2);
+                        drtz[4 + h * 5] = (double.Parse(drtz["2"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["2"].ToString()), 2);
+                        drtz[6 + h * 5] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["1"].ToString()), 2);
                     }
                     break;
                 case "5":
                     for (var h = 0; h < countTime; h++)
                     {
                         drtz[6 + h * 6] = (double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]) == 0) ? 0 : Math.Round(double.Parse(drtz[6 + h * 6].ToString().Split(',')[0]) * 100 / double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]), 2);
-                        drtz[7 + h * 6] = Math.Round(double.Parse(drtz[2 + h * 6].ToString()) * 100 / double.Parse(drtz["1"].ToString()), 2);
+                        drtz[7 + h * 6] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 6].ToString()) * 100 / double.Parse(drtz["1"].ToString()), 2);
                     }
                     break;
             }
