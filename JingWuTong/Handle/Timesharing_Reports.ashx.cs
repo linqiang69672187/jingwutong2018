@@ -376,30 +376,44 @@ namespace JingWuTong.Handle
                     for (int i = 0; i < arryList.Count; i++)
                     {
 
-                        int Ftime = int.Parse(arryList[i][0].Split(':')[0]);
-                        int Stime = int.Parse(arryList[i][1].Split(':')[0]);
+                        int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
+                        int Stime = int.Parse(arryList[i][1].Replace(":", ""));
 
                      
                         var rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                    where p.Field<string>("DevId") == dtEntity.Rows[i1]["DevId"].ToString() && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) < Stime
-                                    orderby p.Field<string>("DevId"), p.Field<int>("在线时长")
+                                    where p.Field<string>("DevId") == dtEntity.Rows[i1]["DevId"].ToString() && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                    group p by new
+                                    {
+                                        t1 = p.Field<string>("devid"),
+                                        t2 = p.Field<int>("AlarmType")
+
+                                    } into g
                                     select new dataStruct
                                     {
-                                        BMDM = p.Field<string>("BMDM"),
-                                        ParentID = p.Field<string>("ParentID"),
-                                        在线时长 = p.Field<int>("在线时长"),
-                                        文件大小 = p.Field<int>("文件大小"),
-                                        AlarmType = p.Field<int>("AlarmType"),
-                                        DevId = p.Field<string>("DevId"),
-                                        HandleCnt = p.Field<int>("处理量"),
-                                        CXCnt = p.Field<int>("查询量")
+                                        文件大小 = g.Sum(p => p.Field<int>("文件大小")),
+                                        AlarmType =g.Key.t2,
+                                        DevId = g.Key.t1,
+                                        HandleCnt = g.Sum(p => p.Field<int>("处理量")),
+                                        CXCnt = g.Sum(p => p.Field<int>("查询量")),
+                                        在线时长 = g.Sum(p => p.Field<int>("在线时长"))
 
                                     }).ToList<dataStruct>();
 
+                            //queryrows = (from p in Data.AsEnumerable()
+                            //             where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                            //             group p by new
+                            //             {
+                            //                 t1 = p.Field<string>("devid")
 
 
-                        //获得设备数量，及正常使用设备
-                         tmpRows = 0;
+                            //             } into g
+                            //             select new dataStruct
+                            //             {
+                            //                 在线时长 = g.Sum(p => p.Field<int>("OnlineTime"))
+                            //             }).ToList<dataStruct>();
+
+                            //获得设备数量，及正常使用设备
+                            tmpRows = 0;
                          tmpcxl = 0;
                          tmpcll = 0;
                          tmpzxsj = 0;
