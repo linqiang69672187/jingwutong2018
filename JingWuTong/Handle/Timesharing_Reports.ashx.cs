@@ -261,7 +261,7 @@ namespace JingWuTong.Handle
                 {
                     case "5":
                         Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.[AlarmType],ala.文件大小, Time,UploadCnt,GFUploadCnt from (" +
-                        "    SELECT  [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType, datename(Hour,Time) as Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt  from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59'  group by [DevId],datename(Hour,Time) ) " +
+                        "    SELECT  [DevId],[VideLength] as 在线时长,[FileSize] as 文件大小,1 as AlarmType, substring(convert(varchar,[Time],120),12,5) as Time,UploadCnt as UploadCnt,GFUploadCnt as GFUploadCnt  from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' ) " +
                         "as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[BMDM]<>''" , "Alarm_EveryDayInfo");
                         dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
                         break;
@@ -287,7 +287,7 @@ namespace JingWuTong.Handle
                     {
                         case "5":
                             Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + ssdd + "' OR BMDM = '" + ssdd + "' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) "+
-                                "  SELECT en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小, Time,UploadCnt,GFUploadCnt  from (SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,datename(Hour,Time) as Time,sum(UploadCnt) as UploadCnt,sum(GFUploadCnt) as GFUploadCnt  from EveryDayInfo_ZFJLY_Hour  where  [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59'  group by [DevId],datename(Hour,Time) ) as ala " +
+                                "  SELECT en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小, Time,UploadCnt,GFUploadCnt  from (SELECT [DevId],[VideLength] as 在线时长,[FileSize] as 文件大小,1 as AlarmType,substring(convert(varchar,[Time],120),12,5) as Time,UploadCnt as UploadCnt,GFUploadCnt as GFUploadCnt  from EveryDayInfo_ZFJLY_Hour  where  [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59'  ) as ala " +
                                 " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]   left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
 
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as [ID] ,BMJC as [Name] ,SJBM as [ParentID],BMJB as [Depth] from [Entity] where [SJBM] ='" + ssdd + "' or [BMDM]='" + ssdd + "'    order BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -313,7 +313,7 @@ namespace JingWuTong.Handle
                     switch (type)
                     {
                         case "5":
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "  WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + sszd + "' OR BMDM = '" + sszd + "' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT us.JYBH,en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小, Time,0 as 处理量,0 as 查询量 from ( SELECT [DevId],sum([VideLength]) as 在线时长,sum([FileSize]) as 文件大小,1 as AlarmType,datename(Hour,Time) as Time from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59'   group by [DevId],datename(Hour,Time)  ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM  in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "  WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + sszd + "' OR BMDM = '" + sszd + "' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT us.JYBH,en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],[AlarmType],ala.在线时长,ala.文件大小, Time,0 as 处理量,0 as 查询量 from ( SELECT [DevId],[VideLength] as 在线时长,[FileSize] as 文件大小,1 as AlarmType,substring(convert(varchar,[Time],120),12,5) as Time from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59'   ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM  in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + sszd + "' OR BMDM = '" + sszd + "' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM )  SELECT us.JYBH,en.BMDM, en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId] from ( SELECT [DevId]  from EveryDayInfo_ZFJLY_Hour   where  [Time] >='" + begintime + "' and [Time] <='" + endtime + "'   group by [DevId] ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM in (select BMDM from childtable)", "Alarm_EveryDayInfo");
 
                             break;
@@ -338,11 +338,7 @@ namespace JingWuTong.Handle
                     arryList.Add(ConfigurationManager.AppSettings[key].Split('-'));
 
                 }
-                arryList.Add(ConfigurationManager.AppSettings["time1"].Split('-'));
-            arryList.Add(ConfigurationManager.AppSettings["time2"].Split('-'));
-            arryList.Add(ConfigurationManager.AppSettings["time3"].Split('-'));
-            arryList.Add(ConfigurationManager.AppSettings["time4"].Split('-'));
-            arryList.Add(ConfigurationManager.AppSettings["time5"].Split('-'));
+                
                 
             #region//个人
 
@@ -378,7 +374,6 @@ namespace JingWuTong.Handle
 
                         int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
                         int Stime = int.Parse(arryList[i][1].Replace(":", ""));
-
                      
                         var rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
                                     where p.Field<string>("DevId") == dtEntity.Rows[i1]["DevId"].ToString() && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
@@ -628,14 +623,14 @@ namespace JingWuTong.Handle
                 for (int i = 0; i < arryList.Count; i++)
                 {
                      
-                        int Ftime = int.Parse(arryList[i][0].Split(':')[0]);
-                        int Stime = int.Parse(arryList[i][1].Split(':')[0]);
-                        List<dataStruct> rows;
+                    int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
+                    int Stime = int.Parse(arryList[i][1].Replace(":", ""));
+                    List<dataStruct> rows;
 
                     if (type == "5")
                     {
                          rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                    where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) < Stime
+                                    where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                  group p by new
                                  {
                                      t1 = p.Field<string>("devid")
@@ -1005,9 +1000,6 @@ namespace JingWuTong.Handle
 
 
 
-            if (ssdd != "all" && sszd != "all")
-            {
-            }
 
             #region 大队和中队汇总
             else
