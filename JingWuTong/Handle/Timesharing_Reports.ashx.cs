@@ -267,7 +267,7 @@ namespace JingWuTong.Handle
                         break;
                     default:
 
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM,  en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,0 as 文件大小,ala.处理量,ala.查询量, Time,2 as AlarmType from (" + "select DevId,datename(Hour,Time) as Time,SUM(OnlineTime) as 在线时长,SUM(isnull(HandleCnt,0)) as 处理量,SUM(isnull(CXCnt,0)) as 查询量 from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time  <='" + endtime + " 23:59'  group by DevId,datename(Hour,Time) " + ") as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
+                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM,  en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,0 as 文件大小,ala.处理量,ala.查询量, Time,2 as AlarmType from (" + "select DevId,substring(convert(varchar,[Time],120),12,5) Time,OnlineTime as 在线时长,HandleCnt as 处理量,CXCnt as 查询量 from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time  <='" + endtime + " 23:59'  ) as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type, "Alarm_EveryDayInfo");
 
 
                         dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' AND BMDM <> '33100000000x' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -295,7 +295,7 @@ namespace JingWuTong.Handle
 
                             break;
                         default:
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + ssdd + "' OR BMDM = '" + ssdd + "' " +" UNION ALL "+" SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM )"+" SELECT en.BMDM,  en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,ala.查询量,ala.处理量, Time from " + "( select DevId,datename(Hour,Time) as Time,SUM(OnlineTime) as 在线时长,SUM(isnull(HandleCnt,0)) as 处理量,SUM(isnull(CXCnt,0)) as 查询量 from EverydayInfo_Hour where    Time >='" + begintime + "' and Time <='" + endtime + " 23:59'   group by DevId,datename(Hour,Time) ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]    left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + ssdd + "' OR BMDM = '" + ssdd + "' " +" UNION ALL "+" SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM )"+" SELECT en.BMDM,  en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,ala.查询量,ala.处理量, Time from " + "( select DevId,substring(convert(varchar,[Time],120),12,5) as Time,OnlineTime as 在线时长,HandleCnt as 处理量,CXCnt as 查询量 from EverydayInfo_Hour where    Time >='" + begintime + "' and Time <='" + endtime + " 23:59'    ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]    left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
 
 
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as [ID] ,BMJC as [Name] ,SJBM as [ParentID],BMJB as [Depth] from [Entity] where [SJBM] ='" + ssdd + "' or [BMDM]='" + ssdd + "'   order BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -318,7 +318,7 @@ namespace JingWuTong.Handle
 
                             break;
                         default:
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小, Time,ala.处理量,ala.查询量 from  " + "(select DevId,datename(Hour,Time) as Time,SUM(OnlineTime) as 在线时长,SUM(isnull(HandleCnt,0)) as 处理量,SUM(isnull(CXCnt,0)) as 查询量  from EverydayInfo_Hour  where   Time  >='" + begintime + "' and Time <='" + endtime + " 23:59'   group by DevId,datename(Hour,Time) ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小, Time,ala.处理量,ala.查询量 from  " + "(select DevId,substring(convert(varchar,[Time],120),12,5) as Time,OnlineTime as 在线时长,HandleCnt as 处理量,CXCnt as 查询量  from EverydayInfo_Hour  where   Time  >='" + begintime + "' and Time <='" + endtime + " 23:59'   group by DevId,datename(Hour,Time) ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId] from  " + "(select DevId  from EverydayInfo_Hour  where Time  >='" + begintime + "' and Time <='" + endtime + "'   group by DevId ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
 
                             break;
@@ -332,8 +332,13 @@ namespace JingWuTong.Handle
 
             List<string[]> arryList = new List<string[]>();
 
+                foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+                {
+                    if (!key.Contains("Time")) continue;
+                    arryList.Add(ConfigurationManager.AppSettings[key].Split('-'));
 
-            arryList.Add(ConfigurationManager.AppSettings["time1"].Split('-'));
+                }
+                arryList.Add(ConfigurationManager.AppSettings["time1"].Split('-'));
             arryList.Add(ConfigurationManager.AppSettings["time2"].Split('-'));
             arryList.Add(ConfigurationManager.AppSettings["time3"].Split('-'));
             arryList.Add(ConfigurationManager.AppSettings["time4"].Split('-'));
