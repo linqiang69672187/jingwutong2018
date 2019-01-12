@@ -338,61 +338,61 @@ namespace JingWuTong.Handle
                     arryList.Add(ConfigurationManager.AppSettings[key].Split('-'));
 
                 }
-                
-                
-            #region//个人
+
+
+                #region//个人
 
                 if (ssdd != "all" && sszd != "all")
-            {
-
-
-                for (int i1 = 0; i1 < dtEntity.Rows.Count; i1++)
                 {
 
-                    DataRow dr = dtreturns.NewRow();
 
-
-                    Int64 在线时长 = 0;
-                    Int64 处理量 = 0;
-                    Int64 文件大小 = 0;
-                    Int64 查询量 = 0;
-                    int 无查询量 = 0;
-                    int 无处罚量 = 0;
-                    int 未使用 = 0;
-                    int usercount = 0;
-                    int 在线 = 0;
-                    int status = 0;//设备使用正常、周1次，月4次，季度12次
-
-                    dr["cloum1"] = dtEntity.Rows[i1]["Contacts"].ToString();
-                    dr["cloum2"] = dtEntity.Rows[i1]["JYBH"].ToString();
-                    dr["cloum3"] = dtEntity.Rows[i1]["DevId"].ToString();
-
-
-
-                    for (int i = 0; i < arryList.Count; i++)
+                    for (int i1 = 0; i1 < dtEntity.Rows.Count; i1++)
                     {
 
-                        int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
-                        int Stime = int.Parse(arryList[i][1].Replace(":", ""));
-                     
-                        var rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                    where p.Field<string>("DevId") == dtEntity.Rows[i1]["DevId"].ToString() && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
-                                    group p by new
-                                    {
-                                        t1 = p.Field<string>("devid"),
-                                        t2 = p.Field<int>("AlarmType")
+                        DataRow dr = dtreturns.NewRow();
 
-                                    } into g
-                                    select new dataStruct
-                                    {
-                                        文件大小 = g.Sum(p => p.Field<int>("文件大小")),
-                                        AlarmType =g.Key.t2,
-                                        DevId = g.Key.t1,
-                                        HandleCnt = g.Sum(p => p.Field<int>("处理量")),
-                                        CXCnt = g.Sum(p => p.Field<int>("查询量")),
-                                        在线时长 = g.Sum(p => p.Field<int>("在线时长"))
 
-                                    }).ToList<dataStruct>();
+                        Int64 在线时长 = 0;
+                        Int64 处理量 = 0;
+                        Int64 文件大小 = 0;
+                        Int64 查询量 = 0;
+                        int 无查询量 = 0;
+                        int 无处罚量 = 0;
+                        int 未使用 = 0;
+                        int usercount = 0;
+                        int 在线 = 0;
+                        int status = 0;//设备使用正常、周1次，月4次，季度12次
+
+                        dr["cloum1"] = dtEntity.Rows[i1]["Contacts"].ToString();
+                        dr["cloum2"] = dtEntity.Rows[i1]["JYBH"].ToString();
+                        dr["cloum3"] = dtEntity.Rows[i1]["DevId"].ToString();
+
+
+
+                        for (int i = 0; i < arryList.Count; i++)
+                        {
+
+                            int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
+                            int Stime = int.Parse(arryList[i][1].Replace(":", ""));
+
+                            var rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
+                                        where p.Field<string>("DevId") == dtEntity.Rows[i1]["DevId"].ToString() && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                        group p by new
+                                        {
+                                            t1 = p.Field<string>("devid"),
+                                            t2 = p.Field<int>("AlarmType")
+
+                                        } into g
+                                        select new dataStruct
+                                        {
+                                            文件大小 = g.Sum(p => p.Field<int>("文件大小")),
+                                            AlarmType = g.Key.t2,
+                                            DevId = g.Key.t1,
+                                            HandleCnt = g.Sum(p => p.Field<int>("处理量")),
+                                            CXCnt = g.Sum(p => p.Field<int>("查询量")),
+                                            在线时长 = g.Sum(p => p.Field<int>("在线时长"))
+
+                                        }).ToList<dataStruct>();
 
                             //queryrows = (from p in Data.AsEnumerable()
                             //             where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
@@ -409,44 +409,44 @@ namespace JingWuTong.Handle
 
                             //获得设备数量，及正常使用设备
                             tmpRows = 0;
-                         tmpcxl = 0;
-                         tmpcll = 0;
-                         tmpzxsj = 0;
-                         在线时长 = 0;
-                         处理量 = 0;
-                         文件大小 = 0;
-                         查询量 = 0;
-                        foreach (dataStruct item in rows)
-                        {
-
-                    
-
-                            switch (item.AlarmType.ToString())
+                            tmpcxl = 0;
+                            tmpcll = 0;
+                            tmpzxsj = 0;
+                            在线时长 = 0;
+                            处理量 = 0;
+                            文件大小 = 0;
+                            查询量 = 0;
+                            foreach (dataStruct item in rows)
                             {
-                                case "1":
-                                    在线时长 += Convert.ToInt32(item.在线时长);
-                                    tmpzxsj += Convert.ToInt32(item.在线时长);
-                                    在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
-                                    文件大小 += Convert.ToInt32(item.文件大小);
-                               
-                                    break;
-                                case "2":
-                                    在线时长 += Convert.ToInt32(item.在线时长);
-                                    tmpzxsj += Convert.ToInt32(item.在线时长);
 
-                                    处理量 += Convert.ToInt32(item.HandleCnt);
-                                    查询量 += Convert.ToInt32(item.CXCnt);
-                                    tmpcxl += Convert.ToInt32(item.CXCnt);
-                                    tmpcll += Convert.ToInt32(item.HandleCnt);
-                                    break;
-                            }
-                            if (item.DevId.ToString() != tmpDevid)
-                            {
-                                tmpRows += 1;  //新设备ID不重复
-                                tmpDevid = item.DevId.ToString();
-                                status += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
-                                allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
-                              
+
+
+                                switch (item.AlarmType.ToString())
+                                {
+                                    case "1":
+                                        在线时长 += Convert.ToInt32(item.在线时长);
+                                        tmpzxsj += Convert.ToInt32(item.在线时长);
+                                        在线 += ((Convert.ToInt32(item.在线时长) - zxstatusvalue) > 0) ? 1 : 0;
+                                        文件大小 += Convert.ToInt32(item.文件大小);
+
+                                        break;
+                                    case "2":
+                                        在线时长 += Convert.ToInt32(item.在线时长);
+                                        tmpzxsj += Convert.ToInt32(item.在线时长);
+
+                                        处理量 += Convert.ToInt32(item.HandleCnt);
+                                        查询量 += Convert.ToInt32(item.CXCnt);
+                                        tmpcxl += Convert.ToInt32(item.CXCnt);
+                                        tmpcll += Convert.ToInt32(item.HandleCnt);
+                                        break;
+                                }
+                                if (item.DevId.ToString() != tmpDevid)
+                                {
+                                    tmpRows += 1;  //新设备ID不重复
+                                    tmpDevid = item.DevId.ToString();
+                                    status += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
+                                    allstatu_device += (Convert.ToInt32(item.在线时长) - statusvalue > 0) ? 1 : 0;
+
                                     未使用 += ((tmpzxsj - statusvalue) <= 0) ? 1 : 0;
                                     在线 += ((tmpzxsj - zxstatusvalue) > 0) ? 1 : 0;
 
@@ -455,555 +455,559 @@ namespace JingWuTong.Handle
                                     tmpcll = 0;
                                     tmpcxl = 0;
                                     tmpzxsj = 0;
-                                
+
+                                }
+
+
+
+
+                            }//循环结束
+
+
+                            tmpList.Clear();
+
+
+
+
+                            int countdevices = tmpRows;
+                            double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
+
+
+
+                            //dr["cloum2"] = countdevices;
+                            devicescount += countdevices;
+
+
+                            switch (type)
+                            {
+                                case "4":
+                                case "6":
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            dr["cloum4"] = 处理量;
+                                            dr["cloum5"] = 查询量;
+                                            break;
+                                        case 1:
+                                            dr["cloum6"] = 处理量;
+                                            dr["cloum7"] = 查询量;
+                                            break;
+                                        case 2:
+                                            dr["cloum8"] = 处理量;
+                                            dr["cloum9"] = 查询量;
+                                            break;
+                                        case 3:
+                                            dr["cloum10"] = 处理量;
+                                            dr["cloum11"] = 查询量;
+                                            break;
+                                        case 4:
+                                            dr["cloum12"] = 处理量;
+                                            dr["cloum13"] = 查询量;
+                                            break;
+                                    }
+
+                                    break;
+                                case "1":
+                                case "2":
+                                case "3":
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            break;
+
+                                        case 1:
+                                            dr["cloum5"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            break;
+
+                                        case 2:
+                                            dr["cloum6"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            break;
+
+                                        case 3:
+                                            dr["cloum7"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            break;
+
+                                        case 4:
+                                            dr["cloum8"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            break;
+                                    }
+
+                                    break;
+                                case "5"://执法记录仪
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            dr["cloum5"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            break;
+                                        case 1:
+                                            dr["cloum6"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            dr["cloum7"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            break;
+                                        case 2:
+                                            dr["cloum8"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            dr["cloum9"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            break;
+                                        case 3:
+                                            dr["cloum10"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            dr["cloum11"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            break;
+                                        case 4:
+                                            dr["cloum12"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            dr["cloum13"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            break;
+                                    }
+
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        dtreturns.Rows.Add(dr);
+
+                    }
+                }
+
+                #endregion
+               
+                #region//大队和中队
+                else
+                {
+                    for (int i1 = 0; i1 < dtEntity.Rows.Count; i1++)
+                    {
+                        DataRow dr = dtreturns.NewRow();
+                        //dr["cloum1"] = (i1 + 1).ToString(); ;
+
+                        dr["cloum1"] = dtEntity.Rows[i1]["Name"].ToString();//部门
+
+                        rowcout0 = dtEntity.Rows.Count;
+                        //dr["cloum13"] = (i1 + 1);
+                        Int64 在线时长 = 0;
+                        Int64 处理量 = 0;
+                        Int64 文件大小 = 0;
+                        Int64 查询量 = 0;
+                        int 无查询量 = 0;
+                        int 无处罚量 = 0;
+                        int 未使用 = 0;
+                        int usercount = 0;
+                        int 在线 = 0;
+                        int 上传总数 = 0;
+                        int 规范上传总数 = 0;
+                        int status = 0;//设备使用正常、周1次，月4次，季度12次
+
+                        int sumdevices = 0;//设备配发数
+
+
+                        var entityids = GetSonID(dtEntity.Rows[i1]["ID"].ToString());
+                        List<string> strList = new List<string>();
+
+                        strList.Add(dtEntity.Rows[i1]["ID"].ToString());
+
+                        if (!(ssdd != "all" && sszd == "all") || !(dtEntity.Rows[i1]["ParentID"].ToString() == "331000000000"))//排除所有中队
+                        {
+                            foreach (entityStruct item in entityids)
+                            {
+                                strList.Add(item.BMDM);
+                            }
+                        }
+
+
+                        var userrows = from p in dUser.AsEnumerable()
+                                       where strList.ToArray().Contains(p.Field<string>("BMDM"))
+                                       select p;
+                        usercount = userrows.Count();
+
+                        int countdevices = 0;
+                        for (int i = 0; i < arryList.Count; i++)
+                        {
+
+                            int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
+                            int Stime = int.Parse(arryList[i][1].Replace(":", ""));
+                            List<dataStruct> rows;
+
+                            if (type == "5")
+                            {
+                                rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
+                                        where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                        group p by new
+                                        {
+                                            t1 = p.Field<string>("devid")
+                                        } into g
+                                        select new dataStruct
+                                        {
+                                            BMDM = dtEntity.Rows[i1]["ID"].ToString(),
+                                            ParentID = dtEntity.Rows[i1]["ParentID"].ToString(),
+                                            在线时长 = g.Sum(p => p.Field<int>("在线时长")),
+                                            文件大小 = g.Sum(p => p.Field<int>("文件大小")),
+                                            AlarmType = 1,
+                                            DevId = g.Key.t1,
+                                            UploadCnt = g.Sum(p => p.Field<int>("UploadCnt")),
+                                            GFUploadCnt = g.Sum(p => p.Field<int>("GFUploadCnt"))
+
+
+
+                                        }).ToList<dataStruct>();
+                            }
+                            else
+                            {
+                                rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
+                                        where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) < Stime
+                                        group p by new
+                                        {
+                                            t1 = p.Field<string>("devid")
+                                        } into g
+
+                                        select new dataStruct
+                                        {
+                                            BMDM = dtEntity.Rows[i1]["ID"].ToString(),
+                                            ParentID = dtEntity.Rows[i1]["ParentID"].ToString(),
+                                            在线时长 = g.Sum(p => p.Field<int>("在线时长")),
+                                            文件大小 = g.Sum(p => p.Field<int>("文件大小")),
+                                            AlarmType = 2,
+                                            DevId = g.Key.t1,
+                                            HandleCnt = g.Sum(p => p.Field<int>("处理量")),
+                                            CXCnt = g.Sum(p => p.Field<int>("查询量"))
+
+                                        }).ToList<dataStruct>();
+
+
                             }
 
 
 
 
-                        }//循环结束
-
-
-                        tmpList.Clear();
-
-                       
-
-
-                       int countdevices = tmpRows;
-                        double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
-
-
-
-                        //dr["cloum2"] = countdevices;
-                        devicescount += countdevices;
-
-
-                        switch (type)
-                        {
-                            case "4":
-                            case "6":
-                                switch (i)
-                                {
-                                    case 0:
-                                        dr["cloum4"] = 处理量;
-                                        dr["cloum5"] = 查询量;
-                                        break;
-                                    case 1:
-                                        dr["cloum6"] = 处理量;
-                                        dr["cloum7"] = 查询量;
-                                        break;
-                                    case 2:
-                                        dr["cloum8"] = 处理量;
-                                        dr["cloum9"] = 查询量;
-                                        break;
-                                    case 3:
-                                        dr["cloum10"] = 处理量;
-                                        dr["cloum11"] = 查询量;
-                                        break;
-                                    case 4:
-                                        dr["cloum12"] = 处理量;
-                                        dr["cloum13"] = 查询量;
-                                        break;
-                                }
-                              
-                                break;
-                            case "1":
-                            case "2":
-                            case "3":
-                                switch (i)
-                                {
-                                    case 0:
-                                        dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                                        break;
-
-                                    case 1:
-                                        dr["cloum5"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                                        break;
-
-                                    case 2:
-                                        dr["cloum6"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                                        break;
-
-                                    case 3:
-                                        dr["cloum7"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                                        break;
-
-                                    case 4:
-                                        dr["cloum8"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                                        break;
-                                }
-
-                                break;
-                            case "5"://执法记录仪
-                                switch (i)
-                                {
-                                    case 0:
-                                        dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                        dr["cloum5"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                        break;
-                                    case 1:
-                                        dr["cloum6"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                        dr["cloum7"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                        break;
-                                    case 2:
-                                        dr["cloum8"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                        dr["cloum9"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                        break;
-                                    case 3:
-                                        dr["cloum10"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                        dr["cloum11"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                        break;
-                                    case 4:
-                                        dr["cloum12"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                        dr["cloum13"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                        break;
-                                }
-                  
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-
-                    dtreturns.Rows.Add(dr);
-
-                }
-            }
-
-#endregion
-            #region//大队和中队
-            else  
-           {
-
-            for (int i1 = 0; i1 < dtEntity.Rows.Count; i1++)
-            {
-                DataRow dr = dtreturns.NewRow();
-                //dr["cloum1"] = (i1 + 1).ToString(); ;
-       
-                dr["cloum1"] = dtEntity.Rows[i1]["Name"].ToString();//部门
-
-                rowcout0 = dtEntity.Rows.Count;
-                //dr["cloum13"] = (i1 + 1);
-                Int64 在线时长 = 0;
-                Int64 处理量 = 0;
-                Int64 文件大小 = 0;
-                Int64 查询量 = 0;
-                int 无查询量 = 0;
-                int 无处罚量 = 0;
-                int 未使用 = 0;
-                int usercount = 0;
-                int 在线 = 0;
-                int 上传总数 =0;
-                int 规范上传总数 = 0;
-                int status = 0;//设备使用正常、周1次，月4次，季度12次
-
-                int sumdevices = 0;//设备配发数
-
-
-                var entityids = GetSonID(dtEntity.Rows[i1]["ID"].ToString());
-                List<string> strList = new List<string>();
-
-                strList.Add(dtEntity.Rows[i1]["ID"].ToString());
-
-                if (!(ssdd != "all" && sszd == "all") || !(dtEntity.Rows[i1]["ParentID"].ToString() == "331000000000"))//排除所有中队
-                {
-                    foreach (entityStruct item in entityids)
-                    {
-                        strList.Add(item.BMDM);
-                    }
-                }
-
-
-                var userrows = from p in dUser.AsEnumerable()
-                               where strList.ToArray().Contains(p.Field<string>("BMDM"))
-                               select p;
-                usercount = userrows.Count();
-
-                    int countdevices=0;
-                for (int i = 0; i < arryList.Count; i++)
-                {
-                     
-                    int Ftime = int.Parse(arryList[i][0].Replace(":", ""));
-                    int Stime = int.Parse(arryList[i][1].Replace(":", ""));
-                    List<dataStruct> rows;
-
-                    if (type == "5")
-                    {
-                         rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                    where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
-                                 group p by new
-                                 {
-                                     t1 = p.Field<string>("devid")
-                                 } into g
-                                 select new dataStruct
-                                    {
-                                        BMDM = dtEntity.Rows[i1]["ID"].ToString(),
-                                        ParentID = dtEntity.Rows[i1]["ParentID"].ToString(),
-                                        在线时长 = g.Sum(p => p.Field<int>("在线时长")),
-                                        文件大小 = g.Sum(p => p.Field<int>("文件大小")),
-                                        AlarmType = 1,
-                                        DevId = g.Key.t1,
-                                        UploadCnt = g.Sum(p => p.Field<int>("UploadCnt")),
-                                        GFUploadCnt = g.Sum(p => p.Field<int>("GFUploadCnt"))
-
-
-
-                                    }).ToList<dataStruct>();
-                    }
-                    else
-                    {
-                         rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                    where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) < Stime
-                                 group p by new
-                                 {
-                                     t1 = p.Field<string>("devid")
-                                 } into g
-
-                                 select new dataStruct
-                                    {
-                                     BMDM = dtEntity.Rows[i1]["ID"].ToString(),
-                                     ParentID = dtEntity.Rows[i1]["ParentID"].ToString(),
-                                     在线时长 = g.Sum(p => p.Field<int>("在线时长")),
-                                     文件大小 = g.Sum(p => p.Field<int>("文件大小")),
-                                     AlarmType = 2,
-                                     DevId = g.Key.t1,
-                                     HandleCnt = g.Sum(p => p.Field<int>("处理量")),
-                                     CXCnt = g.Sum(p => p.Field<int>("查询量"))
-
-                                    }).ToList<dataStruct>();
-                    
-                    
-                    }
-                               
-                
-
-
-                    //获得设备数量，及正常使用设备
-                       tmpRows = 0;
-                         tmpcxl = 0;
-                        tmpcll = 0;
-                        tmpzxsj = 0;
-                        上传总数 = 0;
-                        规范上传总数 = 0;
-                        无处罚量 = 0;
-                        无查询量 = 0;
-                        未使用 = 0;
-                        status = 0;
-                        在线时长 = 0;
-                        文件大小 = 0;
+                            //获得设备数量，及正常使用设备
+                            tmpRows = 0;
+                            tmpcxl = 0;
+                            tmpcll = 0;
+                            tmpzxsj = 0;
+                            上传总数 = 0;
+                            规范上传总数 = 0;
+                            无处罚量 = 0;
+                            无查询量 = 0;
+                            未使用 = 0;
+                            status = 0;
+                            在线时长 = 0;
+                            文件大小 = 0;
                             处理量 = 0;
                             查询量 = 0;
-                       foreach (dataStruct item in rows)
-                    {
+                            foreach (dataStruct item in rows)
+                            {
 
-                        switch (item.AlarmType.ToString())
-                        {
-                            case "1":
-                                在线时长 += Convert.ToInt32(item.在线时长);
-                                文件大小 += Convert.ToInt32(item.文件大小);
-                                tmpzxsj += Convert.ToInt32(item.在线时长);
+                                switch (item.AlarmType.ToString())
+                                {
+                                    case "1":
+                                        在线时长 += Convert.ToInt32(item.在线时长);
+                                        文件大小 += Convert.ToInt32(item.文件大小);
+                                        tmpzxsj += Convert.ToInt32(item.在线时长);
 
-                                上传总数 += item.UploadCnt;
-                                规范上传总数 += item.GFUploadCnt;
-                                break;
-                            case "2":
-                                在线时长 += Convert.ToInt32(item.在线时长);
-                                tmpzxsj += Convert.ToInt32(item.在线时长);
+                                        上传总数 += item.UploadCnt;
+                                        规范上传总数 += item.GFUploadCnt;
+                                        break;
+                                    case "2":
+                                        在线时长 += Convert.ToInt32(item.在线时长);
+                                        tmpzxsj += Convert.ToInt32(item.在线时长);
 
-                                处理量 += Convert.ToInt32(item.HandleCnt);
-                                查询量 += Convert.ToInt32(item.CXCnt);
-                                tmpcxl += Convert.ToInt32(item.CXCnt);
-                                tmpcll += Convert.ToInt32(item.HandleCnt);
+                                        处理量 += Convert.ToInt32(item.HandleCnt);
+                                        查询量 += Convert.ToInt32(item.CXCnt);
+                                        tmpcxl += Convert.ToInt32(item.CXCnt);
+                                        tmpcll += Convert.ToInt32(item.HandleCnt);
+
+
+                                        break;
+
+                                }
+                                if (item.DevId.ToString() != tmpDevid)
+                                {
+                                    tmpRows += 1;  //新设备ID不重复
+                                    tmpDevid = item.DevId.ToString();
+
+
+
+                                    无处罚量 += (tmpcll == 0) ? 1 : 0;
+                                    无查询量 += (tmpcxl == 0) ? 1 : 0;
+                                    未使用 += ((tmpzxsj - statusvalue) <= 0) ? 1 : 0;
+                                    在线 += ((tmpzxsj - zxstatusvalue) > 0) ? 1 : 0;
+                                    status += (tmpzxsj - statusvalue > 0) ? 1 : 0;
+                                    allstatu_device += (tmpzxsj - statusvalue > 0) ? 1 : 0;
+                                    tmpcll = 0;
+                                    tmpcxl = 0;
+                                    tmpzxsj = 0;
+
+
+
+                                }
+
+
+
+
+                            }//循环结束
+
+
+                            tmpList.Clear();
+
+
+
+
+                            countdevices = (countdevices == 0) ? tmpRows : countdevices;
+                            double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
+
+                            sumdevices += (i == 0) ? tmpRows : 0;
+                            dr["cloum2"] = sumdevices;//配发数
+
+                            devicescount += (i == 0) ? countdevices : 0;
+
+
+                            switch (type)
+                            {
+                                case "4"://警务通
+                                case "6"://辅警通
+
+                                    switch (i)
+                                    {
+                                        case 0:
+
+
+                                            dr["cloum3"] = usercount; //辅警数
+                                            jys += usercount;
+
+                                            dr["cloum4"] = 处理量;//设备处罚量
+                                            cfs0 += 处理量;
+                                            dr["cloum5"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
+                                            rjcf0 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
+                                            dr["cloum6"] = 查询量;
+                                            cxl0 += 查询量;
+                                            dr["cloum7"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            pjcf0 += (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            dr["cloum8"] = 无处罚量;//无处罚数的警务通（台）
+                                            wcfl0 += 无处罚量;
+                                            break;
+                                        case 1:
+                                            dr["cloum9"] = 处理量;//设备处罚量
+                                            cfs1 += 处理量;
+                                            dr["cloum10"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
+                                            rjcf1 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
+                                            dr["cloum11"] = 查询量;
+                                            cxl1 += 查询量;
+                                            dr["cloum12"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            pjcf1 += (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            dr["cloum13"] = 无处罚量;//无处罚数的警务通（台）
+                                            wcfl1 += 无处罚量;
+                                            break;
+                                        case 2:
+                                            dr["cloum14"] = 处理量;//设备处罚量
+                                            cfs2 += 处理量;
+                                            dr["cloum15"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
+                                            rjcf2 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
+                                            dr["cloum16"] = 查询量;
+                                            cxl2 += 查询量;
+                                            dr["cloum17"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            pjcf2 += (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            dr["cloum18"] = 无处罚量;//无处罚数的警务通（台）
+                                            wcfl2 += 无处罚量;
+                                            break;
+                                        case 3:
+                                            dr["cloum19"] = 处理量;//设备处罚量
+                                            cfs3 += 处理量;
+                                            dr["cloum20"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
+                                            rjcf3 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
+                                            dr["cloum21"] = 查询量;
+                                            cxl3 += 查询量;
+                                            dr["cloum22"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            pjcf3 += (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            dr["cloum23"] = 无处罚量;//无处罚数的警务通（台）
+                                            wcfl3 += 无处罚量;
+                                            break;
+                                        case 4:
+                                            dr["cloum24"] = 处理量;//设备处罚量
+                                            cfs4 += 处理量;
+                                            dr["cloum25"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
+                                            rjcf4 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
+                                            dr["cloum26"] = 查询量;
+                                            cxl4 += 查询量;
+                                            dr["cloum27"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            pjcf4 += (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
+                                            dr["cloum28"] = 无处罚量;//无处罚数的警务通（台）
+                                            wcfl4 += 无处罚量;
+                                            break;
+
+                                    }
 
 
                                     break;
-                          
+                                case "1"://车载视频
+                                case "2"://对讲机
+                                case "3"://拦截仪
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            dr["cloum3"] = status;//设备使用数量
+                                            status0 += status;//设备使用数量总数
+                                            dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00");//在线时长
+                                            zxsc0 += ((double)在线时长 / 3600);//在线时长汇总
+
+                                            dr["cloum5"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
+
+                                            usagerate0 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            break;
+
+                                        case 1:
+                                            dr["cloum6"] = status;//设备使用数量
+                                            status1 += status;//设备使用数量总数
+                                            dr["cloum7"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            zxsc1 += ((double)在线时长 / 3600);//在线时长汇总
+                                            dr["cloum8"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
+                                            usagerate1 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            break;
+                                        case 2:
+                                            dr["cloum9"] = status;//设备使用数量
+                                            status2 += status;//设备使用数量总数
+                                            dr["cloum10"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            zxsc2 += ((double)在线时长 / 3600);//在线时长汇总
+                                            dr["cloum11"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
+                                            usagerate2 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            break;
+                                        case 3:
+                                            dr["cloum12"] = status;//设备使用数量
+                                            status3 += status;//设备使用数量总数
+                                            dr["cloum13"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            zxsc3 += ((double)在线时长 / 3600);//在线时长汇总
+                                            dr["cloum14"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
+                                            usagerate3 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            break;
+                                        case 4:
+                                            dr["cloum15"] = status;//设备使用数量
+                                            status4 += status;//设备使用数量总数
+                                            dr["cloum16"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
+                                            zxsc4 += ((double)在线时长 / 3600);//在线时长汇总
+                                            dr["cloum17"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
+                                            usagerate4 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            break;
+
+
+                                    }
+
+
+                                    break;
+                                case "5"://执法记录仪
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            dr["cloum3"] = status;//设备使用数量
+                                            sbsyl0 += status;
+                                            dr["cloum4"] = 未使用;//设备未使用数量
+                                            sbwsyl0 += 未使用;
+                                            dr["cloum5"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            spsc0 += (double)在线时长 / 3600;
+                                            dr["cloum6"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            spdx0 += (double)文件大小 / 1048576;
+                                            dr["cloum7"] = (上传总数 == 0) ? "0.00" : ((double)规范上传总数 * 100 / 上传总数).ToString("0.00");//规范上传率
+                                            gfscl0 += 规范上传总数;
+                                            scl0 += 上传总数;
+                                            dr["cloum8"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
+
+                                            usagerate0 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+
+
+                                            //rowcout0 = rows.Count ;
+                                            break;
+
+                                        case 1:
+                                            dr["cloum9"] = status;//设备使用数量
+                                            sbsyl1 += status;
+                                            dr["cloum10"] = 未使用;//设备未使用数量
+                                            sbwsyl1 += 未使用;
+                                            dr["cloum11"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            spsc1 += (double)在线时长 / 3600;
+                                            dr["cloum12"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            spdx1 += (double)文件大小 / 1048576;
+                                            dr["cloum13"] = (上传总数 == 0) ? "0.00" : ((double)规范上传总数 * 100 / 上传总数).ToString("0.00");//规范上传率
+                                                                                                                                  //gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
+                                            gfscl1 += 规范上传总数;
+                                            scl1 += 上传总数;
+                                            dr["cloum14"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
+                                            usagerate1 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+
+                                            //rowcout1 = rows.Count;
+                                            break;
+                                        case 2:
+                                            dr["cloum15"] = status;//设备使用数量
+                                            sbsyl2 += status;
+                                            dr["cloum16"] = 未使用;//设备未使用数量
+                                            sbwsyl2 += 未使用;
+                                            dr["cloum17"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            spsc2 += (double)在线时长 / 3600;
+                                            dr["cloum18"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            spdx2 += (double)文件大小 / 1048576;
+                                            dr["cloum19"] = (上传总数 == 0) ? "0.00" : ((double)规范上传总数 * 100 / 上传总数).ToString("0.00");//规范上传率
+                                                                                                                                  //  gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
+                                            gfscl2 += 规范上传总数;
+                                            scl2 += 上传总数;
+                                            dr["cloum20"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
+                                            usagerate2 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            //rowcout2 = rows.Count;
+                                            break;
+                                        case 3:
+                                            dr["cloum21"] = status;//设备使用数量
+                                            sbsyl3 += status;
+                                            dr["cloum22"] = 未使用;//设备未使用数量
+                                            sbwsyl3 += 未使用;
+                                            dr["cloum23"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            spsc3 += (double)在线时长 / 3600;
+                                            dr["cloum24"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            spdx3 += (double)文件大小 / 1048576;
+                                            dr["cloum25"] = (上传总数 == 0) ? "0.00" : ((double)规范上传总数 * 100 / 上传总数).ToString("0.00");//规范上传率
+                                                                                                                                  //  gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
+                                            gfscl3 += 规范上传总数;
+                                            scl3 += 上传总数;
+                                            dr["cloum26"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
+                                            usagerate3 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            //rowcout3 = rows.Count;
+                                            break;
+                                        case 4:
+                                            dr["cloum27"] = status;//设备使用数量
+                                            sbsyl4 += status;
+                                            dr["cloum28"] = 未使用;//设备未使用数量
+                                            sbwsyl4 += 未使用;
+                                            dr["cloum29"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
+                                            spsc4 += (double)在线时长 / 3600;
+                                            dr["cloum30"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
+                                            spdx4 += (double)文件大小 / 1048576;
+                                            dr["cloum31"] = (上传总数 == 0) ? "0.00" : ((double)规范上传总数 * 100 / 上传总数).ToString("0.00");//规范上传率
+                                                                                                                                  // gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
+                                            gfscl4 += 规范上传总数;
+                                            scl4 += 上传总数;
+                                            dr["cloum32"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
+                                            usagerate4 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
+                                            //rowcout4 = rows.Count;
+                                            break;
+                                    }
+
+
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
-                        if (item.DevId.ToString() != tmpDevid)
-                        {
-                            tmpRows += 1;  //新设备ID不重复
-                            tmpDevid = item.DevId.ToString();
-                         
-                               
-                         
-                            无处罚量 += (tmpcll == 0) ? 1 : 0;
-                            无查询量 += (tmpcxl == 0) ? 1 : 0;
-                            未使用 += ((tmpzxsj - statusvalue) <= 0) ? 1 : 0;
-                            在线 += ((tmpzxsj - zxstatusvalue) > 0) ? 1 : 0;
-                            status += (tmpzxsj - statusvalue > 0) ? 1 : 0;
-                            allstatu_device += (tmpzxsj - statusvalue > 0) ? 1 : 0;
-                            tmpcll = 0;
-                            tmpcxl = 0;
-                            tmpzxsj = 0;
-                               
-                               
-                           
-                        }
-                          
 
-                       
-
-                        }//循环结束
-          
-
-                tmpList.Clear();
+                        dtreturns.Rows.Add(dr);
+                    }
+                }
+                #endregion
 
 
-          
-
-                countdevices = (countdevices==0)?tmpRows:countdevices;
-                double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
-
-                sumdevices += (i==0)?tmpRows:0;
-                dr["cloum2"] = sumdevices;//配发数
-
-                devicescount += (i == 0)?countdevices:0;
 
 
-                switch (type)
+                if (ssdd != "all" && sszd != "all")
                 {
-                    case "4"://警务通
-                    case "6"://辅警通
-                
-                         switch (i)
-                         {
-                             case 0:
-    
-
-                          dr["cloum3"] = usercount; //辅警数
-                         jys += usercount;
-
-                                 dr["cloum4"] = 处理量;//设备处罚量
-                                 cfs0 += 处理量;
-                                 dr["cloum5"] =(usercount==0)?0: Math.Round((double)处理量 / usercount, 2);//人均处罚量
-                                 rjcf0 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
-                                 dr["cloum6"] = 查询量;
-                                 cxl0 += 查询量;
-                                 dr["cloum7"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                 pjcf0+=(countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                 dr["cloum8"] = 无处罚量;//无处罚数的警务通（台）
-                                 wcfl0 += 无处罚量;
-                                 break;
-                             case 1:
-                                dr["cloum9"] = 处理量;//设备处罚量
-                                cfs1 += 处理量;
-                                 dr["cloum10"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
-                                 rjcf1 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
-                                 dr["cloum11"] = 查询量;
-                                 cxl1 += 查询量;
-                                 dr["cloum12"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                    pjcf1+=(countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                 dr["cloum13"] = 无处罚量;//无处罚数的警务通（台）
-                                 wcfl1 += 无处罚量;
-                                 break;
-                             case 2:
-                            dr["cloum14"] = 处理量;//设备处罚量
-                            cfs2+= 处理量;
-                                 dr["cloum15"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
-                                 rjcf2 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
-                                 dr["cloum16"] = 查询量;
-                                 cxl2 += 查询量;
-                                 dr["cloum17"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                    pjcf2+=(countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                 dr["cloum18"] = 无处罚量;//无处罚数的警务通（台）
-                                 wcfl2 += 无处罚量;
-                                 break;
-                             case 3:
-                               dr["cloum19"] = 处理量;//设备处罚量
-                               cfs3 += 处理量;
-                                 dr["cloum20"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
-                                 rjcf3 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
-                                 dr["cloum21"] = 查询量;
-                                 cxl3+= 查询量;
-                                 dr["cloum22"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                    pjcf3+=(countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                 dr["cloum23"] = 无处罚量;//无处罚数的警务通（台）
-                                 wcfl3 += 无处罚量;
-                                 break;
-                             case 4:
-                                 dr["cloum24"] = 处理量;//设备处罚量
-                                 cfs4 += 处理量;
-                                 dr["cloum25"] = (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);//人均处罚量
-                                 rjcf4 += (usercount == 0) ? 0 : Math.Round((double)处理量 / usercount, 2);
-                                 dr["cloum26"] = 查询量;
-                                 cxl4 += 查询量;
-                                 dr["cloum27"] = (countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                    pjcf4+=(countdevices == 0) ? 0 : Math.Round((double)处理量 / countdevices, 2); ;//设备平均处罚量
-                                 dr["cloum28"] = 无处罚量;//无处罚数的警务通（台）
-                                 wcfl4 += 无处罚量;
-                                 break;
-
-                         }
-
-    
-                        break;
-                    case "1"://车载视频
-                    case "2"://对讲机
-                    case "3"://拦截仪
-                        switch(i)
-                        {
-                        case 0:
-                         dr["cloum3"] =status;//设备使用数量
-                         status0 += status;//设备使用数量总数
-                        dr["cloum4"] = ((double)在线时长 / 3600).ToString("0.00");//在线时长
-                         zxsc0+=((double)在线时长 / 3600);//在线时长汇总
-
-                        dr["cloum5"] = (countdevices != 0) ? (deviceuse):0.0;//设备使用率
-
-                        usagerate0 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                         break;
-
-                        case 1:
-                         dr["cloum6"] = status;//设备使用数量
-                           status1 += status;//设备使用数量总数
-                         dr["cloum7"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                         zxsc1+=((double)在线时长 / 3600);//在线时长汇总
-                         dr["cloum8"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
-                         usagerate1 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                         break;
-                        case 2:
-                         dr["cloum9"] = status;//设备使用数量
-                         status2 += status;//设备使用数量总数
-                         dr["cloum10"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                         zxsc2+=((double)在线时长 / 3600);//在线时长汇总
-                         dr["cloum11"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
-                         usagerate2 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                         break;
-                        case 3:
-                         dr["cloum12"] = status;//设备使用数量
-                          status3 += status;//设备使用数量总数
-                         dr["cloum13"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                         zxsc3+=((double)在线时长 / 3600);//在线时长汇总
-                         dr["cloum14"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
-                         usagerate3 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                         break;
-                        case 4:
-                         dr["cloum15"] = status;//设备使用数量
-                          status4 += status;//设备使用数量总数
-                         dr["cloum16"] = ((double)在线时长 / 3600).ToString("0.00"); ;//在线时长
-                          zxsc4+=((double)在线时长 / 3600);//在线时长汇总
-                          dr["cloum17"] = (countdevices != 0) ? (deviceuse) : 0.0;//设备使用率
-                          usagerate4 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                         break;
-
-
-                        }
-
-
-                        break;
-                    case "5"://执法记录仪
-                        switch (i)
-                        {
-                            case 0:
-                                dr["cloum3"] = status;//设备使用数量
-                              sbsyl0+=status;
-                                dr["cloum4"] = 未使用;//设备未使用数量
-                                sbwsyl0 += 未使用;
-                                dr["cloum5"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                spsc0 += (double)在线时长 / 3600;
-                                dr["cloum6"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                spdx0 += (double)文件大小 / 1048576;
-                                dr["cloum7"] = (上传总数==0)?"0.00": ((double)规范上传总数*100 / 上传总数).ToString("0.00");//规范上传率
-                                gfscl0 += 规范上传总数;
-                                scl0 += 上传总数;
-                             dr["cloum8"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
-
-                             usagerate0 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-
-
-                             //rowcout0 = rows.Count ;
-                             break;
-                            
-                            case 1:
-                                 dr["cloum9"] = status;//设备使用数量
-                                 sbsyl1 += status;
-                                dr["cloum10"] = 未使用;//设备未使用数量
-                                sbwsyl1 += 未使用;
-                                dr["cloum11"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                spsc1 += (double)在线时长 / 3600;
-                                dr["cloum12"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                spdx1 += (double)文件大小 / 1048576;
-                                dr["cloum13"] =(上传总数==0)?"0.00": ((double)规范上传总数*100 / 上传总数).ToString("0.00");//规范上传率
-                                //gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
-                                        gfscl1 += 规范上传总数;
-                                        scl1 += 上传总数;
-                                        dr["cloum14"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
-                             usagerate1 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-
-                             //rowcout1 = rows.Count;
-                             break;
-                            case 2:
-                                dr["cloum15"] = status;//设备使用数量
-                                sbsyl2+= status;
-                                dr["cloum16"] = 未使用;//设备未使用数量
-                                sbwsyl2 += 未使用;
-                                dr["cloum17"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                spsc2 += (double)在线时长 / 3600;
-                                dr["cloum18"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                spdx2 += (double)文件大小 / 1048576;
-                                dr["cloum19"] =(上传总数==0)?"0.00": ((double)规范上传总数*100 / 上传总数).ToString("0.00");//规范上传率
-                              //  gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
-                                        gfscl2 += 规范上传总数;
-                                        scl2 += 上传总数;
-                                        dr["cloum20"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
-                             usagerate2 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                             //rowcout2 = rows.Count;
-                             break;
-                            case 3:
-                               dr["cloum21"] = status;//设备使用数量
-                               sbsyl3 += status;
-                                dr["cloum22"] = 未使用;//设备未使用数量
-                                sbwsyl3 += 未使用;
-                                dr["cloum23"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                spsc3 += (double)在线时长 / 3600;
-                                dr["cloum24"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                spdx3 += (double)文件大小 / 1048576;
-                                dr["cloum25"] = (上传总数==0)?"0.00": ((double)规范上传总数*100 / 上传总数).ToString("0.00");//规范上传率
-                              //  gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
-                                        gfscl3 += 规范上传总数;
-                                        scl3 += 上传总数;
-                                        dr["cloum26"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
-                             usagerate3 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                             //rowcout3 = rows.Count;
-                             break;
-                            case 4:
-                               dr["cloum27"] = status;//设备使用数量
-                               sbsyl4 += status;
-                                dr["cloum28"] = 未使用;//设备未使用数量
-                                sbwsyl4 += 未使用;
-                                dr["cloum29"] = ((double)在线时长 / 3600).ToString("0.00");//视频时长总和
-                                spsc4 += (double)在线时长 / 3600;
-                                dr["cloum30"] = ((double)文件大小 / 1048576).ToString("0.00");//视频大小（GB）
-                                spdx4 += (double)文件大小 / 1048576;
-                                dr["cloum31"] = (上传总数==0)?"0.00": ((double)规范上传总数*100 / 上传总数).ToString("0.00");//规范上传率
-                               // gfscl1 += (上传总数 == 0) ? 0.00 : ((double)规范上传总数 / 上传总数);
-                                        gfscl4 += 规范上传总数;
-                                        scl4 += 上传总数;
-                                        dr["cloum32"] = (countdevices != 0) ? (deviceuse) : 0;//设备使用率
-                                usagerate4 += (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
-                                //rowcout4 = rows.Count;
-                             break;
-                        }
-            
-
-                        break;
-                    default:
-                        break;
                 }
-                }
-   
-                dtreturns.Rows.Add(dr);
-            }
-}
-#endregion
 
 
-
-
-
-            #region 大队和中队汇总
-            else
-            {
+                #region 大队和中队汇总
+                else
+                {
 
                 DataRow dr2 = dtreturns.NewRow();
 
