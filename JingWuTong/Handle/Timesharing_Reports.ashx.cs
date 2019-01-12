@@ -653,7 +653,7 @@ namespace JingWuTong.Handle
                             else
                             {
                                 rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                        where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time")) >= Ftime && int.Parse(p.Field<string>("Time")) < Stime
+                                        where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                         group p by new
                                         {
                                             t1 = p.Field<string>("devid")
