@@ -266,7 +266,6 @@ function createChar() {
                     sumonline = 0; sumisused = 0; total = 0;
                     $(".lbtitle:eq(" + i + ")").html("<i class='fa fa-minus  fa-rotate-90 " + data[n]["Name"] + "'></i>" + data[n]["Name"]);
                     $(".lbtitle:eq(" + i + ")").attr("data-BMDM", data[n]["BMDM"])
-                    $(".divcontentrt:eq(" + i + ") ul").empty();
                     for (var i1 = 0; i1 < data[n]["data"].length; i1++) {
                         total += parseInt(data[n]["data"][i1]["count"]);
                         if (data[n]["data"][i1]["online"] != "") { sumonline += parseInt(data[n]["data"][i1]["online"]) };//在线终端总数
@@ -274,25 +273,25 @@ function createChar() {
 
                         switch (data[n]["data"][i1]["TypeName"]) {
                             case "车载视频":
-                                img = "../Image/index_chezaiship.png";
+                                $(".divcontentrt:eq(" + i + ") ul li:eq(0) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                 break;
                             case "警务通":
-                                img = "../Image/index_jingwutong.png";
+                                $(".divcontentrt:eq(" + i + ") ul li:eq(3) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                            case "辅警通":
+                                $(".divcontentrt:eq(" + i + ") ul li:eq(2) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                 break;
                             case "拦截仪":
-                                img = "../Image/index_lanjieyi.png";
+                                $(".divcontentrt:eq(" + i + ") ul li:eq(4) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                 break;
                             case "对讲机":
-                                img = "../Image/index_duijiangji.png";
+                                $(".divcontentrt:eq(" + i + ") ul li:eq(1) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                 break;
                             case "执法记录仪":
-                                img = "../Image/index_zhifajiluyi.png";
+                                $(".divcontentrt:eq(" + i + ") ul li:eq(5) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                 break;
                             default:
-                                img = "../Image/index_fujingtong.png";
                                 break;
                         }
-                        $(".divcontentrt:eq(" + i + ") ul").append("<li><img src='" + img + "' /><span>" + data[n]["data"][i1]["TypeName"] + ":</span><span>" + data[n]["data"][i1]["count"] + "</span></li>")
                     }
                     $(".divcontentlf:eq(" + i + ") div:eq(3)").text(total);
                     $(".divcontentlf:eq(" + i + ") div:eq(7)").text(formatSeconds(sumisused / total, 2) + "%");
@@ -320,7 +319,6 @@ function createChar() {
                         }
                         sumonline = 0; sumisused = 0; total = 0;
                         if ($(this).attr("data-BMDM") == data[n]["BMDM"]) {
-                            $(".divcontentrt:eq(" + index + ") ul").empty();
                             for (var i1 = 0; i1 < data[n]["data"].length; i1++) {
                                 total += parseInt(data[n]["data"][i1]["count"]);
                                 if (data[n]["data"][i1]["online"] != "") { sumonline += parseInt(data[n]["data"][i1]["online"]) };//在线终端总数
@@ -328,25 +326,25 @@ function createChar() {
 
                                 switch (data[n]["data"][i1]["TypeName"]) {
                                     case "车载视频":
-                                        img = "../Image/index_chezaiship.png";
+                                        $(".divcontentrt:eq(" + i + ") ul li:eq(0) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                         break;
                                     case "警务通":
-                                        img = "../Image/index_jingwutong.png";
+                                        $(".divcontentrt:eq(" + i + ") ul li:eq(3) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                                    case "辅警通":
+                                        $(".divcontentrt:eq(" + i + ") ul li:eq(2) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                         break;
                                     case "拦截仪":
-                                        img = "../Image/index_lanjieyi.png";
+                                        $(".divcontentrt:eq(" + i + ") ul li:eq(4) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                         break;
                                     case "对讲机":
-                                        img = "../Image/index_duijiangji.png";
+                                        $(".divcontentrt:eq(" + i + ") ul li:eq(1) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                         break;
                                     case "执法记录仪":
-                                        img = "../Image/index_zhifajiluyi.png";
+                                        $(".divcontentrt:eq(" + i + ") ul li:eq(5) span:eq(1)").text(data[n]["data"][i1]["count"]);
                                         break;
                                     default:
-                                        img = "../Image/index_fujingtong.png";
                                         break;
                                 }
-                                $(".divcontentrt:eq(" + index + ") ul").append("<li><img src='" + img + "' /><span>" + data[n]["data"][i1]["TypeName"] + ":</span><span>" + data[n]["data"][i1]["count"] + "</span></li>")
                             }
                             $(".divcontentlf:eq(" + index + ") div:eq(3)").text(total);
                             $(".divcontentlf:eq(" + index + ") div:eq(7)").text(formatSeconds(sumisused / total, 2) + "%");
@@ -443,34 +441,33 @@ function crateItem() {
 
             $(".lbtitle:eq(" + index + ")").html("<i class='fa fa-minus  fa-rotate-90 " + data[currentIndex]["Name"] + "'></i>" + data[currentIndex]["Name"]);
             $(".lbtitle:eq(" + index + ")").attr("data-BMDM", data[currentIndex]["BMDM"]);
-            $(".divcontentrt:eq(" + index + ") ul").html("");
             for (var i1 = 0; i1 < data[currentIndex]["data"].length; i1++) {
                 total += parseInt(data[currentIndex]["data"][i1]["count"]);
                 if (data[currentIndex]["data"][i1]["online"] != "" && data[currentIndex]["data"][i1]["online"] != undefined) { sumonline += parseInt(data[currentIndex]["data"][i1]["online"]) };//在线终端总数
                 if (data[currentIndex]["data"][i1]["Isused"] != "" && data[currentIndex]["data"][i1]["Isused"] != undefined) { sumisused += parseInt(data[currentIndex]["data"][i1]["Isused"]) };//当日使用终端数
 
-                switch (data[currentIndex]["data"][i1]["TypeName"]) {
+                switch (data[n]["data"][i1]["TypeName"]) {
                     case "车载视频":
-                        img = "../Image/index_chezaiship.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(0) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "警务通":
-                        img = "../Image/index_jingwutong.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(3) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                    case "辅警通":
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(2) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "拦截仪":
-                        img = "../Image/index_lanjieyi.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(4) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "对讲机":
-                        img = "../Image/index_duijiangji.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(1) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "执法记录仪":
-                        img = "../Image/index_zhifajiluyi.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(5) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     default:
-                        img = "../Image/index_fujingtong.png";
                         break;
                 }
 
-                $(".divcontentrt:eq(" + index + ") ul").append("<li><img src='" + img + "' /><span>" + data[currentIndex]["data"][i1]["TypeName"] + ":</span><span>" + data[currentIndex]["data"][i1]["count"] + "</span></li>")
             }
             $(".divcontentlf:eq(" + index + ") div:eq(3)").text(total);
             $(".divcontentlf:eq(" + index + ") div:eq(7)").text(formatSeconds(sumisused / total, 2) + "%");
@@ -513,34 +510,33 @@ function crateItemRight() {
 
             $(".lbtitle:eq(" + index + ")").html("<i class='fa fa-minus  fa-rotate-90 " + data[currentIndex]["Name"] + "'></i>" + data[currentIndex]["Name"]);
             $(".lbtitle:eq(" + index + ")").attr("data-BMDM", data[currentIndex]["BMDM"]);
-            $(".divcontentrt:eq(" + index + ") ul").html("");
             for (var i1 = 0; i1 < data[currentIndex]["data"].length; i1++) {
                 total += parseInt(data[currentIndex]["data"][i1]["count"]);
                 if (data[currentIndex]["data"][i1]["online"] != "" && data[currentIndex]["data"][i1]["online"] != undefined) { sumonline += parseInt(data[currentIndex]["data"][i1]["online"]) };//在线终端总数
                 if (data[currentIndex]["data"][i1]["Isused"] != "" && data[currentIndex]["data"][i1]["Isused"] != undefined) { sumisused += parseInt(data[currentIndex]["data"][i1]["Isused"]) };//当日使用终端数
 
-                switch (data[currentIndex]["data"][i1]["TypeName"]) {
+                switch (data[n]["data"][i1]["TypeName"]) {
                     case "车载视频":
-                        img = "../Image/index_chezaiship.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(0) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "警务通":
-                        img = "../Image/index_jingwutong.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(3) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                    case "辅警通":
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(2) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "拦截仪":
-                        img = "../Image/index_lanjieyi.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(4) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "对讲机":
-                        img = "../Image/index_duijiangji.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(1) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     case "执法记录仪":
-                        img = "../Image/index_zhifajiluyi.png";
+                        $(".divcontentrt:eq(" + i + ") ul li:eq(5) span:eq(1)").text(data[n]["data"][i1]["count"]);
                         break;
                     default:
-                        img = "../Image/index_chezaiship.png";
                         break;
                 }
 
-                $(".divcontentrt:eq(" + index + ") ul").append("<li><img src='" + img + "' /><span>" + data[currentIndex]["data"][i1]["TypeName"] + ":</span><span>" + data[currentIndex]["data"][i1]["count"] + "</span></li>")
             }
             $(".divcontentlf:eq(" + index + ") div:eq(3)").text(total);
             $(".divcontentlf:eq(" + index + ") div:eq(7)").text(formatSeconds(sumisused / total, 2) + "%");
