@@ -572,7 +572,7 @@ namespace JingWuTong.Handle
                 case "3":
                    for (var h=0;h< countTime; h++)
                     {
-                        drtz[4+ h*3] = (double.Parse(drtz["1"].ToString())==0)?0: Math.Round(double.Parse(drtz[2 + h*3].ToString())/ double.Parse(drtz["1"].ToString()),2);
+                        drtz[4+ h*3] = (double.Parse(drtz["1"].ToString())==0)?0: Math.Round(double.Parse(drtz[2 + h*3].ToString())*100/ double.Parse(drtz["1"].ToString()),2);
                     }
                     break;
                 case "4":
