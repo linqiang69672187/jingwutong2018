@@ -446,23 +446,23 @@ function crateItem() {
                 if (data[currentIndex]["data"][i1]["online"] != "" && data[currentIndex]["data"][i1]["online"] != undefined) { sumonline += parseInt(data[currentIndex]["data"][i1]["online"]) };//在线终端总数
                 if (data[currentIndex]["data"][i1]["Isused"] != "" && data[currentIndex]["data"][i1]["Isused"] != undefined) { sumisused += parseInt(data[currentIndex]["data"][i1]["Isused"]) };//当日使用终端数
 
-                switch (data[n]["data"][i1]["TypeName"]) {
+                switch (data[currentIndex]["data"][i1]["TypeName"]) {
                     case "车载视频":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(0) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(0) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "警务通":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(3) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(3) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                     case "辅警通":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(2) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(2) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "拦截仪":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(4) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(4) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "对讲机":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(1) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(1) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "执法记录仪":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(5) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(5) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     default:
                         break;
