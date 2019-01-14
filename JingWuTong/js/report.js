@@ -544,7 +544,7 @@ function createDataTableTime() {
 
                        "<th colspan='6' style='text-align:center'>" + arry[0] + "</th>" +
                        "<th colspan='6' style='text-align:center'>" + arry[1] + "</th>" +
-                        "<th colspan='6' style='text-align:center'>" + arry[2] + "</th>" +
+                       "<th colspan='6' style='text-align:center'>" + arry[2] + "</th>" +
                         "<th colspan='6' style='text-align:center'>" + arry[3] + "</th>" +
                          "<th colspan='6' style='text-align:center'>" + arry[4] + "</th>" +
                          "</tr>" +

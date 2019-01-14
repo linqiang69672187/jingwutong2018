@@ -24,12 +24,12 @@ namespace JingWuTong.Handle
 
         // 获取Config 中的数据
                 StringBuilder sb = new StringBuilder();
-                sb.Append(ConfigurationManager.AppSettings["time1"]+",");
-                sb.Append(ConfigurationManager.AppSettings["time2"] + ",");
-                sb.Append(ConfigurationManager.AppSettings["time3"] + ",");
-                sb.Append(ConfigurationManager.AppSettings["time4"] + ",");
-                sb.Append(ConfigurationManager.AppSettings["time5"] + ",");
+                foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+                {
+                    if (!key.Contains("Time")) continue;
+                    sb.Append(ConfigurationManager.AppSettings[key] + ",");
 
+                }
                 string sql =" select val  from IndexConfigs where  DevType=7 ";
 
                 string s_value = SQLHelper.ExecuteScalar(CommandType.Text, sql.ToString()).ToString();
