@@ -177,7 +177,6 @@
     <Content Include="Equipment\Equipment_Register_Add.aspx" />
     <Content Include="Handle\index_24histroy.ashx" />
     <Content Include="Handle\report\1.xls" />
-    <Content Include="Handle\WebForm1.aspx" />
     <Content Include="HtmlPage1.html" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\sort_asc.png" />
@@ -607,13 +606,6 @@
     </Compile>
     <Compile Include="Handle\Timesharing_ReportsTime.ashx.cs">
       <DependentUpon>Timesharing_ReportsTime.ashx</DependentUpon>
-    </Compile>
-    <Compile Include="Handle\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Handle\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
     </Compile>
     <Compile Include="Handle\Window1.ashx.cs">
       <DependentUpon>Window1.ashx</DependentUpon>
