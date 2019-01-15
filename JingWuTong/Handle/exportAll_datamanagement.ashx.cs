@@ -62,9 +62,9 @@ namespace JingWuTong.Handle
 
 
 
-             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
+             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
              devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
-             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Device de on de.JYBH = us.JYBH left join Entity en on de.BMDM = en.BMDM where " + sreachcondi + " us.[JYBH] <>''", "user");
+             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM ", "user");
              zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  sum(CONVERT(bigint,[VideLength])) as 视频长度, sum(CONVERT(bigint,[FileSize])) as 文件大小,sum([UploadCnt]) as 上传量,sum([GFUploadCnt]) as 规范上传量,de.BMDM,de.DevId FROM [EveryDayInfo_ZFJLY] al left join Device de on de.DevId = al.DevId left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + "'  group by de.DevId,de.BMDM", "Alarm_EveryDayInfo");
              zxscData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as value ,de.DevId,de.devtype  FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId left join ACL_USER as us on de.JYBH = us.JYBH  where  " + sreachcondi + "  [AlarmDay ] >='" + begintime + "' and [AlarmDay ] <='" + endtime + "'  and al.AlarmType=1 group by de.DevId,de.BMDM,de.devtype ", "Alarm_EveryDayInfo");
              cllData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT de.BMDM,SUM(value) as  value ,de.DevId ,de.devtype FROM [Alarm_EveryDayInfo] al left join Device de on de.DevId = al.DevId left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + "  [AlarmDay ] >='" + begintime + "' and [AlarmDay ] <='" + endtime + "'  and al.AlarmType=2 group by de.DevId,de.BMDM,de.devtype", "Alarm_EveryDayInfo");
@@ -95,7 +95,7 @@ namespace JingWuTong.Handle
               
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
                 sheetrows = 0;
-                InsertRowdata(sheet, devtypes.Rows[h]["id"].ToString(), devtypes.Rows[h]["TypeName"].ToString(), "331000000000", "支队","台州交警局");
+                InsertRowdata(sheet, devtypes.Rows[h]["id"].ToString(), devtypes.Rows[h]["TypeName"].ToString(), "331000000000", "支队","台州市交通警察局");
 
 
 
@@ -321,12 +321,12 @@ namespace JingWuTong.Handle
                             foreach (var row in cllrow)
                             {
                                 处罚数 += row.HandleCnt;
-                                无处罚量设备 += 1;
+                                无处罚量设备 += (row.HandleCnt==0)?1:0;
                             }
                             dr["cloum5"] = 处罚数;//设备使用数量
-                            dr["cloum6"] = (userrow.Count() == 0) ? 0 : Math.Round((double)处罚数 * 100 / userrow.Count(), 2);//人均处罚量
+                            dr["cloum6"] = (userrow.Count() == 0) ? 0 : Math.Round((double)处罚数  / userrow.Count(), 2);//人均处罚量
                             dr["cloum7"] = 查询量;//查询量
-                            dr["cloum8"] = (cllrow.Count() == 0) ? 0 : Math.Round((double)处罚数 * 100 / cllrow.Count(), 2);//查询量
+                            dr["cloum8"] = (cllrow.Count() == 0) ? 0 : Math.Round((double)处罚数  / cllrow.Count(), 2);//查询量
                             dr["cloum10"] = 无处罚量设备;
 
                             dtreturns.Rows.Add(dr);
@@ -406,8 +406,9 @@ namespace JingWuTong.Handle
 
                             temsyl = double.Parse((item[pxstring].ToString()));
                             temorder = orderno;
+                            orderno += 1;
+
                         }
-                        orderno += 1;
                     }
 
                     drtz["cloum1"] = dtreturns.Rows.Count + 1;
@@ -453,8 +454,9 @@ namespace JingWuTong.Handle
 
                                 jwt_temsyl = double.Parse((item[pxstring].ToString()));
                                 jwt_temorder = jwt_orderno;
+                                jwt_orderno += 1;
+
                             }
-                            jwt_orderno += 1;
                         }
 
                         drtz["cloum1"] = dtreturns.Rows.Count + 1;
@@ -462,9 +464,9 @@ namespace JingWuTong.Handle
                         drtz["cloum3"] = jwt_all_pf;
                         drtz["cloum4"] = jwt_all_user;
                         drtz["cloum5"] = jwt_all_cfs;
-                        drtz["cloum6"] = (jwt_all_user == 0) ? 0 : Math.Round((double)jwt_all_cfs * 100 / jwt_all_user, 2); ;
+                        drtz["cloum6"] = (jwt_all_user == 0) ? 0 : Math.Round((double)jwt_all_cfs  / jwt_all_user, 2); ;
                         drtz["cloum7"] = jwt_all_cxl;
-                        drtz["cloum8"] = (jwt_all_pf == 0) ? 0 : Math.Round((double)jwt_all_cfs * 100 / jwt_all_pf, 2);//设备使用率
+                        drtz["cloum8"] = (jwt_all_pf == 0) ? 0 : Math.Round((double)jwt_all_cfs  / jwt_all_pf, 2);//设备使用率
                         drtz["cloum9"] = "/";
                         drtz["cloum10"] = jwt_all_wchf;
                     }

@@ -314,7 +314,7 @@ namespace Policesystem.Handle
                         dr["cloum9"] = ((double)文件大小 / 1048576).ToString("0.00"); //转换为GB
                         spdx += ((double)文件大小 / 1048576);
                         dr["cloum7"] = (countdevices != 0) ? (deviceuse) : 0;
-                        zxsc += (double)在线时长 / 3600;
+                        zxsc += Math.Round((double)在线时长 / 3600,2);
                         pxstring = "cloum7";
                         break;
                     case "5":
@@ -323,9 +323,9 @@ namespace Policesystem.Handle
                         dr["cloum4"] = status;
                         dr["cloum9"] = countdevices - status; //设备未使用项目，第8列
                         dr["cloum7"] = ((double)文件大小 / 1048576).ToString("0.00"); //转换为GB，第5列
-                        spdx += ((double)文件大小 / 1048576);
+                        spdx += Math.Round(((double)文件大小 / 1048576),2);
                         dr["cloum6"] = (countdevices != 0) ? (deviceuse) : 0; //使用数量，第6列
-                        zxsc += (double)在线时长 / 3600;
+                        zxsc += Math.Round((double)在线时长 / 3600,2);
                         pxstring = "cloum6";
                         break;
                     default:
@@ -359,8 +359,9 @@ namespace Policesystem.Handle
 
                     temsyl = double.Parse((item[pxstring].ToString()));
                     temorder = orderno;
+                    orderno += 1;
                 }
-                orderno += 1;
+                
             }
 
             //  query=query.OrderBy(p =>p["cloum13"]);
@@ -378,11 +379,11 @@ namespace Policesystem.Handle
                 case "6":
                     drtz["cloum7"] = cxl;
                     drtz["cloum4"] = hzusecount;
-                    drtz["cloum5"] = (hzusecount == 0) ? "0" : (zxsc / hzusecount).ToString("0.00"); ;
+                    drtz["cloum5"] = (hzusecount == 0) ? 0 : Math.Round((zxsc / hzusecount),2); ;
                     drtz["cloum11"] = wcfl;
                     drtz["cloum9"] = zxsc;//wcfl;
                     drtz["cloum10"] = wsysb;
-                    drtz["cloum6"] = (devicescount == 0) ? "0" : (zxsc / devicescount).ToString("0.00");
+                    drtz["cloum6"] = (devicescount == 0) ? 0 : Math.Round((zxsc / devicescount),2);
                     drtz["cloum13"] = zxsc;// jwtzxsc;//zxsc;
 
                     break;
@@ -390,8 +391,8 @@ namespace Policesystem.Handle
                 case "2":
                 case "3":
                     drtz["cloum6"] = devicescount - allstatu_device;
-                    drtz["cloum4"] = zxsc.ToString("0.00");
-                    drtz["cloum9"] = spdx.ToString("0.00");
+                    drtz["cloum4"] = Math.Round(zxsc,2);
+                    drtz["cloum9"] = Math.Round(spdx,2);
                     sbsyl = (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
                     drtz["cloum7"] = Math.Round(sbsyl, 2);
                     drtz["cloum13"] = zxsc;
@@ -399,8 +400,8 @@ namespace Policesystem.Handle
                     break;
                 case "5":
                     drtz["cloum5"] = allstatu_device;// devicescount - allstatu_device;
-                    drtz["cloum5"] = zxsc.ToString("0.00");
-                    drtz["cloum7"] = spdx.ToString("0.00");
+                    drtz["cloum5"] = Math.Round(zxsc,2);
+                    drtz["cloum7"] = Math.Round(spdx,2);
                     sbsyl = (devicescount == 0) ? 0 : ((double)allstatu_device * 100 / devicescount);
                     drtz["cloum6"] = Math.Round(sbsyl, 2);
                     drtz["cloum4"] = allstatu_device;
