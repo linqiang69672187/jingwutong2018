@@ -499,6 +499,7 @@ namespace JingWuTong.Handle
                             if (zf_temsyl == double.Parse(item[pxstring].ToString()))
                             {
                                 item["cloum9"] = zf_temorder;
+
                             }
                             else
                             {
@@ -506,8 +507,9 @@ namespace JingWuTong.Handle
 
                                 zf_temsyl = double.Parse((item[pxstring].ToString()));
                                 zf_temorder = zf_orderno;
+                                zf_orderno += 1;
                             }
-                            zf_orderno += 1;
+                           
                         }
 
                     drtz["cloum1"] = dtreturns.Rows.Count + 1;
