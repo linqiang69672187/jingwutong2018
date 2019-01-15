@@ -44,7 +44,7 @@ namespace Policesystem.Handle
                 alramtype = 2;
             }
             StringBuilder sqltext = new StringBuilder();
-            search = (search=="") ? " " : "  and (de.[DevId] like '%" + search + "%' or us.[XM] like '%" + search + "%' or us.[JYBH] like '%" + search + "%' ) ";
+            search = (search=="") ? " " : "  and (de.[IMEI] like '%" + search + "%' or de.[DevId] like '%" + search + "%' or us.[XM] like '%" + search + "%' or us.[JYBH] like '%" + search + "%' ) ";
             switch (type)
             {
                 case "5":

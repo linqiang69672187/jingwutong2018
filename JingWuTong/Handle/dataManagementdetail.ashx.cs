@@ -47,7 +47,7 @@ namespace Policesystem.Handle
                 case "":
                     break;
                 default:
-                    sreachcondi = "   (de.[DevId] like '%" + search + "%' or us.[XM] like '%" + search + "%' or us.[JYBH] like '%" + search + "%' ) ";
+                    sreachcondi = "   (de.[IMEI] like '%" + search + "%' or de.[DevId] like '%" + search + "%' or us.[XM] like '%" + search + "%' or us.[JYBH] like '%" + search + "%' ) ";
                     break;
             }
 

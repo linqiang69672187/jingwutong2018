@@ -84,7 +84,7 @@ namespace Policesystem.Handle
             #region 选中设备类型为除人员以外的其它，对讲机、执法记录仪、警务通等8小件
             else
             {
-                searchcondition = (search == "") ? " and d.DevType ='" + type + "'" : " and d.DevType ='" + type + "'" + "  and(d.DevId like '%" + search + "%' or u.XM like '%" + search + "%')";
+                searchcondition = (search == "") ? " and d.DevType ='" + type + "'" : " and d.DevType ='" + type + "'" + "  and(d.IMEI like '%" + search + "%' or d.DevId like '%" + search + "%' or u.XM like '%" + search + "%')";
                 if (ssdd == "all")
                 {
                     if (status == "all")
