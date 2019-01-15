@@ -449,7 +449,7 @@ namespace JingWuTong.Handle
                                 {
                                     HandleCnt += item.HandleCnt;
                                     CXCnt += item.CXCnt;
-                                    NoneHandleCnt += (HandleCnt == 0) ? 1 : 0;
+                                    NoneHandleCnt += (item.HandleCnt == 0) ? 1 : 0;
                                 }
                                 dr[3 + h] = HandleCnt;
                                 dr[4 + h] = (userrow.Count()==0)?0:Math.Round((double)HandleCnt / userrow.Count(), 2); 
