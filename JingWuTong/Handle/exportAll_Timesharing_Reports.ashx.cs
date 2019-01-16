@@ -382,7 +382,7 @@ namespace JingWuTong.Handle
                             int usedevices = 0;
                             Int64 onlinetime = 0;
                             queryrows = (from p in Data.AsEnumerable()
-                                         where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":",""))>= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                         where strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":",""))>= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                          group p by new
                                          {
                                              t1 = p.Field<string>("devid")
@@ -430,7 +430,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -489,7 +489,7 @@ namespace JingWuTong.Handle
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
 
                                 queryrows = (from p in zfData.AsEnumerable()
-                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")

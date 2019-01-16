@@ -534,10 +534,10 @@ namespace JingWuTong.Handle
                     countdevices = (countdevices == 0) ? tmpRows : countdevices;
                     double deviceuse = Math.Round((double)status * 100 / (double)countdevices, 2);
 
-                    sumdevices += (i == 4) ? tmpRows : 0;
+                    sumdevices += (i == 0) ? tmpRows : 0;
                     dr["cloum2"] = sumdevices;//配发数
 
-                    devicescount += (i == 4) ? countdevices : 0;
+                    devicescount += (i == 0) ? countdevices : 0;
 
 
                     switch (type)

@@ -93,7 +93,7 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-                Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM]  in (select BMDM from childtable) and de.devType=" + devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
+                Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) and de.devType=" + devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
 
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
                 sheetrows = 0;
@@ -383,7 +383,7 @@ namespace JingWuTong.Handle
                                 int usedevices = 0;
                                 Int64 onlinetime = 0;
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -403,7 +403,7 @@ namespace JingWuTong.Handle
                                 drtz[2 + h] = (drtz[2 + h].ToString() == "") ? usedevices : int.Parse(drtz[2 + h].ToString()) + usedevices;
                                 dr[3 + h] = Math.Round((double)onlinetime / 3600, 2);
                                 drtz[3 + h] = (drtz[3 + h].ToString() == "") ? Math.Round((double)onlinetime / 3600, 2) : double.Parse(drtz[3 + h].ToString()) + Math.Round((double)onlinetime / 3600, 2);
-                                dr[4 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)usedevices / queryrows.Count, 2); ;
+                                dr[4 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)usedevices*100 / queryrows.Count, 2); ;
                                 if (h == 0)
                                 {
                                     dr["1"] = queryrows.Count;
@@ -433,7 +433,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -452,7 +452,7 @@ namespace JingWuTong.Handle
                                 {
                                     HandleCnt += item.HandleCnt;
                                     CXCnt += item.CXCnt;
-                                    NoneHandleCnt += (HandleCnt == 0) ? 1 : 0;
+                                    NoneHandleCnt += (item.HandleCnt == 0) ? 1 : 0;
                                 }
                                 dr[3 + h] = HandleCnt;
                                 dr[4 + h] = (userrow.Count() == 0) ? 0 : Math.Round((double)HandleCnt / userrow.Count(), 2);
@@ -492,7 +492,7 @@ namespace JingWuTong.Handle
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
 
                                 queryrows = (from p in zfData.AsEnumerable()
-                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -575,7 +575,7 @@ namespace JingWuTong.Handle
                 case "3":
                     for (var h = 0; h < countTime; h++)
                     {
-                        drtz[4 + h * 3] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 3].ToString()) / double.Parse(drtz["1"].ToString()), 2);
+                        drtz[4 + h * 3] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 3].ToString())*100 / double.Parse(drtz["1"].ToString()), 2);
                     }
                     break;
                 case "4":
