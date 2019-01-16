@@ -298,7 +298,7 @@ function createChar() {
                     $(".divcontentlf:eq(" + i + ") div:eq(11)").text(sumonline);
                 };
               
-                currentIndex = 2;
+                currentIndex = 5;
                 Caroursel.init($('.caroursel'));
                 firstload = false;
             }
@@ -438,9 +438,14 @@ function crateItem() {
 
     $("ul.poster-list>li").each(function (index, ele) {
         if ($(this).position().left == 0) {
+            $(".divcontentrt:eq(" + index + ") ul li").each(function () {
+                $(this).find("span:eq(1)").text("0");
+            })
 
             $(".lbtitle:eq(" + index + ")").html("<i class='fa fa-minus  fa-rotate-90 " + data[currentIndex]["Name"] + "'></i>" + data[currentIndex]["Name"]);
             $(".lbtitle:eq(" + index + ")").attr("data-BMDM", data[currentIndex]["BMDM"]);
+            sumonline = 0; sumisused = 0; total = 0;
+
             for (var i1 = 0; i1 < data[currentIndex]["data"].length; i1++) {
                 total += parseInt(data[currentIndex]["data"][i1]["count"]);
                 if (data[currentIndex]["data"][i1]["online"] != "" && data[currentIndex]["data"][i1]["online"] != undefined) { sumonline += parseInt(data[currentIndex]["data"][i1]["online"]) };//在线终端总数
@@ -507,6 +512,11 @@ function crateItemRight() {
 
     $("ul.poster-list>li").each(function (index, ele) {
         if ($(this).position().left > 0 && $(this).position().top != 0) {
+            $(".divcontentrt:eq(" + index + ") ul li").each(function () {
+                $(this).find("span:eq(1)").text("0");
+            })
+
+            sumonline = 0; sumisused = 0; total = 0;
 
             $(".lbtitle:eq(" + index + ")").html("<i class='fa fa-minus  fa-rotate-90 " + data[currentIndex]["Name"] + "'></i>" + data[currentIndex]["Name"]);
             $(".lbtitle:eq(" + index + ")").attr("data-BMDM", data[currentIndex]["BMDM"]);
@@ -515,23 +525,23 @@ function crateItemRight() {
                 if (data[currentIndex]["data"][i1]["online"] != "" && data[currentIndex]["data"][i1]["online"] != undefined) { sumonline += parseInt(data[currentIndex]["data"][i1]["online"]) };//在线终端总数
                 if (data[currentIndex]["data"][i1]["Isused"] != "" && data[currentIndex]["data"][i1]["Isused"] != undefined) { sumisused += parseInt(data[currentIndex]["data"][i1]["Isused"]) };//当日使用终端数
 
-                switch (data[n]["data"][i1]["TypeName"]) {
+                switch (data[currentIndex]["data"][i1]["TypeName"]) {
                     case "车载视频":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(0) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(0) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "警务通":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(3) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(3) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                     case "辅警通":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(2) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(2) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "拦截仪":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(4) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(4) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "对讲机":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(1) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(1) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     case "执法记录仪":
-                        $(".divcontentrt:eq(" + i + ") ul li:eq(5) span:eq(1)").text(data[n]["data"][i1]["count"]);
+                        $(".divcontentrt:eq(" + index + ") ul li:eq(5) span:eq(1)").text(data[currentIndex]["data"][i1]["count"]);
                         break;
                     default:
                         break;
