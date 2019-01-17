@@ -291,15 +291,15 @@ namespace JingWuTong.Handle
                         try
                         {
                             var cxlrow = (from p in cxlData.AsEnumerable()
-                                         where strList.ToArray().Contains(p.Field<string>("BMDM"))
-                                         select new dataStruct
+                                         where strList.ToArray().Contains(p.Field<string>("BMDM")) && p.Field<int>("devtype").ToString() == type
+                                          select new dataStruct
                                          {
                                              BMDM = p.Field<string>("BMDM"),
                                              CXCnt = p.Field<int>("value"),
                                              DevId = p.Field<string>("DevId")
                                          }).ToList<dataStruct>();
                             var cllrow = (from p in cllData.AsEnumerable()
-                                          where strList.ToArray().Contains(p.Field<string>("BMDM"))
+                                          where strList.ToArray().Contains(p.Field<string>("BMDM")) && p.Field<int>("devtype").ToString() == type
                                           select new dataStruct
                                           {
                                               BMDM = p.Field<string>("BMDM"),
@@ -308,7 +308,7 @@ namespace JingWuTong.Handle
                                           }).ToList<dataStruct>();
                             var userrow = (from p in dUser.AsEnumerable()
                                           where strList.ToArray().Contains(p.Field<string>("BMDM"))
-                                          select p);
+                                           select p);
                             dr["cloum3"] = cllrow.Count().ToString();  //配发数
                             dr["cloum4"] = userrow.Count().ToString();
                             int 处罚数 = 0;
@@ -442,7 +442,7 @@ namespace JingWuTong.Handle
                             jwt_all_pf += int.Parse(item["cloum3"].ToString());
                             jwt_all_user += int.Parse(item["cloum4"].ToString());
                             jwt_all_cfs += int.Parse(item["cloum5"].ToString());
-                            jwt_all_cxl =+int.Parse(item["cloum7"].ToString());
+                            jwt_all_cxl +=int.Parse(item["cloum7"].ToString());
                             jwt_all_wchf += int.Parse(item["cloum10"].ToString());
                             if (jwt_temsyl == double.Parse(item[pxstring].ToString()))
                             {

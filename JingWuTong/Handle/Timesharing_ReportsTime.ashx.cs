@@ -268,7 +268,7 @@ namespace JingWuTong.Handle
 
                         Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,查询量,处理量 from (" +
 
-                         "select DevId,DevType,Time,OnlineTime as 在线时长,HandleCnt as 处理量,CXCnt as 查询量 from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time  <='" + endtime + " 23:59' "
+                         "select DevId,DevType,Time,OnlineTime as 在线时长,Isnull(HandleCnt,0) as 处理量,Isnull(CXCnt,0) as 查询量 from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time  <='" + endtime + " 23:59' "
 
                         + ") as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type+ "and en.[BMDM] not in (select BMDM from childtable)", "Alarm_EveryDayInfo");
 
@@ -309,7 +309,7 @@ namespace JingWuTong.Handle
                             " UNION ALL " +
                           " SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM )" +
                           " SELECT  en.BMDM,  en.[SJBM] as ParentID,us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,处理量,查询量 from " +
-                          "( select DevId,DevType,Time,OnlineTime as 在线时长,HandleCnt as 处理量,CXCnt as 查询量  from EverydayInfo_Hour where    Time >='" + begintime + "' and Time <='" + endtime + " 23:59'  ) as ala "
+                          "( select DevId,DevType,Time,OnlineTime as 在线时长,Isnull(HandleCnt,0) as 处理量,Isnull(CXCnt,0) as 查询量  from EverydayInfo_Hour where    Time >='" + begintime + "' and Time <='" + endtime + " 23:59'  ) as ala "
                           + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]    left join ACL_USER as us on de.JYBH = us.JYBH where " + sreachcondi + " de.[DevType]=" + type + " and de.BMDM in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
 
 
@@ -340,7 +340,7 @@ namespace JingWuTong.Handle
                             break;
                         default:
                             Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT  en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,ala.DevType as AlarmType,0 as 文件大小,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,处理量,查询量 from " +
-                                "(  select DevId,DevType,Time,OnlineTime as 在线时长,HandleCnt as 处理量,CXCnt as 查询量  from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time <='" + endtime + " 23:59'   ) as ala " + 
+                                "(  select DevId,DevType,Time,OnlineTime as 在线时长,Isnull(HandleCnt,0) as 处理量,Isnull(CXCnt,0) as 查询量  from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time <='" + endtime + " 23:59'   ) as ala " + 
                                 " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "'", "Alarm_EveryDayInfo");
                             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '" + sszd + "' OR BMDM = '" + sszd + "' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM FROM [dbo].[ACL_USER] us left join Entity en on us.BMDM = en.BMDM where en.[BMDM] in (select BMDM from childtable)", "user");
 
