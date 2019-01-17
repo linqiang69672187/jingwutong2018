@@ -16,3 +16,4 @@ C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Release\DbComponet.dll
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Release\DbComponet.pdb
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\obj\Release\DbComponet.dll
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\obj\Release\DbComponet.pdb
+E:\工作\jingwutong2018\DbComponet\obj\Release\DbComponet.csprojResolveAssemblyReference.cache
