@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 namespace JingWuTong.Handle
@@ -35,7 +36,11 @@ namespace JingWuTong.Handle
         int dataindex = 0;
         string begintime = "";
         string endtime = "";
+        string sreachcondi = "";
         int countTime;
+        int currentTime=0;
+        ExcelFile excelFile;
+        string tmpath = "";
 
         public void ProcessRequest(HttpContext context)
         {
@@ -47,7 +52,7 @@ namespace JingWuTong.Handle
             string sszd = context.Request.Form["sszd"];
             string requesttype = context.Request.Form["requesttype"];
             string search = context.Request.Form["search"];
-            string sreachcondi = "";
+        
 
             int onlinevalue = int.Parse(context.Request.Form["onlinevalue"]) * 60;
             int usedvalue = int.Parse(context.Request.Form["usedvalue"]) * 60;
@@ -84,51 +89,100 @@ namespace JingWuTong.Handle
             statusvalue = days * usedvalue;//超过10分钟算使用
             zxstatusvalue = days * onlinevalue;//在线参考值
 
-
-            ExcelFile excelFile = new ExcelFile();
-            var tmpath = "";
             tmpath = HttpContext.Current.Server.MapPath("templet\\0.xls");
-            excelFile.LoadXls(tmpath);
+            excelFile = new ExcelFile();
+           
+             excelFile.LoadXls(tmpath);
             //所有大队
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
+               
 
-                ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
+              
                 sheetrows = 0;
-                try {
-                    Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) and de.devType=" + devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
-
-                    InsertRowdata(sheet, devtypes.Rows[h]["id"].ToString(), devtypes.Rows[h]["TypeName"].ToString(), "331000000000", "支队", "台州市交通警察局");
-                }
-                catch (Exception e) {
-                    sheet.Rows[sheetrows].Cells["A"].Value = e.ToString();
-
-                }
-
-
+                string typename = devtypes.Rows[h]["TypeName"].ToString();
+                Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
+                thread.Start(typename);
 
             }
 
+             tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
 
-            tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
-            excelFile.SaveXls(tmpath);
-            StringBuilder retJson = new StringBuilder();
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (currentTime == 6)
+                {
+                    excelFile.SaveXls(tmpath);
+                    StringBuilder retJson = new StringBuilder();
 
 
-            retJson.Append("{\"");
-            retJson.Append("data");
-            retJson.Append('"');
-            retJson.Append(":");
-            retJson.Append('"');
-            retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
-            retJson.Append('"');
-            retJson.Append("}");
-            context.Response.Write(retJson);
+                    retJson.Append("{\"");
+                    retJson.Append("data");
+                    retJson.Append('"');
+                    retJson.Append(":");
+                    retJson.Append('"');
+                    retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
+                    retJson.Append('"');
+                    retJson.Append("}");
+                    context.Response.Write(retJson);
+                    return;
+                }
+
+            }
 
             //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
 
         }
+
+        public void ThreadInsertSheet(object typename)
+        {
+            ExcelWorksheet sheet = excelFile.Worksheets[typename.ToString()];
+            string typeid = "0";
+            switch (typename.ToString())
+            {
+                case "车载视频":
+                    typeid = "1";
+                    break;
+                case "对讲机":
+                    typeid = "2";
+                    break;
+                case "拦截仪":
+                    typeid = "3";
+                    break;
+                case "警务通":
+                    typeid = "4";
+                    break;
+                case "执法记录仪":
+                    typeid = "5";
+                    break;
+                case "辅警通":
+                    typeid = "6";
+                    break;
+                case "测速仪":
+                    typeid = "7";
+                    break;
+                case "酒精测试仪":
+                    typeid = "8";
+                    break;
+
+            }
+            try
+            {
+                //Thread t1 = new Thread(new ThreadStart());
+                Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) and de.devType=" + typeid + "", "Alarm_EveryDayInfo");
+                InsertRowdata(sheet, typeid, typename.ToString(), "331000000000", "支队", "台州市交通警察局");
+            }
+            catch (Exception e)
+            {
+                sheet.Rows[sheetrows].Cells["A"].Value = e.ToString();
+
+            }
+            currentTime += 1;
+            
+        }
+
 
         public CellStyle Titlestyle()
         {
@@ -371,7 +425,7 @@ namespace JingWuTong.Handle
                     {
                         strList.Add(item.BMDM);
                     }
-                List<dataStruct> queryrows;
+                List<dataStruct> queryrows = null;
                 int h = 0;
                 switch (type)
                 {
@@ -424,6 +478,7 @@ namespace JingWuTong.Handle
                         {
 
                         }
+                        queryrows.Clear();
                         break;
                     case "4":
                     case "6":
