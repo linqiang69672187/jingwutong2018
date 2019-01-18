@@ -73,7 +73,7 @@ namespace JingWuTong.Handle
             }
 
 
-           allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
+            allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(VideLength,0) VideLength, isnull([FileSize],0) FileSize,isnull([UploadCnt],0) UploadCnt,isnull([GFUploadCnt],0) GFUploadCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM where  en.[BMDM]  in (select BMDM from childtable)", "user");
@@ -111,7 +111,7 @@ namespace JingWuTong.Handle
             while (true)
             {
                 Thread.Sleep(1000);
-                if (currentTime == 6)
+                if (currentTime == devtypes.Rows.Count)
                 {
                     excelFile.SaveXls(tmpath);
                     StringBuilder retJson = new StringBuilder();
