@@ -78,6 +78,7 @@ namespace JingWuTong.Handle
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(VideLength,0) VideLength, isnull([FileSize],0) FileSize,isnull([UploadCnt],0) UploadCnt,isnull([GFUploadCnt],0) GFUploadCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM where  en.[BMDM]  in (select BMDM from childtable)", "user");
             daystb = SQLHelper.ExecuteRead(CommandType.Text, "  select distinct CONVERT(varchar(12) , Time, 111 ) as date from EverydayInfo_Hour  where Time >='" + begintime + "' and Time  <='" + endtime + "' ORDER  BY date", "2");
+            Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
 
 
 
@@ -170,7 +171,6 @@ namespace JingWuTong.Handle
             }
             try
             {
-                Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) and de.devType=" + typeid + "", "Alarm_EveryDayInfo");
                 InsertRowdata(sheet, typeid, typename.ToString(), "331000000000", "支队", "台州市交通警察局");
             }
             catch (Exception e)
@@ -437,7 +437,7 @@ namespace JingWuTong.Handle
                                 int usedevices = 0;
                                 Int64 onlinetime = 0;
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -488,7 +488,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
