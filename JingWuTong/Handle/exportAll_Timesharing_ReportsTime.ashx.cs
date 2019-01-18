@@ -138,6 +138,7 @@ namespace JingWuTong.Handle
         public void ThreadInsertSheet(object typename)
         {
             ExcelWorksheet sheet = excelFile.Worksheets[typename.ToString()];
+           
             string typeid = "0";
             switch (typename.ToString())
             {
@@ -688,7 +689,7 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            sheetrows += 1;
+            sheetrows += 3;
 
             InsertTitle(sheet, type);//标题添加
             sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
@@ -702,6 +703,7 @@ namespace JingWuTong.Handle
                 }
 
             }
+            sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
         }
 
 
