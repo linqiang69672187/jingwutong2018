@@ -1,6 +1,7 @@
 ﻿using DbComponent;
 using GemBox.Spreadsheet;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -32,7 +33,6 @@ namespace JingWuTong.Handle
         int statusvalue = 0;  //正常参考值
         int zxstatusvalue = 0;//在线参考值
 
-        int sheetrows = 0;
         int dataindex = 0;
         string begintime = "";
         string endtime = "";
@@ -65,12 +65,15 @@ namespace JingWuTong.Handle
 
             foreach (var key in ConfigurationManager.AppSettings.AllKeys)
             {
-                countTime += (key.Contains("Time")) ? 1 : 0;
+                if (key.Contains("Time"))
+                {
+                    countTime += 1;
+
+                }
             }
 
 
-
-            allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
+           allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(VideLength,0) VideLength, isnull([FileSize],0) FileSize,isnull([UploadCnt],0) UploadCnt,isnull([GFUploadCnt],0) GFUploadCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM where  en.[BMDM]  in (select BMDM from childtable)", "user");
@@ -97,10 +100,6 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-               
-
-              
-                sheetrows = 0;
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
@@ -175,7 +174,7 @@ namespace JingWuTong.Handle
             }
             catch (Exception e)
             {
-                sheet.Rows[sheetrows].Cells["A"].Value = e.ToString();
+                sheet.Rows[0].Cells["A"].Value = e.ToString();
 
             }
             currentTime += 1;
@@ -208,6 +207,7 @@ namespace JingWuTong.Handle
             CellStyle style;
             int mergedint = 0;
             int h = 0;
+            int sheetrows = sheet.Rows.Count;
             switch (type)
             {
                 case "1":
@@ -244,7 +244,7 @@ namespace JingWuTong.Handle
                         h += 3;
                     }
 
-                    sheetrows += 1;
+
                     //      range.Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     break;
                 case "4":
@@ -282,9 +282,7 @@ namespace JingWuTong.Handle
                         sheet.Rows[sheetrows + 1].Cells[7 + h].Value = "无处罚数的警务通（台）";
                         h += 5;
                     }
-
-                    sheetrows += 1;
-                    break;
+                  break;
                 case "6":
                     mergedint = 2 + countTime * 5;
                     range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, mergedint);
@@ -320,8 +318,6 @@ namespace JingWuTong.Handle
                         sheet.Rows[sheetrows + 1].Cells[7 + h].Value = "无违停设备（台）";
                         h += 5;
                     }
-
-                    sheetrows += 1;
                     break;
                 case "5":
                     mergedint = 1 + countTime * 6;
@@ -357,11 +353,9 @@ namespace JingWuTong.Handle
                         h += 6;
                     }
 
-                    sheetrows += 1;
                     break;
 
             }
-            sheetrows += 1;
         }
 
         public void InsertRowdata(ExcelWorksheet sheet, string type, string typename, string sjbm, string reporttype, string title)
@@ -672,6 +666,8 @@ namespace JingWuTong.Handle
 
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
+            int sheetrows = sheet.Rows.Count;
+
             int mergedint = 0;
             switch (type)
             {
@@ -693,9 +689,9 @@ namespace JingWuTong.Handle
             range.Merged = true;
             range.Style = Titlestyle();
             sheetrows += 1;
+
             InsertTitle(sheet, type);//标题添加
             sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
-
             for (int h = 0; h < dt.Rows.Count; h++)
             {
                 for (int n = 0; n < dt.Columns.Count; n++)
@@ -706,7 +702,6 @@ namespace JingWuTong.Handle
                 }
 
             }
-            sheetrows += dt.Rows.Count + 1;
         }
 
 
