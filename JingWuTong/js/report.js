@@ -862,7 +862,7 @@ $(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', funct
         data: data,
         dataType: "json",
         success: function (data) {
-            if (data.data.indexOf > 0) {
+            if (data.data.indexOf(".xls") > 0) {
                 $('.createok a').text("报表已生成点击下载");
                 $('.createok a').attr('href', '../Handle/upload/' + data.data);
                 $('.createok').show();
