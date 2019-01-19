@@ -32,14 +32,13 @@ namespace JingWuTong.Handle
         int statusvalue = 0;  //正常参考值
         int zxstatusvalue = 0;//在线参考值
 
-        int sheetrows = 0;
         int dataindex = 0;
         string begintime = "";
         string endtime = "";
         int countTime;
         int currentTime = 0;
         ExcelFile excelFile = null;
-        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+     //   private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void ProcessRequest(HttpContext context)
         {
@@ -71,15 +70,15 @@ namespace JingWuTong.Handle
 
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
-            log.Info("读取zfData表");
+           // log.Info("读取zfData表");
 
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
-            log.Info("表zfData完成");
+          ///  log.Info("表zfData完成");
 
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM ", "user");
-            log.Info("读取Data表");
+          //  log.Info("读取Data表");
             Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType in (1,2,3,4,6)", "Alarm_EveryDayInfo");
-            log.Info("表Data完成");
+            //log.Info("表Data完成");
 
 
 
@@ -107,7 +106,7 @@ namespace JingWuTong.Handle
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
-                log.Info(typename + "_线程开始");
+               // log.Info(typename + "_线程开始");
 
 
 
@@ -183,7 +182,7 @@ namespace JingWuTong.Handle
 
             }
             currentTime += 1;
-            log.Info(typename + "_线程结束");
+          //  log.Info(typename + "_线程结束");
 
         }
 
@@ -211,6 +210,8 @@ namespace JingWuTong.Handle
             CellRange rangepf;
             CellRange rangejy;
             CellStyle style;
+            int sheetrows = sheet.Rows.Count;
+
             int mergedint = 0;
             int h = 0;
             switch (type)
@@ -249,7 +250,6 @@ namespace JingWuTong.Handle
                         h += 3;
                     }
 
-                    sheetrows += 1;
                     //      range.Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     break;
                 case "4":
@@ -288,7 +288,6 @@ namespace JingWuTong.Handle
                         h += 5;
                     }
 
-                    sheetrows += 1;
                     break;
                 case "6":
                     mergedint = 2 + countTime * 5;
@@ -326,7 +325,6 @@ namespace JingWuTong.Handle
                         h += 5;
                     }
 
-                    sheetrows += 1;
                     break;
                 case "5":
                     mergedint =1 + countTime * 6;
@@ -362,11 +360,9 @@ namespace JingWuTong.Handle
                         h += 6;
                     }
 
-                    sheetrows += 1;
                     break;
 
             }
-            sheetrows += 1;
         }
 
         public void InsertRowdata(ExcelWorksheet sheet, string type, string typename, string sjbm, string reporttype, string title)
@@ -675,6 +671,8 @@ namespace JingWuTong.Handle
 
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
+            int sheetrows = sheet.Rows.Count;
+
             int mergedint = 0;
             switch (type)
             {
@@ -695,7 +693,7 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            sheetrows += 1;
+            sheetrows += 3;
             InsertTitle(sheet, type);//标题添加
             sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
 
@@ -709,7 +707,9 @@ namespace JingWuTong.Handle
                 }
 
             }
-            sheetrows += dt.Rows.Count + 1;
+            sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
+
+
         }
 
 
