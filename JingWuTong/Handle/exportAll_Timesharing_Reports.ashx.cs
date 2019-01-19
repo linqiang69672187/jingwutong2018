@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web;
 
 
@@ -36,6 +37,9 @@ namespace JingWuTong.Handle
         string begintime = "";
         string endtime = "";
         int countTime;
+        int currentTime = 0;
+        ExcelFile excelFile = null;
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void ProcessRequest(HttpContext context)
         {
@@ -67,9 +71,15 @@ namespace JingWuTong.Handle
 
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
+            log.Info("读取zfData表");
+
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
+            log.Info("表zfData完成");
+
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM ", "user");
+            log.Info("读取Data表");
             Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType in (1,2,3,4,6)", "Alarm_EveryDayInfo");
+            log.Info("表Data完成");
 
 
 
@@ -85,7 +95,7 @@ namespace JingWuTong.Handle
             zxstatusvalue = days * onlinevalue;//在线参考值
 
 
-            ExcelFile excelFile = new ExcelFile();
+             excelFile = new ExcelFile();
             var tmpath = "";
             tmpath = HttpContext.Current.Server.MapPath("templet\\0.xls");
             excelFile.LoadXls(tmpath);
@@ -94,33 +104,89 @@ namespace JingWuTong.Handle
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
 
-                ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
-                sheetrows = 0;
-                InsertRowdata(sheet, devtypes.Rows[h]["id"].ToString(), devtypes.Rows[h]["TypeName"].ToString(), "331000000000", "支队", "台州市交通警察局");
-
+                string typename = devtypes.Rows[h]["TypeName"].ToString();
+                Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
+                thread.Start(typename);
+                log.Info(typename + "_线程开始");
 
 
 
             }
 
+            while (true)
+            {
+                Thread.Sleep(1000);
+                if (currentTime == devtypes.Rows.Count)
+                {
+                    tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
+                    excelFile.SaveXls(tmpath);
+                    StringBuilder retJson = new StringBuilder();
 
-            tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
-            excelFile.SaveXls(tmpath);
-            StringBuilder retJson = new StringBuilder();
 
-
-            retJson.Append("{\"");
-            retJson.Append("data");
-            retJson.Append('"');
-            retJson.Append(":");
-            retJson.Append('"');
-            retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
-            retJson.Append('"');
-            retJson.Append("}");
-            context.Response.Write(retJson);
-            //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
+                    retJson.Append("{\"");
+                    retJson.Append("data");
+                    retJson.Append('"');
+                    retJson.Append(":");
+                    retJson.Append('"');
+                    retJson.Append(begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
+                    retJson.Append('"');
+                    retJson.Append("}");
+                    context.Response.Write(retJson);
+                    return;
+                    //string reTitle = ExportExcel(dtreturns, type, begintime, endtime, ssdd, sszd);
+                }
+            }
 
         }
+
+
+        public void ThreadInsertSheet(object typename)
+        {
+            ExcelWorksheet sheet = excelFile.Worksheets[typename.ToString()];
+
+            string typeid = "0";
+            switch (typename.ToString())
+            {
+                case "车载视频":
+                    typeid = "1";
+                    break;
+                case "对讲机":
+                    typeid = "2";
+                    break;
+                case "拦截仪":
+                    typeid = "3";
+                    break;
+                case "警务通":
+                    typeid = "4";
+                    break;
+                case "执法记录仪":
+                    typeid = "5";
+                    break;
+                case "辅警通":
+                    typeid = "6";
+                    break;
+                case "测速仪":
+                    typeid = "7";
+                    break;
+                case "酒精测试仪":
+                    typeid = "8";
+                    break;
+
+            }
+            try
+            {
+                InsertRowdata(sheet, typeid, typename.ToString(), "331000000000", "支队", "台州市交通警察局");
+            }
+            catch (Exception e)
+            {
+                sheet.Rows[0].Cells["A"].Value = e.ToString();
+
+            }
+            currentTime += 1;
+            log.Info(typename + "_线程结束");
+
+        }
+
 
         public CellStyle Titlestyle()
         {

@@ -40,7 +40,6 @@ namespace JingWuTong.Handle
         int countTime;
         int currentTime=0;
         ExcelFile excelFile;
-        string tmpath = "";
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public void ProcessRequest(HttpContext context)
         {
@@ -96,6 +95,7 @@ namespace JingWuTong.Handle
 
             statusvalue = days * usedvalue;//超过10分钟算使用
             zxstatusvalue = days * onlinevalue;//在线参考值
+            string tmpath = "";
 
             tmpath = HttpContext.Current.Server.MapPath("templet\\0.xls");
             excelFile = new ExcelFile();
@@ -112,13 +112,14 @@ namespace JingWuTong.Handle
 
             }
 
-            tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
 
             while (true)
             {
                 Thread.Sleep(1000);
                 if (currentTime == devtypes.Rows.Count)
                 {
+                    tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
+
                     excelFile.SaveXls(tmpath);
                     StringBuilder retJson = new StringBuilder();
 
