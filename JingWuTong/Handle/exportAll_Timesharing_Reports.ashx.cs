@@ -32,7 +32,6 @@ namespace JingWuTong.Handle
         int statusvalue = 0;  //正常参考值
         int zxstatusvalue = 0;//在线参考值
 
-        int sheetrows = 0;
         int dataindex = 0;
         string begintime = "";
         string endtime = "";
@@ -211,6 +210,8 @@ namespace JingWuTong.Handle
             CellRange rangepf;
             CellRange rangejy;
             CellStyle style;
+            int sheetrows = sheet.Rows.Count;
+
             int mergedint = 0;
             int h = 0;
             switch (type)
@@ -249,7 +250,6 @@ namespace JingWuTong.Handle
                         h += 3;
                     }
 
-                    sheetrows += 1;
                     //      range.Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     break;
                 case "4":
@@ -288,7 +288,6 @@ namespace JingWuTong.Handle
                         h += 5;
                     }
 
-                    sheetrows += 1;
                     break;
                 case "6":
                     mergedint = 2 + countTime * 5;
@@ -326,7 +325,6 @@ namespace JingWuTong.Handle
                         h += 5;
                     }
 
-                    sheetrows += 1;
                     break;
                 case "5":
                     mergedint =1 + countTime * 6;
@@ -362,11 +360,9 @@ namespace JingWuTong.Handle
                         h += 6;
                     }
 
-                    sheetrows += 1;
                     break;
 
             }
-            sheetrows += 1;
         }
 
         public void InsertRowdata(ExcelWorksheet sheet, string type, string typename, string sjbm, string reporttype, string title)
@@ -675,6 +671,8 @@ namespace JingWuTong.Handle
 
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
+            int sheetrows = sheet.Rows.Count;
+
             int mergedint = 0;
             switch (type)
             {
@@ -695,7 +693,7 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            sheetrows += 1;
+            sheetrows += 3;
             InsertTitle(sheet, type);//标题添加
             sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
 
@@ -709,7 +707,9 @@ namespace JingWuTong.Handle
                 }
 
             }
-            sheetrows += dt.Rows.Count + 1;
+            sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
+
+
         }
 
 
