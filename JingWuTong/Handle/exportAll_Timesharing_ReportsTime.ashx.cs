@@ -118,12 +118,12 @@ namespace JingWuTong.Handle
                 Thread.Sleep(1000);
                 if (currentTime == devtypes.Rows.Count)
                 {
-                    tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
-
-                    excelFile.SaveXls(tmpath);
+                   string tmpatht = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
                     StringBuilder retJson = new StringBuilder();
 
-
+                    try
+                    { 
+                    excelFile.SaveXls(tmpatht);
                     retJson.Append("{\"");
                     retJson.Append("data");
                     retJson.Append('"');
@@ -133,7 +133,23 @@ namespace JingWuTong.Handle
                     retJson.Append('"');
                     retJson.Append("}");
                     context.Response.Write(retJson);
-                    return;
+                        return;
+
+                    }
+                    catch (Exception e) {
+                        retJson.Append("{\"");
+                        retJson.Append("data");
+                        retJson.Append('"');
+                        retJson.Append(":");
+                        retJson.Append('"');
+                        retJson.Append(e.Message);
+                        retJson.Append('"');
+                        retJson.Append("}");
+                        context.Response.Write(retJson);
+                        return;
+
+                    }
+
                 }
 
             }
@@ -631,6 +647,7 @@ namespace JingWuTong.Handle
             }
 
             drtz["0"] = "汇总";//ddtitle;
+            try { 
             switch (type)
             {
                 case "1":
@@ -658,7 +675,8 @@ namespace JingWuTong.Handle
                     break;
             }
 
-
+            }
+            catch (Exception e) { }
 
 
             dtreturns.Rows.Add(drtz);

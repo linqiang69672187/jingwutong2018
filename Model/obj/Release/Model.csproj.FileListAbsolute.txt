@@ -17,3 +17,4 @@ C:\工作\jingwutong2018\jingwutong2018\Model\bin\Release\Model.pdb
 C:\工作\jingwutong2018\jingwutong2018\Model\obj\Release\Model.dll
 C:\工作\jingwutong2018\jingwutong2018\Model\obj\Release\Model.pdb
 E:\工作\jingwutong2018\Model\obj\Release\Model.csprojResolveAssemblyReference.cache
+C:\工作\jingwutong2018\jingwutong2018\Model\obj\Release\Model.csprojResolveAssemblyReference.cache
