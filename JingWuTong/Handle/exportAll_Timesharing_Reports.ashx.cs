@@ -38,7 +38,7 @@ namespace JingWuTong.Handle
         int countTime;
         int currentTime = 0;
         ExcelFile excelFile = null;
-     //   private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void ProcessRequest(HttpContext context)
         {
@@ -70,15 +70,15 @@ namespace JingWuTong.Handle
 
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
-           // log.Info("读取zfData表");
+            log.Info("读取zfData表");
 
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
-          ///  log.Info("表zfData完成");
+            log.Info("表zfData完成");
 
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM ", "user");
-          //  log.Info("读取Data表");
+            log.Info("读取Data表");
             Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType in (1,2,3,4,6)", "Alarm_EveryDayInfo");
-            //log.Info("表Data完成");
+            log.Info("表Data完成");
 
 
 
@@ -106,7 +106,7 @@ namespace JingWuTong.Handle
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
-               // log.Info(typename + "_线程开始");
+                log.Info(typename + "_线程开始");
 
 
 
@@ -182,7 +182,7 @@ namespace JingWuTong.Handle
 
             }
             currentTime += 1;
-          //  log.Info(typename + "_线程结束");
+            log.Info(typename + "_线程结束");
 
         }
 
