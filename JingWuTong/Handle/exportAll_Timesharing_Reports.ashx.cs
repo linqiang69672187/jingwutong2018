@@ -69,6 +69,7 @@ namespace JingWuTong.Handle
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM ", "user");
+            Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType in (1,2,3,4,6)", "Alarm_EveryDayInfo");
 
 
 
@@ -92,7 +93,6 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-                Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType="+ devtypes.Rows[h]["id"].ToString() + "", "Alarm_EveryDayInfo");
 
                 ExcelWorksheet sheet = excelFile.Worksheets[devtypes.Rows[h]["TypeName"].ToString()];
                 sheetrows = 0;
@@ -382,7 +382,7 @@ namespace JingWuTong.Handle
                             int usedevices = 0;
                             Int64 onlinetime = 0;
                             queryrows = (from p in Data.AsEnumerable()
-                                         where strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":",""))>= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                         where strList.ToArray().Contains(p.Field<string>("BMDM")) && p.Field<int>("devtype") == int.Parse(type) && int.Parse(p.Field<string>("Time").Replace(":",""))>= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                          group p by new
                                          {
                                              t1 = p.Field<string>("devid")
@@ -430,7 +430,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where strList.ToArray().Contains(p.Field<string>("BMDM")) && p.Field<int>("devtype") == int.Parse(type) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")

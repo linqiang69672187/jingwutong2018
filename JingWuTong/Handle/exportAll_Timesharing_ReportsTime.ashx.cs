@@ -410,6 +410,14 @@ namespace JingWuTong.Handle
                        select p;
             }
             DateTime enddt = Convert.ToDateTime(endtime.Replace('/', '-'));
+            var entityids = GetSonID(sjbm, type);
+            List<string> strList = new List<string>();
+            strList.Add(sjbm);
+
+            foreach (entityStruct item in entityids)
+            {
+                strList.Add(item.BMDM);
+            }
             for (int hn = 0; hn < daystb.Rows.Count; hn++)
             {
 
@@ -417,14 +425,7 @@ namespace JingWuTong.Handle
                 dataindex += 1;
                 dr["0"] = daystb.Rows[hn][0]; //部门名称
 
-                var entityids = GetSonID(sjbm, type);
-                List<string> strList = new List<string>();
-                strList.Add(sjbm);
-            
-                    foreach (entityStruct item in entityids)
-                    {
-                        strList.Add(item.BMDM);
-                    }
+              
                 List<dataStruct> queryrows = null;
                 int h = 0;
                 switch (type)
