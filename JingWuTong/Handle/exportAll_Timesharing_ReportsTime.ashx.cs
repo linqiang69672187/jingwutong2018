@@ -41,7 +41,7 @@ namespace JingWuTong.Handle
         int currentTime=0;
         ExcelFile excelFile;
         string tmpath = "";
-
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -72,13 +72,17 @@ namespace JingWuTong.Handle
                 }
             }
 
-
+            
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
+            log.Info("读取zfData表");
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(VideLength,0) VideLength, isnull([FileSize],0) FileSize,isnull([UploadCnt],0) UploadCnt,isnull([GFUploadCnt],0) GFUploadCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
+            log.Info("表zfData完成");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM where  en.[BMDM]  in (select BMDM from childtable)", "user");
             daystb = SQLHelper.ExecuteRead(CommandType.Text, "  select distinct CONVERT(varchar(12) , Time, 111 ) as date from EverydayInfo_Hour  where Time >='" + begintime + "' and Time  <='" + endtime + "' ORDER  BY date", "2");
-            Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) ", "Alarm_EveryDayInfo");
+            log.Info("读取Data表");
+            Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.devtype  in (1,2,3,4,6) ", "Alarm_EveryDayInfo");
+            log.Info("表Data完成");
 
 
 
@@ -104,10 +108,11 @@ namespace JingWuTong.Handle
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
+                log.Info(typename+"_线程开始");
 
             }
 
-             tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
+            tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
 
             while (true)
             {
@@ -179,7 +184,8 @@ namespace JingWuTong.Handle
 
             }
             currentTime += 1;
-            
+            log.Info(typename + "_线程结束");
+
         }
 
 
@@ -411,7 +417,7 @@ namespace JingWuTong.Handle
                 dataindex += 1;
                 dr["0"] = daystb.Rows[hn][0]; //部门名称
 
-                var entityids = GetSonID(sjbm);
+                var entityids = GetSonID(sjbm, type);
                 List<string> strList = new List<string>();
                 strList.Add(sjbm);
             
@@ -707,18 +713,38 @@ namespace JingWuTong.Handle
         }
 
 
-        public IEnumerable<entityStruct> GetSonID(string p_id)
+        public IEnumerable<entityStruct> GetSonID(string p_id,string type)
         {
+            List<entityStruct> query = null;
             try
             {
-                var query = (from p in allEntitys.AsEnumerable()
-                             where (p.Field<string>("SJBM") == p_id)
-                             select new entityStruct
-                             {
-                                 BMDM = p.Field<string>("BMDM"),
-                                 SJBM = p.Field<string>("SJBM")
-                             }).ToList<entityStruct>();
-                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonID(t.BMDM)));
+                switch (type)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "6":
+                        query = (from p in allEntitys.AsEnumerable()
+                                 where (p.Field<string>("SJBM") == p_id && p.Field<string>("BMDM") != "33100000000x")
+                                 select new entityStruct
+                                 {
+                                     BMDM = p.Field<string>("BMDM"),
+                                     SJBM = p.Field<string>("SJBM")
+                                 }).ToList<entityStruct>();
+                        break;
+                    case "5":
+                        query = (from p in allEntitys.AsEnumerable()
+                                 where (p.Field<string>("SJBM") == p_id)
+                                 select new entityStruct
+                                 {
+                                     BMDM = p.Field<string>("BMDM"),
+                                     SJBM = p.Field<string>("SJBM")
+                                 }).ToList<entityStruct>();
+                        break;
+                }
+               
+                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonID(t.BMDM,type)));
             }
             catch (Exception e)
             {

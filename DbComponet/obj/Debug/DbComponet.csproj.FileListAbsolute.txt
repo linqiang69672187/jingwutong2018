@@ -18,7 +18,6 @@ E:\工作\JingWuTong\DbComponet\obj\Debug\DbComponet.pdb
 E:\工作\jingwutong2018\DbComponet\bin\Debug\DbComponet.dll
 E:\工作\jingwutong2018\DbComponet\bin\Debug\DbComponet.pdb
 E:\工作\jingwutong2018\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
-E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.csprojResolveAssemblyReference.cache
 E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.dll
 E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.pdb
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Debug\DbComponet.dll
@@ -26,3 +25,5 @@ C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Debug\DbComponet.pdb
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\bin\Debug\GemBox.Spreadsheet.dll
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\obj\Debug\DbComponet.dll
 C:\工作\jingwutong2018\jingwutong2018\DbComponet\obj\Debug\DbComponet.pdb
+E:\工作\jingwutong2018\DbComponet\bin\Debug\log4net.dll
+E:\工作\jingwutong2018\DbComponet\obj\Debug\DbComponet.csprojResolveAssemblyReference.cache

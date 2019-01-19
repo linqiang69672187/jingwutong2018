@@ -45,6 +45,10 @@
     <Reference Include="GemBox.Spreadsheet">
       <HintPath>..\DbComponet\bin\Debug\GemBox.Spreadsheet.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NPOI">
       <HintPath>C:\Users\queyx\Desktop\Npoi201Dll\NPOI.dll</HintPath>
@@ -80,6 +84,7 @@
     <Content Include="bin\JingWuTong.dll" />
     <Content Include="bin\JingWuTong.pdb" />
     <Content Include="bin\JingWuTong.XmlSerializers.dll" />
+    <Content Include="bin\log4net.dll" />
     <Content Include="bin\Model.dll" />
     <Content Include="bin\Model.pdb" />
     <Content Include="bin\NPOI.dll" />
@@ -175,6 +180,7 @@
     <Content Include="Equipment\Equipment_Management.aspx" />
     <Content Include="Equipment\Equipment_Register.aspx" />
     <Content Include="Equipment\Equipment_Register_Add.aspx" />
+    <Content Include="Global.asax" />
     <Content Include="Handle\index_24histroy.ashx" />
     <Content Include="Handle\report\1.xls" />
     <Content Include="HtmlPage1.html" />
@@ -543,6 +549,9 @@
     <Compile Include="Equipment\Equipment_Register_Add.aspx.designer.cs">
       <DependentUpon>Equipment_Register_Add.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Handle\bakreporttime.ashx.cs">
       <DependentUpon>bakreporttime.ashx</DependentUpon>
     </Compile>
@@ -893,6 +902,7 @@
     <Content Include="Handle\templet\0.xls" />
     <Content Include="Handle\exportAll_Timesharing_Reports.ashx" />
     <Content Include="Handle\exportAll_Timesharing_ReportsTime.ashx" />
+    <Content Include="log4net.config" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
     <Content Include="Static_Seed_Project\css\bootstrap.css.map" />
     <Content Include="Static_Seed_Project\css\bootstrap.min.css.map" />
