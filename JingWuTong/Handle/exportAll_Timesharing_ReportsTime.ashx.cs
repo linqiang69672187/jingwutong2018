@@ -41,6 +41,7 @@ namespace JingWuTong.Handle
         int currentTime=0;
         ExcelFile excelFile;
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        List<Thread> listThread = new List<Thread>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -109,14 +110,23 @@ namespace JingWuTong.Handle
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
                 log.Info(typename+"_线程开始");
-
+                listThread.Add(thread);
             }
 
-
+            int count = 0;
             while (true)
             {
                 Thread.Sleep(1000);
-                if (currentTime == devtypes.Rows.Count)
+                count = 0;
+                foreach (var item in listThread)
+                {
+                    if (item.ThreadState == ThreadState.Running)
+                    {
+                        count++;
+                    }
+                }
+                log.Info(count);
+             if (currentTime == devtypes.Rows.Count&&count==0)
                 {
                    string tmpatht = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
                     StringBuilder retJson = new StringBuilder();
