@@ -104,12 +104,12 @@ namespace JingWuTong.Handle
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
 
-                string typename = devtypes.Rows[h]["TypeName"].ToString();
-                Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
-                thread.Start(typename);
-               // log.Info(typename + "_线程开始");
-                listThread.Add(thread);
-
+                 string typename = devtypes.Rows[h]["TypeName"].ToString();
+                // Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
+                // thread.Start(typename);
+                // log.Info(typename + "_线程开始");
+                //  listThread.Add(thread);
+                ThreadInsertSheet(typename);
 
             }
             int count = 0;
@@ -149,9 +149,9 @@ namespace JingWuTong.Handle
         }
 
 
-        public void ThreadInsertSheet(object typename)
+        public void ThreadInsertSheet(string typename)
         {
-            ExcelWorksheet sheet = excelFile.Worksheets[typename.ToString()];
+            ExcelWorksheet sheet = excelFile.Worksheets[typename];
 
             string typeid = "0";
             switch (typename.ToString())
@@ -221,7 +221,6 @@ namespace JingWuTong.Handle
             CellRange rangejy;
             CellStyle style;
             int sheetrows = sheet.Rows.Count;
-
             int mergedint = 0;
             int h = 0;
             switch (type)
@@ -229,8 +228,9 @@ namespace JingWuTong.Handle
                 case "1":
                 case "2":
                 case "3":
+
                     mergedint = 1 + countTime * 3;
-                    range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows+1, mergedint);
+                    range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, mergedint);
                     style = new CellStyle();
                     style.FillPattern.SetPattern(FillPatternStyle.Solid, ColorTranslator.FromHtml("#ccffcc"), Color.Empty);
                     style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
@@ -241,13 +241,13 @@ namespace JingWuTong.Handle
                     style.VerticalAlignment = VerticalAlignmentStyle.Center;
                     range.Style = style;
 
-                    rangebm = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows+1, 0);//GetSubrange("A1", "G1");
+                    rangebm = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, 0);//GetSubrange("A1", "G1");
                     rangepf = sheet.Cells.GetSubrangeAbsolute(sheetrows, 1, sheetrows + 1, 1);//GetSubrange("A1", "G1");
                     rangebm.Value = "部门";
                     rangepf.Value = "设备配发数（台）";
                     rangebm.Merged = true;
                     rangepf.Merged = true;
-                    
+
                     foreach (var key in ConfigurationManager.AppSettings.AllKeys)
                     {
                         if (!key.Contains("Time")) continue;
@@ -373,6 +373,12 @@ namespace JingWuTong.Handle
                     break;
 
             }
+            for (var i = 1; i < 20; i++)
+            {
+                sheet.Rows[sheetrows + i].Cells[0].Value = "这里是占位符";
+            }
+
+
         }
 
         public void InsertRowdata(ExcelWorksheet sheet, string type, string typename, string sjbm, string reporttype, string title)
@@ -416,15 +422,15 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            sheetrows += 3;
             InsertTitle(sheet, type);//标题添加
-            sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
 
 
             string pram = typename + "$__$" + sjbm + "$__$" + type + "$__$" + title + "$__$" + reporttype;
             Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertTable));
             thread.Start(pram);
             listThread.Add(thread);
+
+           // ThreadInsertTable(pram);
 
             if (reporttype != "支队") return;
             foreach (var entityitem in rows)
@@ -558,6 +564,7 @@ namespace JingWuTong.Handle
                         {
 
                         }
+                     
                         break;
                     case "4":
                     case "6":
@@ -744,20 +751,19 @@ namespace JingWuTong.Handle
         }
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
-           
+            int sheetrows = sheet.Rows.Count;
 
-            //for (int h = 0; h < dt.Rows.Count; h++)
-            //{
-            //    for (int n = 0; n < dt.Columns.Count; n++)
-            //    {
-            //        sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
-            //        if (dt.Rows[h][n].ToString() != "") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
+            for (int h = 0; h < dt.Rows.Count; h++)
+            {
+                for (int n = 0; n < dt.Columns.Count; n++)
+                {
+                    sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
+                    if (dt.Rows[h][n].ToString() != "") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
 
-            //    }
+                }
 
-            //}
-            sheet.InsertDataTable(dt, 0, 0, false);
-            //sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
+            }
+           sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
             
 
         }
