@@ -38,7 +38,7 @@ namespace JingWuTong.Handle
         int countTime;
         int currentTime = 0;
         ExcelFile excelFile = null;
-        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+    //    private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         List<Thread> listThread = new List<Thread>();
 
         public void ProcessRequest(HttpContext context)
@@ -71,15 +71,15 @@ namespace JingWuTong.Handle
 
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
-            log.Info("读取zfData表");
+           // log.Info("读取zfData表");
 
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT VideLength, [FileSize] ,[UploadCnt],[GFUploadCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
-            log.Info("表zfData完成");
+          //  log.Info("表zfData完成");
 
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM ", "user");
-            log.Info("读取Data表");
+           // log.Info("读取Data表");
             Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT OnlineTime, [HandleCnt] ,[CXCnt],de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType in (1,2,3,4,6)", "Alarm_EveryDayInfo");
-            log.Info("表Data完成");
+          //  log.Info("表Data完成");
 
 
 
@@ -107,7 +107,7 @@ namespace JingWuTong.Handle
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
-                log.Info(typename + "_线程开始");
+               // log.Info(typename + "_线程开始");
                 listThread.Add(thread);
 
 
@@ -124,7 +124,7 @@ namespace JingWuTong.Handle
                         count++;
                     }
                 }
-                log.Info(count);
+                //log.Info(count);
                 if (currentTime == devtypes.Rows.Count && count == 0)
                 {
                     tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段报表.xls");
@@ -192,7 +192,7 @@ namespace JingWuTong.Handle
 
             }
             currentTime += 1;
-            log.Info(typename + "_线程结束");
+          //  log.Info(typename + "_线程结束");
 
         }
 
@@ -393,6 +393,34 @@ namespace JingWuTong.Handle
                        orderby p.Field<int>("Sort") descending
                        select p;
             }
+            int sheetrows = sheet.Rows.Count;
+
+            int mergedint = 0;
+            switch (type)
+            {
+                case "1":
+                case "2":
+                case "3":
+                    mergedint = 1 + countTime * 3;
+                    break;
+                case "4":
+                case "6":
+                    mergedint = 2 + countTime * 5;
+                    break;
+                case "5":
+                    mergedint = 1 + countTime * 6;
+                    break;
+            }
+
+            CellRange range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);//GetSubrange("A1", "G1");
+            range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
+            range.Merged = true;
+            range.Style = Titlestyle();
+            sheetrows += 3;
+            InsertTitle(sheet, type);//标题添加
+            sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
+
+
             string pram = typename + "$__$" + sjbm + "$__$" + type + "$__$" + title + "$__$" + reporttype;
             Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertTable));
             thread.Start(pram);
@@ -716,44 +744,21 @@ namespace JingWuTong.Handle
         }
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
-            int sheetrows = sheet.Rows.Count;
+           
 
-            int mergedint = 0;
-            switch (type)
-            {
-                case "1":
-                case "2":
-                case "3":
-                    mergedint = 1+countTime*3;
-                    break;
-                case "4":
-                case "6":
-                    mergedint = 2+ countTime*5;
-                    break;
-                case "5":
-                    mergedint = 1 + countTime * 6;
-                    break;
-            }
-            CellRange range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);//GetSubrange("A1", "G1");
-            range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
-            range.Merged = true;
-            range.Style = Titlestyle();
-            sheetrows += 3;
-            InsertTitle(sheet, type);//标题添加
-            sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
+            //for (int h = 0; h < dt.Rows.Count; h++)
+            //{
+            //    for (int n = 0; n < dt.Columns.Count; n++)
+            //    {
+            //        sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
+            //        if (dt.Rows[h][n].ToString() != "") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
 
-            for (int h = 0; h < dt.Rows.Count; h++)
-            {
-                for (int n = 0; n < dt.Columns.Count; n++)
-                {
-                    sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
-                    if (dt.Rows[h][n].ToString() != "") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
+            //    }
 
-                }
-
-            }
-            sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
-
+            //}
+            sheet.InsertDataTable(dt, 0, 0, false);
+            //sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
+            
 
         }
 

@@ -34,3 +34,12 @@ C:\工作\jingwutong2018\jingwutong2018\DAL\bin\Release\TOOL.pdb
 C:\工作\jingwutong2018\jingwutong2018\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
 C:\工作\jingwutong2018\jingwutong2018\DAL\obj\Release\DAL.dll
 C:\工作\jingwutong2018\jingwutong2018\DAL\obj\Release\DAL.pdb
+C:\工作\jingwutong2018\DAL\bin\Release\DAL.dll
+C:\工作\jingwutong2018\DAL\bin\Release\DAL.pdb
+C:\工作\jingwutong2018\DAL\bin\Release\Model.dll
+C:\工作\jingwutong2018\DAL\bin\Release\TOOL.dll
+C:\工作\jingwutong2018\DAL\bin\Release\Model.pdb
+C:\工作\jingwutong2018\DAL\bin\Release\TOOL.pdb
+C:\工作\jingwutong2018\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache
+C:\工作\jingwutong2018\DAL\obj\Release\DAL.dll
+C:\工作\jingwutong2018\DAL\obj\Release\DAL.pdb
