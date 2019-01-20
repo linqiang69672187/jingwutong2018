@@ -373,9 +373,9 @@ namespace JingWuTong.Handle
                     break;
 
             }
-            for (var i = 0; i <= emptyrows; i++)
+            for (var i = 2; i <= emptyrows+3; i++)
             {
-                sheet.Rows[sheetrows + i].Cells[0].Value = "";
+                sheet.Cells[sheetrows + i,0].Value="";
             }
 
 
@@ -387,10 +387,18 @@ namespace JingWuTong.Handle
 
             if (sjbm == "331000000000")
             {
+                if (type != "5") {
+                    rows = from p in allEntitys.AsEnumerable()
+                           where (p.Field<string>("SJBM") == sjbm && p.Field<string>("BMDM") != "33100000000x")
+                           orderby p.Field<int>("Sort") descending
+                           select p;
+                }
+                else { 
                 rows = from p in allEntitys.AsEnumerable()
                        where (p.Field<string>("SJBM") == sjbm)
                        orderby p.Field<int>("Sort") descending
                        select p;
+                }
             }
             else
             {
@@ -422,7 +430,7 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            InsertTitle(sheet, type,rows.Count()+2);//标题添加
+            InsertTitle(sheet, type,rows.Count());//标题添加
 
 
             string pram = typename + "$__$" + sjbm + "$__$" + type + "$__$" + title + "$__$" + reporttype;
@@ -435,7 +443,7 @@ namespace JingWuTong.Handle
             if (reporttype != "支队") return;
             foreach (var entityitem in rows)
             {
-                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
+               // if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
                 InsertRowdata(sheet, type, typename, entityitem["BMDM"].ToString(), "大队", entityitem["BMMC"].ToString());
             }
 
@@ -756,10 +764,11 @@ namespace JingWuTong.Handle
             int dtcount = dt.Rows.Count;
             for (int i=0; i < sheetrows; i++)
             {
+                if (sheet.Cells[i, 0].Value == null) continue;
                 if (sheet.Cells[i, 0].Value.ToString() == title)
                 {
                     sheet.InsertDataTable(dt, i + 3, 0, false);
-                    CellRange range = sheet.Cells.GetSubrangeAbsolute(i+3, 0, i+2+ dtcount, dt.Columns.Count);
+                    CellRange range = sheet.Cells.GetSubrangeAbsolute(i+3, 0, i+2+ dtcount, dt.Columns.Count-1);
                     CellStyle style = new CellStyle();
                     style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     range.Style = style;
