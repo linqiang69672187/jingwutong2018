@@ -213,7 +213,7 @@ namespace JingWuTong.Handle
             return style;
         }
 
-        public void InsertTitle(ExcelWorksheet sheet, string type)
+        public void InsertTitle(ExcelWorksheet sheet, string type,int emptyrows)
         {
             CellRange range;
             CellRange rangebm;
@@ -373,9 +373,9 @@ namespace JingWuTong.Handle
                     break;
 
             }
-            for (var i = 1; i < 20; i++)
+            for (var i = 0; i <= emptyrows; i++)
             {
-                sheet.Rows[sheetrows + i].Cells[0].Value = "这里是占位符";
+                sheet.Rows[sheetrows + i].Cells[0].Value = "";
             }
 
 
@@ -422,7 +422,7 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            InsertTitle(sheet, type);//标题添加
+            InsertTitle(sheet, type,rows.Count()+2);//标题添加
 
 
             string pram = typename + "$__$" + sjbm + "$__$" + type + "$__$" + title + "$__$" + reporttype;
@@ -751,20 +751,25 @@ namespace JingWuTong.Handle
         }
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
+            title = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             int sheetrows = sheet.Rows.Count;
-
-            for (int h = 0; h < dt.Rows.Count; h++)
+            int dtcount = dt.Rows.Count;
+            for (int i=0; i < sheetrows; i++)
             {
-                for (int n = 0; n < dt.Columns.Count; n++)
+                if (sheet.Cells[i, 0].Value.ToString() == title)
                 {
-                    sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
-                    if (dt.Rows[h][n].ToString() != "") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
-
+                    sheet.InsertDataTable(dt, i + 3, 0, false);
+                    CellRange range = sheet.Cells.GetSubrangeAbsolute(i+3, 0, i+2+ dtcount, dt.Columns.Count);
+                    CellStyle style = new CellStyle();
+                    style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
+                    range.Style = style;
+                    return;
                 }
 
             }
-           sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
-            
+
+
+
 
         }
 
