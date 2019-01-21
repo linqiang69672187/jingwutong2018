@@ -41,6 +41,7 @@ namespace JingWuTong.Handle
         int currentTime=0;
         ExcelFile excelFile;
         private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        List<Thread> listThread = new List<Thread>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -106,17 +107,27 @@ namespace JingWuTong.Handle
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
-                Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
-                thread.Start(typename);
-                log.Info(typename+"_线程开始");
-
+                // Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
+                // thread.Start(typename);
+                 log.Info(typename+"_线程开始");
+                //listThread.Add(thread);
+                ThreadInsertSheet(typename);
             }
 
-
+            int count = 0;
             while (true)
             {
                 Thread.Sleep(1000);
-                if (currentTime == devtypes.Rows.Count)
+                count = 0;
+                foreach (var item in listThread)
+                {
+                    if (item.ThreadState == ThreadState.Running)
+                    {
+                        count++;
+                    }
+                }
+                log.Info(count);
+             if (currentTime == devtypes.Rows.Count&&count==0)
                 {
                    string tmpatht = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
                     StringBuilder retJson = new StringBuilder();
@@ -222,7 +233,7 @@ namespace JingWuTong.Handle
             return style;
         }
 
-        public void InsertTitle(ExcelWorksheet sheet, string type)
+        public void InsertTitle(ExcelWorksheet sheet, string type, int emptyrows)
         {
             CellRange range;
             CellRange rangebm;
@@ -380,10 +391,90 @@ namespace JingWuTong.Handle
                     break;
 
             }
+
+            for (var i = 2; i <= emptyrows + 3; i++)
+            {
+                sheet.Cells[sheetrows + i, 0].Value = "";
+            }
         }
 
         public void InsertRowdata(ExcelWorksheet sheet, string type, string typename, string sjbm, string reporttype, string title)
         {
+            OrderedEnumerableRowCollection<DataRow> rows;
+
+    
+                if (type != "5")
+                {
+                    rows = from p in allEntitys.AsEnumerable()
+                           where (p.Field<string>("SJBM") == sjbm || p.Field<string>("BMDM") == sjbm && p.Field<string>("BMDM") != "33100000000x")
+                           orderby p.Field<int>("Sort") descending
+                           select p;
+                }
+                else
+                {
+                    rows = from p in allEntitys.AsEnumerable()
+                           where (p.Field<string>("SJBM") == sjbm || p.Field<string>("BMDM") == sjbm)
+                           orderby p.Field<int>("Sort") descending
+                           select p;
+                }
+          
+            
+            int mergedint = 0;
+            switch (type)
+            {
+                case "1":
+                case "2":
+                case "3":
+                    mergedint = 1 + countTime * 3;
+                    break;
+                case "4":
+                case "6":
+                    mergedint = 2 + countTime * 5;
+                    break;
+                case "5":
+                    mergedint = 1 + countTime * 6;
+                    break;
+            }
+
+            foreach (var entityitem in rows)
+            {
+            int sheetrows = sheet.Rows.Count;
+            CellRange range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);//GetSubrange("A1", "G1");
+            range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + entityitem["BMMC"].ToString() + typename + "报表";
+            range.Merged = true;
+            range.Style = Titlestyle();
+            InsertTitle(sheet, type, daystb.Rows.Count);//标题添加
+
+
+            string pram = typename + "$__$" + entityitem["BMDM"].ToString() + "$__$" + type + "$__$" + entityitem["BMMC"].ToString() + "$__$" + reporttype;
+            Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertTable));
+            thread.Start(pram);
+            listThread.Add(thread);
+
+            // ThreadInsertTable(pram);
+
+            //if (reporttype != "支队") return;
+            
+                // if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
+               // InsertRowdata(sheet, type, typename, entityitem["BMDM"].ToString(), "大队", entityitem["BMMC"].ToString());
+            }
+
+
+
+        }
+
+
+        public void ThreadInsertTable(object typename_sjbm_type_title_reporttype)
+        {
+            log.Info(typename_sjbm_type_title_reporttype.ToString() + "_线程开始");
+            string[] pramlist = typename_sjbm_type_title_reporttype.ToString().Split(new string[] { "$__$" }, StringSplitOptions.None);
+            string typename = pramlist[0];
+            string sjbm = pramlist[1];
+            string type = pramlist[2];
+            string title = pramlist[3];
+            string reporttype = pramlist[4];
+            ExcelWorksheet sheet = excelFile.Worksheets[typename];
+
             DataTable dtreturns = new DataTable(); //返回数据表
             DataRow drtz = dtreturns.NewRow();
 
@@ -442,7 +533,7 @@ namespace JingWuTong.Handle
                 dataindex += 1;
                 dr["0"] = daystb.Rows[hn][0]; //部门名称
 
-              
+
                 List<dataStruct> queryrows = null;
                 int h = 0;
                 switch (type)
@@ -461,7 +552,7 @@ namespace JingWuTong.Handle
                                 int usedevices = 0;
                                 Int64 onlinetime = 0;
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -481,7 +572,7 @@ namespace JingWuTong.Handle
                                 drtz[2 + h] = (drtz[2 + h].ToString() == "") ? usedevices : int.Parse(drtz[2 + h].ToString()) + usedevices;
                                 dr[3 + h] = Math.Round((double)onlinetime / 3600, 2);
                                 drtz[3 + h] = (drtz[3 + h].ToString() == "") ? Math.Round((double)onlinetime / 3600, 2) : double.Parse(drtz[3 + h].ToString()) + Math.Round((double)onlinetime / 3600, 2);
-                                dr[4 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)usedevices*100 / queryrows.Count, 2); ;
+                                dr[4 + h] = (queryrows.Count == 0) ? 0 : Math.Round((double)usedevices * 100 / queryrows.Count, 2); ;
                                 if (h == 0)
                                 {
                                     dr["1"] = queryrows.Count;
@@ -512,7 +603,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -571,7 +662,7 @@ namespace JingWuTong.Handle
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
 
                                 queryrows = (from p in zfData.AsEnumerable()
-                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -647,33 +738,34 @@ namespace JingWuTong.Handle
             }
 
             drtz["0"] = "汇总";//ddtitle;
-            try { 
-            switch (type)
+            try
             {
-                case "1":
-                case "2":
-                case "3":
-                    for (var h = 0; h < countTime; h++)
-                    {
-                        drtz[4 + h * 3] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 3].ToString())*100 / double.Parse(drtz["1"].ToString()), 2);
-                    }
-                    break;
-                case "4":
-                case "6":
-                    for (var h = 0; h < countTime; h++)
-                    {
-                        drtz[4 + h * 5] = (double.Parse(drtz["2"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["2"].ToString()), 2);
-                        drtz[6 + h * 5] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["1"].ToString()), 2);
-                    }
-                    break;
-                case "5":
-                    for (var h = 0; h < countTime; h++)
-                    {
-                        drtz[6 + h * 6] = (double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]) == 0) ? 0 : Math.Round(double.Parse(drtz[6 + h * 6].ToString().Split(',')[0]) * 100 / double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]), 2);
-                        drtz[7 + h * 6] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 6].ToString()) * 100 / double.Parse(drtz["1"].ToString()), 2);
-                    }
-                    break;
-            }
+                switch (type)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                        for (var h = 0; h < countTime; h++)
+                        {
+                            drtz[4 + h * 3] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 3].ToString()) * 100 / double.Parse(drtz["1"].ToString()), 2);
+                        }
+                        break;
+                    case "4":
+                    case "6":
+                        for (var h = 0; h < countTime; h++)
+                        {
+                            drtz[4 + h * 5] = (double.Parse(drtz["2"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["2"].ToString()), 2);
+                            drtz[6 + h * 5] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[3 + h * 5].ToString()) / double.Parse(drtz["1"].ToString()), 2);
+                        }
+                        break;
+                    case "5":
+                        for (var h = 0; h < countTime; h++)
+                        {
+                            drtz[6 + h * 6] = (double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]) == 0) ? 0 : Math.Round(double.Parse(drtz[6 + h * 6].ToString().Split(',')[0]) * 100 / double.Parse(drtz[6 + h * 6].ToString().Split(',')[1]), 2);
+                            drtz[7 + h * 6] = (double.Parse(drtz["1"].ToString()) == 0) ? 0 : Math.Round(double.Parse(drtz[2 + h * 6].ToString()) * 100 / double.Parse(drtz["1"].ToString()), 2);
+                        }
+                        break;
+                }
 
             }
             catch (Exception e) { }
@@ -682,56 +774,30 @@ namespace JingWuTong.Handle
             dtreturns.Rows.Add(drtz);
 
             insertSheet(dtreturns, sheet, type, typename, reporttype, title);
-            if (reporttype != "支队") return;
-            foreach (var entityitem in rows)
-            {
-                if (type != "5" && entityitem["BMDM"].ToString() == "33100000000x") continue;//如果不是执法记录仪，跳出“局机关”单位
-                InsertRowdata(sheet, type, typename, entityitem["BMDM"].ToString(), "大队", entityitem["BMMC"].ToString());
-            }
+            log.Info(typename_sjbm_type_title_reporttype.ToString() + "_线程结束");
 
         }
 
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
+            title = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             int sheetrows = sheet.Rows.Count;
-
-            int mergedint = 0;
-            switch (type)
+            int dtcount = dt.Rows.Count;
+            for (int i = 0; i < sheetrows; i++)
             {
-                case "1":
-                case "2":
-                case "3":
-                    mergedint = 1 + countTime * 3;
-                    break;
-                case "4":
-                case "6":
-                    mergedint = 2 + countTime * 5;
-                    break;
-                case "5":
-                    mergedint = 1 + countTime * 6;
-                    break;
-            }
-            CellRange range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows, mergedint);//GetSubrange("A1", "G1");
-            range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
-            range.Merged = true;
-            range.Style = Titlestyle();
-            sheetrows += 3;
-
-            InsertTitle(sheet, type);//标题添加
-            sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
-            for (int h = 0; h < dt.Rows.Count; h++)
-            {
-                for (int n = 0; n < dt.Columns.Count; n++)
+                if (sheet.Cells[i, 0].Value == null) continue;
+                if (sheet.Cells[i, 0].Value.ToString() == title)
                 {
-                    sheet.Rows[sheetrows + h].Cells[n].Value = dt.Rows[h][n].ToString();
-                    if (dt.Rows[h][n].ToString() != "") sheet.Rows[sheetrows + h].Cells[n].Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
-
+                    sheet.InsertDataTable(dt, i + 3, 0, false);
+                    CellRange range = sheet.Cells.GetSubrangeAbsolute(i + 3, 0, i + 2 + dtcount, dt.Columns.Count - 1);
+                    CellStyle style = new CellStyle();
+                    style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
+                    range.Style = style;
+                    return;
                 }
 
             }
-            sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
         }
-
 
         public IEnumerable<entityStruct> GetSonID(string p_id,string type)
         {

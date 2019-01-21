@@ -285,7 +285,7 @@ function createcolum(index, type, data, color, fontweight) {
         },
         tooltip: {
             headerFormat: '<span >{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> 使用率<br/>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: 使用率<b>{point.y:.2f}%</b> <br/>',
             style: {
                 fontSize: realaxisLabelfontsize
             }
@@ -312,7 +312,7 @@ function createcolum(index, type, data, color, fontweight) {
         series: [{
             type: type,
             innerSize: '80%',
-            name: '配发数',
+            name: '设备使用率',
             data: data,
             borderRadius: (fontweight == 'L') ? 15 : cloumnborderRadius
         }]
@@ -383,7 +383,7 @@ function createChart(index, type, data, color, totalvalue, fontweight) {
         },
         tooltip: {
             headerFormat: (fontweight == 'L' || datalabelsize == '28px') ? '<span style="font-size:20px">{series.name}</span><br>' : '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: (fontweight == 'L' || datalabelsize == '28px') ? '<span style="color:{point.color};font-size:12px">{point.name}: {point.y}个</span> <br/>':'<span style="color:{point.color};font-size:12px">{point.name}: {point.y}个</span> <br/>'
+            pointFormat: (fontweight == 'L' || datalabelsize == '28px') ? '<span style="color:{point.color};font-size:12px">{point.name}: {point.y}台</span> <br/>':'<span style="color:{point.color};font-size:12px">{point.name}: {point.y}台</span> <br/>'
         },
         legend: {
             enabled: false
