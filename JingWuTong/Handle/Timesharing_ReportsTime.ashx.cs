@@ -246,7 +246,6 @@ namespace JingWuTong.Handle
             zxstatusvalue = days * onlinevalue;//在线参考值
 
 
-
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM from [Entity] ", "11");
 
             //所有大队
@@ -266,11 +265,11 @@ namespace JingWuTong.Handle
                         break;
                     default:
 
-                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,查询量,处理量 from (" +
+                        Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,查询量,处理量 from (" +
 
                          "select DevId,DevType,Time,OnlineTime as 在线时长,Isnull(HandleCnt,0) as 处理量,Isnull(CXCnt,0) as 查询量 from EverydayInfo_Hour  where  Time >='" + begintime + "' and Time  <='" + endtime + " 23:59' "
 
-                        + ") as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type+ "and en.[BMDM] not in (select BMDM from childtable)", "Alarm_EveryDayInfo");
+                        + ") as ala left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]     left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type+ "", "Alarm_EveryDayInfo");
 
 
                         //dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM as ID,BMJC as Name,SJBM as ParentID,BMJB AS Depth from [Entity] a where [SJBM]  = '331000000000' and [BMJC] IS NOT NULL AND BMJC <> '' AND BMDM <> '33100000000x' ORDER  BY CASE WHEN Sort IS NULL THEN 1 ELSE Sort END desc", "2");
@@ -371,7 +370,14 @@ namespace JingWuTong.Handle
 
             #region//大队和中队
 
+            var entityids = GetSonID(bmdm, type);
+            List<string> strList = new List<string>();
+            strList.Add(bmdm);
 
+            foreach (entityStruct item in entityids)
+            {
+                strList.Add(item.BMDM);
+            }
 
             for (int i1 = 0; i1 < dtEntity.Rows.Count; i1++)
             {
@@ -433,7 +439,7 @@ namespace JingWuTong.Handle
                     else
                     {
                          rows = (from p in Alarm_EveryDayInfo.AsEnumerable()
-                                 where p.Field<string>("date") == dtEntity.Rows[i1]["Hour"].ToString() && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                 where p.Field<string>("date") == dtEntity.Rows[i1]["Hour"].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                  group p by new
                                  {
                                      t1 = p.Field<string>("devid")
@@ -924,18 +930,37 @@ namespace JingWuTong.Handle
             context.Response.Write(JSON.DatatableToDatatableJS(dtreturns, reTitle));
         }
 
-        public IEnumerable<entityStruct> GetSonID(string p_id)
+        public IEnumerable<entityStruct> GetSonID(string p_id, string type)
         {
+            List<entityStruct> query = null;
             try
             {
-                var query = (from p in allEntitys.AsEnumerable()
-                             where (p.Field<string>("SJBM") == p_id)
-                             select new entityStruct
-                             {
-                                 BMDM = p.Field<string>("BMDM"),
-                                 SJBM = p.Field<string>("SJBM")
-                             }).ToList<entityStruct>();
-                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonID(t.BMDM)));
+                switch (type)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "6":
+                        query = (from p in allEntitys.AsEnumerable()
+                                 where (p.Field<string>("SJBM") == p_id && p.Field<string>("BMDM") != "33100000000x")
+                                 select new entityStruct
+                                 {
+                                     BMDM = p.Field<string>("BMDM"),
+                                     SJBM = p.Field<string>("SJBM")
+                                 }).ToList<entityStruct>();
+                        break;
+                    case "5":
+                        query = (from p in allEntitys.AsEnumerable()
+                                 where (p.Field<string>("SJBM") == p_id)
+                                 select new entityStruct
+                                 {
+                                     BMDM = p.Field<string>("BMDM"),
+                                     SJBM = p.Field<string>("SJBM")
+                                 }).ToList<entityStruct>();
+                        break;
+                }
+                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonID(t.BMDM,type)));
             }
             catch (Exception e)
             {
@@ -1002,32 +1027,57 @@ namespace JingWuTong.Handle
             string Entityname = "";
             Entityname += (ssddtext == "全部") ? "台州交警局" : ssddtext;
             Entityname += (sszdtext == "全部") ? "" : sszdtext;
+            ExcelWorksheet sheet = null;
             switch (type)
             {
                 case "1":
                 case "3":
                 case "2":
                     tmpath = HttpContext.Current.Server.MapPath("ReportTime\\1.xls");
+                    excelFile.LoadXls(tmpath);
+                    sheet = excelFile.Worksheets[0];
+                    sheet.Rows[1].Cells["C"].Value = ConfigurationManager.AppSettings["Time1"];
+                    sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time2"];
+                    sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time3"];
+                    sheet.Rows[1].Cells["L"].Value = ConfigurationManager.AppSettings["Time4"];
+                    sheet.Rows[1].Cells["O"].Value = ConfigurationManager.AppSettings["Time5"];
 
                     break;
 
                 case "5":
                     tmpath = HttpContext.Current.Server.MapPath("ReportTime\\5.xls");
-
+                    excelFile.LoadXls(tmpath);
+                    sheet = excelFile.Worksheets[0];
+                    sheet.Rows[1].Cells["C"].Value = ConfigurationManager.AppSettings["Time1"];
+                    sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time2"];
+                    sheet.Rows[1].Cells["O"].Value = ConfigurationManager.AppSettings["Time3"];
+                    sheet.Rows[1].Cells["U"].Value = ConfigurationManager.AppSettings["Time4"];
+                    sheet.Rows[1].Cells["AA"].Value = ConfigurationManager.AppSettings["Time5"];
                     break;
                 case "4"://警务通
 
                     tmpath = HttpContext.Current.Server.MapPath("ReportTime\\4.xls");
-
+                    excelFile.LoadXls(tmpath);
+                    sheet = excelFile.Worksheets[0];
+                    sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                    sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time2"];
+                    sheet.Rows[1].Cells["N"].Value = ConfigurationManager.AppSettings["Time3"];
+                    sheet.Rows[1].Cells["S"].Value = ConfigurationManager.AppSettings["Time4"];
+                    sheet.Rows[1].Cells["X"].Value = ConfigurationManager.AppSettings["Time5"];
                     break;
                 case "6"://辅警通
 
                     tmpath = HttpContext.Current.Server.MapPath("ReportTime\\6.xls");
-
+                    excelFile.LoadXls(tmpath);
+                    sheet = excelFile.Worksheets[0];
+                    sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                    sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time2"];
+                    sheet.Rows[1].Cells["N"].Value = ConfigurationManager.AppSettings["Time3"];
+                    sheet.Rows[1].Cells["S"].Value = ConfigurationManager.AppSettings["Time4"];
+                    sheet.Rows[1].Cells["X"].Value = ConfigurationManager.AppSettings["Time5"];
                     break;
             }
-            excelFile.LoadXls(tmpath);
-            ExcelWorksheet sheet = excelFile.Worksheets[0];
+            
 
 
             DateTime bg = Convert.ToDateTime(begintime);

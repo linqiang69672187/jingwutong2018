@@ -862,8 +862,15 @@ $(document).on('click.bs.carousel.data-api', '.daochuall,.daochuall_time', funct
         data: data,
         dataType: "json",
         success: function (data) {
-            if (data.data) {
+            if (data.data.indexOf(".xls") > 0) {
+                $('.createok a').text("报表已生成点击下载");
                 $('.createok a').attr('href', '../Handle/upload/' + data.data);
+                $('.createok').show();
+                $('.creating').hide();
+            }
+            else {
+                $('.createok a').text("报表数据不存在，生成失败");
+                $('.createok a').attr('#');
                 $('.createok').show();
                 $('.creating').hide();
             }

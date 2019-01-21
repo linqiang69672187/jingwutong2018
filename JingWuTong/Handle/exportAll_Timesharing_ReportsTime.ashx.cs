@@ -1,6 +1,7 @@
 ﻿using DbComponent;
 using GemBox.Spreadsheet;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -32,7 +33,6 @@ namespace JingWuTong.Handle
         int statusvalue = 0;  //正常参考值
         int zxstatusvalue = 0;//在线参考值
 
-        int sheetrows = 0;
         int dataindex = 0;
         string begintime = "";
         string endtime = "";
@@ -40,8 +40,8 @@ namespace JingWuTong.Handle
         int countTime;
         int currentTime=0;
         ExcelFile excelFile;
-        string tmpath = "";
-
+        private log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        List<Thread> listThread = new List<Thread>();
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
@@ -65,16 +65,24 @@ namespace JingWuTong.Handle
 
             foreach (var key in ConfigurationManager.AppSettings.AllKeys)
             {
-                countTime += (key.Contains("Time")) ? 1 : 0;
+                if (key.Contains("Time"))
+                {
+                    countTime += 1;
+
+                }
             }
 
-
-
+            
             allEntitys = SQLHelper.ExecuteRead(CommandType.Text, "SELECT BMDM,SJBM,BMQC as BMMC,isnull(Sort,0) as Sort,id from [Entity] ", "11");
             devtypes = SQLHelper.ExecuteRead(CommandType.Text, "SELECT TypeName,ID FROM [dbo].[DeviceType] where ID<7  ORDER by Sort ", "11");
+            log.Info("读取zfData表");
             zfData = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(VideLength,0) VideLength, isnull([FileSize],0) FileSize,isnull([UploadCnt],0) UploadCnt,isnull([GFUploadCnt],0) GFUploadCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EveryDayInfo_ZFJLY_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and de.devType='5' ", "Alarm_EveryDayInfo");
+            log.Info("表zfData完成");
             dUser = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '331001000000' OR BMDM = '331001000000' OR SJBM= '331002000000' OR BMDM = '331002000000' OR SJBM= '331003000000' OR BMDM = '331003000000' OR SJBM= '331004000000' OR BMDM = '331004000000' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT en.SJBM,us.BMDM,us.XM FROM [dbo].[ACL_USER] us  left join  Entity en  on us.BMDM = en.BMDM where  en.[BMDM]  in (select BMDM from childtable)", "user");
             daystb = SQLHelper.ExecuteRead(CommandType.Text, "  select distinct CONVERT(varchar(12) , Time, 111 ) as date from EverydayInfo_Hour  where Time >='" + begintime + "' and Time  <='" + endtime + "' ORDER  BY date", "2");
+            log.Info("读取Data表");
+            Data = SQLHelper.ExecuteRead(CommandType.Text, "SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date,de.devtype FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.devtype  in (1,2,3,4,6) ", "Alarm_EveryDayInfo");
+            log.Info("表Data完成");
 
 
 
@@ -88,6 +96,7 @@ namespace JingWuTong.Handle
 
             statusvalue = days * usedvalue;//超过10分钟算使用
             zxstatusvalue = days * onlinevalue;//在线参考值
+            string tmpath = "";
 
             tmpath = HttpContext.Current.Server.MapPath("templet\\0.xls");
             excelFile = new ExcelFile();
@@ -97,27 +106,34 @@ namespace JingWuTong.Handle
 
             for (int h = 0; h < devtypes.Rows.Count; h++)
             {
-               
-
-              
-                sheetrows = 0;
                 string typename = devtypes.Rows[h]["TypeName"].ToString();
                 Thread thread = new Thread(new ParameterizedThreadStart(ThreadInsertSheet));
                 thread.Start(typename);
-
+                log.Info(typename+"_线程开始");
+                listThread.Add(thread);
             }
 
-             tmpath = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
-
+            int count = 0;
             while (true)
             {
                 Thread.Sleep(1000);
-                if (currentTime == 6)
+                count = 0;
+                foreach (var item in listThread)
                 {
-                    excelFile.SaveXls(tmpath);
+                    if (item.ThreadState == ThreadState.Running)
+                    {
+                        count++;
+                    }
+                }
+                log.Info(count);
+             if (currentTime == devtypes.Rows.Count&&count==0)
+                {
+                   string tmpatht = HttpContext.Current.Server.MapPath("upload\\" + begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + "分时段时间分类报表.xls");
                     StringBuilder retJson = new StringBuilder();
 
-
+                    try
+                    { 
+                    excelFile.SaveXls(tmpatht);
                     retJson.Append("{\"");
                     retJson.Append("data");
                     retJson.Append('"');
@@ -127,7 +143,23 @@ namespace JingWuTong.Handle
                     retJson.Append('"');
                     retJson.Append("}");
                     context.Response.Write(retJson);
-                    return;
+                        return;
+
+                    }
+                    catch (Exception e) {
+                        retJson.Append("{\"");
+                        retJson.Append("data");
+                        retJson.Append('"');
+                        retJson.Append(":");
+                        retJson.Append('"');
+                        retJson.Append(e.Message);
+                        retJson.Append('"');
+                        retJson.Append("}");
+                        context.Response.Write(retJson);
+                        return;
+
+                    }
+
                 }
 
             }
@@ -139,6 +171,7 @@ namespace JingWuTong.Handle
         public void ThreadInsertSheet(object typename)
         {
             ExcelWorksheet sheet = excelFile.Worksheets[typename.ToString()];
+           
             string typeid = "0";
             switch (typename.ToString())
             {
@@ -170,16 +203,16 @@ namespace JingWuTong.Handle
             }
             try
             {
-                Data = SQLHelper.ExecuteRead(CommandType.Text, "WITH childtable(BMMC,BMDM,SJBM) as (SELECT BMMC,BMDM,SJBM FROM [Entity] WHERE SJBM= '33100000000x' OR BMDM = '33100000000x' UNION ALL SELECT A.BMMC,A.BMDM,A.SJBM FROM [Entity] A,childtable b where a.SJBM = b.BMDM ) SELECT isnull(OnlineTime,0) OnlineTime, isnull([HandleCnt],0) HandleCnt,isnull([CXCnt],0) CXCnt,de.BMDM,de.DevId,substring(convert(varchar,[Time],120),12,5) Time, CONVERT(varchar(12) , Time, 111 ) as date FROM [EverydayInfo_Hour] al left join Device de on de.DevId = al.DevId  left join ACL_USER as us on de.JYBH = us.JYBH     where " + sreachcondi + "   [Time] >='" + begintime + "' and [Time] <='" + endtime + " 23:59' and  de.[BMDM] not in (select BMDM from childtable) and de.devType=" + typeid + "", "Alarm_EveryDayInfo");
                 InsertRowdata(sheet, typeid, typename.ToString(), "331000000000", "支队", "台州市交通警察局");
             }
             catch (Exception e)
             {
-                sheet.Rows[sheetrows].Cells["A"].Value = e.ToString();
+                sheet.Rows[0].Cells["A"].Value = e.ToString();
 
             }
             currentTime += 1;
-            
+            log.Info(typename + "_线程结束");
+
         }
 
 
@@ -208,6 +241,7 @@ namespace JingWuTong.Handle
             CellStyle style;
             int mergedint = 0;
             int h = 0;
+            int sheetrows = sheet.Rows.Count;
             switch (type)
             {
                 case "1":
@@ -244,7 +278,7 @@ namespace JingWuTong.Handle
                         h += 3;
                     }
 
-                    sheetrows += 1;
+
                     //      range.Style.Borders.SetBorders(MultipleBorders.Outside, Color.FromArgb(0, 0, 0), LineStyle.Thin);
                     break;
                 case "4":
@@ -282,9 +316,7 @@ namespace JingWuTong.Handle
                         sheet.Rows[sheetrows + 1].Cells[7 + h].Value = "无处罚数的警务通（台）";
                         h += 5;
                     }
-
-                    sheetrows += 1;
-                    break;
+                  break;
                 case "6":
                     mergedint = 2 + countTime * 5;
                     range = sheet.Cells.GetSubrangeAbsolute(sheetrows, 0, sheetrows + 1, mergedint);
@@ -320,8 +352,6 @@ namespace JingWuTong.Handle
                         sheet.Rows[sheetrows + 1].Cells[7 + h].Value = "无违停设备（台）";
                         h += 5;
                     }
-
-                    sheetrows += 1;
                     break;
                 case "5":
                     mergedint = 1 + countTime * 6;
@@ -357,11 +387,9 @@ namespace JingWuTong.Handle
                         h += 6;
                     }
 
-                    sheetrows += 1;
                     break;
 
             }
-            sheetrows += 1;
         }
 
         public void InsertRowdata(ExcelWorksheet sheet, string type, string typename, string sjbm, string reporttype, string title)
@@ -409,6 +437,14 @@ namespace JingWuTong.Handle
                        select p;
             }
             DateTime enddt = Convert.ToDateTime(endtime.Replace('/', '-'));
+            var entityids = GetSonID(sjbm, type);
+            List<string> strList = new List<string>();
+            strList.Add(sjbm);
+
+            foreach (entityStruct item in entityids)
+            {
+                strList.Add(item.BMDM);
+            }
             for (int hn = 0; hn < daystb.Rows.Count; hn++)
             {
 
@@ -416,14 +452,7 @@ namespace JingWuTong.Handle
                 dataindex += 1;
                 dr["0"] = daystb.Rows[hn][0]; //部门名称
 
-                var entityids = GetSonID(sjbm);
-                List<string> strList = new List<string>();
-                strList.Add(sjbm);
-            
-                    foreach (entityStruct item in entityids)
-                    {
-                        strList.Add(item.BMDM);
-                    }
+              
                 List<dataStruct> queryrows = null;
                 int h = 0;
                 switch (type)
@@ -442,7 +471,7 @@ namespace JingWuTong.Handle
                                 int usedevices = 0;
                                 Int64 onlinetime = 0;
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date")== daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM")) && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -493,7 +522,7 @@ namespace JingWuTong.Handle
                                 int Ftime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[0].Replace(":", ""));
                                 int Stime = int.Parse(ConfigurationManager.AppSettings[key].Split('-')[1].Replace(":", ""));
                                 queryrows = (from p in Data.AsEnumerable()
-                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
+                                             where p.Field<string>("date") == daystb.Rows[hn][0].ToString() && p.Field<int>("devtype") == int.Parse(type) && strList.ToArray().Contains(p.Field<string>("BMDM"))  && int.Parse(p.Field<string>("Time").Replace(":", "")) >= Ftime && int.Parse(p.Field<string>("Time").Replace(":", "")) < Stime
                                              group p by new
                                              {
                                                  t1 = p.Field<string>("devid")
@@ -628,6 +657,7 @@ namespace JingWuTong.Handle
             }
 
             drtz["0"] = "汇总";//ddtitle;
+            try { 
             switch (type)
             {
                 case "1":
@@ -655,7 +685,8 @@ namespace JingWuTong.Handle
                     break;
             }
 
-
+            }
+            catch (Exception e) { }
 
 
             dtreturns.Rows.Add(drtz);
@@ -672,6 +703,8 @@ namespace JingWuTong.Handle
 
         public void insertSheet(DataTable dt, ExcelWorksheet sheet, string type, string typename, string reporttype, string title)
         {
+            int sheetrows = sheet.Rows.Count;
+
             int mergedint = 0;
             switch (type)
             {
@@ -692,10 +725,10 @@ namespace JingWuTong.Handle
             range.Value = begintime.Replace("/", "-") + "_" + endtime.Replace("/", "-") + title + typename + "报表";
             range.Merged = true;
             range.Style = Titlestyle();
-            sheetrows += 1;
+            sheetrows += 3;
+
             InsertTitle(sheet, type);//标题添加
             sheet.Rows[0].Cells[0].Style.FillPattern.PatternBackgroundColor = Color.Black;
-
             for (int h = 0; h < dt.Rows.Count; h++)
             {
                 for (int n = 0; n < dt.Columns.Count; n++)
@@ -706,22 +739,42 @@ namespace JingWuTong.Handle
                 }
 
             }
-            sheetrows += dt.Rows.Count + 1;
+            sheet.Rows[sheet.Rows.Count].Cells[0].Value = "";
         }
 
 
-        public IEnumerable<entityStruct> GetSonID(string p_id)
+        public IEnumerable<entityStruct> GetSonID(string p_id,string type)
         {
+            List<entityStruct> query = null;
             try
             {
-                var query = (from p in allEntitys.AsEnumerable()
-                             where (p.Field<string>("SJBM") == p_id)
-                             select new entityStruct
-                             {
-                                 BMDM = p.Field<string>("BMDM"),
-                                 SJBM = p.Field<string>("SJBM")
-                             }).ToList<entityStruct>();
-                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonID(t.BMDM)));
+                switch (type)
+                {
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
+                    case "6":
+                        query = (from p in allEntitys.AsEnumerable()
+                                 where (p.Field<string>("SJBM") == p_id && p.Field<string>("BMDM") != "33100000000x")
+                                 select new entityStruct
+                                 {
+                                     BMDM = p.Field<string>("BMDM"),
+                                     SJBM = p.Field<string>("SJBM")
+                                 }).ToList<entityStruct>();
+                        break;
+                    case "5":
+                        query = (from p in allEntitys.AsEnumerable()
+                                 where (p.Field<string>("SJBM") == p_id)
+                                 select new entityStruct
+                                 {
+                                     BMDM = p.Field<string>("BMDM"),
+                                     SJBM = p.Field<string>("SJBM")
+                                 }).ToList<entityStruct>();
+                        break;
+                }
+               
+                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonID(t.BMDM,type)));
             }
             catch (Exception e)
             {

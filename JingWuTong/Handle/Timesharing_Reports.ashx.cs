@@ -318,7 +318,7 @@ namespace JingWuTong.Handle
 
                             break;
                         default:
-                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小, Time,ala.处理量,ala.查询量 from  " + "(select DevId,substring(convert(varchar,[Time],120),12,5) as Time,OnlineTime as 在线时长,Isnull(HandleCnt,0) as 处理量,Isnull(CXCnt,0) as 查询量  from EverydayInfo_Hour  where   Time  >='" + begintime + "' and Time <='" + endtime + " 23:59'   group by DevId,datename(Hour,Time) ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
+                            Alarm_EveryDayInfo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId],ala.在线时长,2 as AlarmType,0 as 文件大小, Time,ala.处理量,ala.查询量 from  " + "(select DevId,substring(convert(varchar,[Time],120),12,5) as Time,OnlineTime as 在线时长,Isnull(HandleCnt,0) as 处理量,Isnull(CXCnt,0) as 查询量  from EverydayInfo_Hour  where   Time  >='" + begintime + "' and Time <='" + endtime + " 23:59'   ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
                             dtEntity = SQLHelper.ExecuteRead(CommandType.Text, "SELECT us.JYBH,en.BMDM, en.SJBM as [ParentID],us.XM as [Contacts],de.[DevId] from  " + "(select DevId  from EverydayInfo_Hour  where Time  >='" + begintime + "' and Time <='" + endtime + "'   group by DevId ) as ala " + " left join [Device] as de on de.[DevId] = ala.[DevId] left join [Entity] as en on en.[BMDM] = de.[BMDM]  left join ACL_USER as us on de.JYBH = us.JYBH  where " + sreachcondi + " de.[DevType]=" + type + " and en.BMDM='" + sszd + "' ", "Alarm_EveryDayInfo");
 
                             break;
@@ -1233,6 +1233,7 @@ namespace JingWuTong.Handle
         public string ExportExcel(DataTable dt, string type, string begintime, string endtime, string entityTitle, string ssdd, string sszd, string ssddtext, string sszdtext)
         {
             ExcelFile excelFile = new ExcelFile();
+            ExcelWorksheet sheet = null;
             var tmpath = "";
             string Entityname = "";
             Entityname += (ssddtext == "全部") ? "台州交警局" : ssddtext;
@@ -1244,13 +1245,28 @@ namespace JingWuTong.Handle
                 case "3":
                     if (ssdd != "all" && sszd != "all")
                     {
-
+                      
                         tmpath = HttpContext.Current.Server.MapPath("report\\1-3.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["E"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["G"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["H"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     else
                     {
                         tmpath = HttpContext.Current.Server.MapPath("report\\1.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["C"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["L"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["O"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
+
                     break;
 
                 case "2":
@@ -1258,10 +1274,24 @@ namespace JingWuTong.Handle
                     {
 
                         tmpath = HttpContext.Current.Server.MapPath("report\\2.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["E"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["G"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["H"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     else
                     {
                         tmpath = HttpContext.Current.Server.MapPath("report\\1.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["C"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["L"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["O"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     break;
 
@@ -1270,10 +1300,24 @@ namespace JingWuTong.Handle
                     {
 
                         tmpath = HttpContext.Current.Server.MapPath("report\\5-5.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["H"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["J"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["L"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     else
                     {
                         tmpath = HttpContext.Current.Server.MapPath("report\\5.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["C"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["O"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["U"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["AA"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     break;
                 case "4"://警务通
@@ -1281,10 +1325,24 @@ namespace JingWuTong.Handle
                     {
 
                         tmpath = HttpContext.Current.Server.MapPath("report\\4-4.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["H"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["J"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["L"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     else
                     {
                         tmpath = HttpContext.Current.Server.MapPath("report\\4.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["N"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["S"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["X"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     break;
                 case "6"://辅警通
@@ -1292,17 +1350,30 @@ namespace JingWuTong.Handle
                     {
 
                         tmpath = HttpContext.Current.Server.MapPath("report\\6-6.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["F"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["H"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["J"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["L"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     else
                     {
                         tmpath = HttpContext.Current.Server.MapPath("report\\6.xls");
+                        excelFile.LoadXls(tmpath);
+                        sheet = excelFile.Worksheets[0];
+                        sheet.Rows[1].Cells["D"].Value = ConfigurationManager.AppSettings["Time1"];
+                        sheet.Rows[1].Cells["I"].Value = ConfigurationManager.AppSettings["Time2"];
+                        sheet.Rows[1].Cells["N"].Value = ConfigurationManager.AppSettings["Time3"];
+                        sheet.Rows[1].Cells["S"].Value = ConfigurationManager.AppSettings["Time4"];
+                        sheet.Rows[1].Cells["X"].Value = ConfigurationManager.AppSettings["Time5"];
                     }
                     break;
 
             }
 
-            excelFile.LoadXls(tmpath);
-            ExcelWorksheet sheet = excelFile.Worksheets[0];
+           
 
 
             DateTime bg = Convert.ToDateTime(begintime);

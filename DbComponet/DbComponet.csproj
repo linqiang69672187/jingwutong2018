@@ -33,6 +33,9 @@
     <Reference Include="GemBox.Spreadsheet">
       <HintPath>bin\Release\GemBox.Spreadsheet.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\JingWuTong\bin\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -44,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="JSON.cs" />
+    <Compile Include="LogHelper.cs" />
     <Compile Include="login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLHelper.cs" />
