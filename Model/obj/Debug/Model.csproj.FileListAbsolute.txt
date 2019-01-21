@@ -10,11 +10,11 @@ E:\工作\JingWuTong\Model\bin\Debug\Model.dll
 E:\工作\JingWuTong\Model\bin\Debug\Model.pdb
 E:\工作\JingWuTong\Model\obj\Debug\Model.dll
 E:\工作\JingWuTong\Model\obj\Debug\Model.pdb
-E:\工作\jingwutong2018\Model\bin\Debug\Model.dll
-E:\工作\jingwutong2018\Model\bin\Debug\Model.pdb
-E:\工作\jingwutong2018\Model\obj\Debug\Model.dll
-E:\工作\jingwutong2018\Model\obj\Debug\Model.pdb
 C:\工作\jingwutong2018\jingwutong2018\Model\bin\Debug\Model.dll
 C:\工作\jingwutong2018\jingwutong2018\Model\bin\Debug\Model.pdb
 C:\工作\jingwutong2018\jingwutong2018\Model\obj\Debug\Model.dll
 C:\工作\jingwutong2018\jingwutong2018\Model\obj\Debug\Model.pdb
+E:\工作\jingwutong2018\Model\bin\Debug\Model.dll
+E:\工作\jingwutong2018\Model\bin\Debug\Model.pdb
+E:\工作\jingwutong2018\Model\obj\Debug\Model.dll
+E:\工作\jingwutong2018\Model\obj\Debug\Model.pdb
