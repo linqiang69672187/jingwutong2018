@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+     <link href="../css/permissions_set.css" rel="stylesheet" />
+        <div id="setbody" v-cloak>
+            <div class="row"><div>角色名称：</div><div><input v-model="rolename" placeholder="请输入角色名称" type="text" /></div></div>
+            <div class="row"><div>创建人：</div><div>{{creater}}</div></div>
+            <div class="row"><div>备注：</div><div><textarea v-model="remark"></textarea></div></div>
+            <div class="row"><div>设备状态：</div></div>
+            <div class="row">
+                <table>
+                    <thead>
+                      <tr>
+                        <th>姓名</th>
+                        <th>性别</th>
+                        <th>暂住地</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="parent" id="row_01">
+                        <td colspan="3">前台设计组</td>
+                      </tr>
+                      <tr class="child_row_01">
+                        <td>张山</td>
+                        <td>男</td>
+                        <td>浙江宁波</td>
+                      </tr>
+                      <tr class="child_row_01">
+                        <td>李四</td>
+                        <td>女</td>
+                        <td>浙江杭州</td>
+                      </tr>
+                      <tr class="parent" id="row_02">
+                        <td colspan="3">前台开发组</td>
+                      </tr>
+                      <tr class="child_row_02">
+                        <td>王五</td>
+                        <td>男</td>
+                        <td>湖南长沙</td>
+                      </tr>
+                      <tr class="child_row_02">
+                        <td>找六</td>
+                        <td>男</td>
+                        <td>浙江温州</td>
+                      </tr>
+                      <tr class="parent" id="row_03">
+                        <td colspan="3">后台开发组</td>
+                      </tr>
+                      <tr class="child_row_03">
+                        <td>Rain</td>
+                        <td>男</td>
+                        <td>浙江杭州</td>
+                      </tr>
+                      <tr class="child_row_03">
+                        <td>MAXMAN</td>
+                        <td>女</td>
+                        <td>浙江杭州</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+            </div>
+        </div>
+     <script src="../comjs/jquery.js"></script>
+     <script src="../comjs/Vue.js"></script>
+    <script src="../js/permissions_set.js"></script>
+</body>
+</html>

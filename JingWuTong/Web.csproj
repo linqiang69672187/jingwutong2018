@@ -139,6 +139,7 @@
     <Content Include="comjs\moment.js" />
     <Content Include="comjs\myHeatmap2.0.min.js" />
     <Content Include="comjs\textCount.js" />
+    <Content Include="comjs\Vue.js" />
     <Content Include="config.html" />
     <Content Include="configs\entitymanage.html" />
     <Content Include="configs\Images\favicon.ico" />
@@ -156,6 +157,7 @@
     <Content Include="css\config.css" />
     <Content Include="css\dataManagement.css" />
     <Content Include="css\indexdemo.css" />
+    <Content Include="css\permissions_set.css" />
     <Content Include="css\report.css" />
     <Content Include="css\window.css" />
     <Content Include="css\datatables.min.css" />
@@ -184,6 +186,7 @@
     <Content Include="Handle\index_24histroy.ashx" />
     <Content Include="Handle\report\1.xls" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="Html\permissions_set.html" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\sort_asc.png" />
     <Content Include="Images\sort_asc_disabled.png" />
@@ -314,6 +317,7 @@
     <Content Include="js\demo.js" />
     <Content Include="js\indexdemo.js" />
     <Content Include="js\opendiv.js" />
+    <Content Include="js\permissions_set.js" />
     <Content Include="js\report.js" />
     <Content Include="js\window1.js" />
     <Content Include="js\Date.js" />
