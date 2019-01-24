@@ -317,6 +317,7 @@
     <Content Include="js\demo.js" />
     <Content Include="js\indexdemo.js" />
     <Content Include="js\opendiv.js" />
+    <Content Include="js\parentchildTr.js" />
     <Content Include="js\permissions_set.js" />
     <Content Include="js\report.js" />
     <Content Include="js\window1.js" />
