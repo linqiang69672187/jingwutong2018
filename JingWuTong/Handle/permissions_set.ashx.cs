@@ -14,7 +14,8 @@ namespace JingWuTong.Handle
         public void ProcessRequest(HttpContext context)
         {
             context.Response.ContentType = "text/plain";
-            context.Response.Write("Hello World");
+            string type = "新增";
+
         }
 
         public bool IsReusable
