@@ -22,7 +22,7 @@
                     </thead>
                     <tbody>
                        <template v-for="(item, index) in pages" >
-                          <tr class="parent" :id="createid('row',index)">
+                          <tr class="parent" :id="createid('row',index)" @click="selectchild($event)">
                               <td ><input v-model="pages[index].checked" type="checkbox" />{{pages[index].name}}</td>
                               <td ><div v-for="(item, index) in pages[index].buttons" >
                                   <input v-model="item.checked" type="checkbox" />{{item.name}}

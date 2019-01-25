@@ -14,7 +14,8 @@
                 data: { 'requesttype': 'add' },
                 dataType: "json",
                 success: function (data) {
-                   app.pages=data;
+                    app.pages = data;
+                   
                 },
                 error: function (msg) {
                     console.debug("错误:ajax");
@@ -29,15 +30,18 @@
         createclass:function(head,id){
             return head+id+" childrow";
         },
+        selectchild: function (event) {
+            $(event.currentTarget).toggleClass("selected").siblings('.child_' + event.currentTarget.id).toggle(); // 隐藏/显示所谓的子行
+
+        }
     },
+    
+      
 });
 
-$(function(){
-    $('tr.parent').click(function(){ // 获取所谓的父行
-      $(this).toggleClass("selected") .siblings('.child_'+this.id).toggle(); // 隐藏/显示所谓的子行
-    });
-});
-
+//$('tr.parent td').click(function () { // 获取所谓的父行
+//    $(this).toggleClass("selected").siblings('.child_' + this.id).toggle(); // 隐藏/显示所谓的子行
+//});
 //    { name: '首页',checked:true },
 //    { name: '设备查看',checked:false},
 //    { name: '实时状况',checked:false,buttons:[
