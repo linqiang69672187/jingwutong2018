@@ -1,9 +1,7 @@
 ﻿var app = new Vue({
     el: '#setbody',
     data: {
-        rolename: '管理员',
-        creater:'admin',
-        remark: '备注信息',
+        role: { 'id': '22', 'name': '管理员', 'remark': '这是管理员', 'creater': 'admin' },
         pages: []
     },
     mounted:
@@ -11,11 +9,10 @@
             $.ajax({
                 type: "POST",
                 url: "../Handle/permissions_set.ashx",
-                data: { 'requesttype': 'add' },
+                data: { 'requesttype': 'read' },
                 dataType: "json",
                 success: function (data) {
                     app.pages = data;
-                   
                 },
                 error: function (msg) {
                     console.debug("错误:ajax");
@@ -32,7 +29,21 @@
         },
         selectchild: function (event) {
             $(event.currentTarget).toggleClass("selected").siblings('.child_' + event.currentTarget.id).toggle(); // 隐藏/显示所谓的子行
-
+        },
+        save: function (event) {
+            var _this =this;
+                $.ajax({
+                    type: "POST",
+                    url: "../Handle/permissions_set.ashx",
+                    data: { 'requesttype': 'save', 'data': JSON.stringify(_this.pages), 'role': JSON.stringify(_this.role) },
+                    dataType: "json",
+                    success: function (data) {
+                        alert(data)
+                    },
+                    error: function (msg) {
+                        console.debug("错误:ajax");
+                    }
+                });
         }
     },
     

@@ -18,3 +18,4 @@ E:\工作\jingwutong2018\Model\bin\Debug\Model.dll
 E:\工作\jingwutong2018\Model\bin\Debug\Model.pdb
 E:\工作\jingwutong2018\Model\obj\Debug\Model.dll
 E:\工作\jingwutong2018\Model\obj\Debug\Model.pdb
+E:\工作\jingwutong2018\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache

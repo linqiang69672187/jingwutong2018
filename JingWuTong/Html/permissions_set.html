@@ -8,9 +8,9 @@
 <body>
      <link href="../css/permissions_set.css" rel="stylesheet" />
         <div id="setbody" v-cloak>
-            <div class="row"><div>角色名称：</div><div><input v-model="rolename" placeholder="请输入角色名称" type="text" /></div></div>
-            <div class="row"><div>创建人：</div><div>{{creater}}</div></div>
-            <div class="row"><div>备注：</div><div><textarea v-model="remark"></textarea></div></div>
+            <div class="row"><div>角色名称：</div><div><input v-model="role.name" placeholder="请输入角色名称" type="text" /></div></div>
+            <div class="row"><div>创建人：</div><div>{{role.creater}}</div></div>
+            <div class="row"><div>备注：</div><div><textarea v-model="role.remark"></textarea></div></div>
             <div class="row"><div>设备状态：</div></div>
             <div class="row">
                 <table>
@@ -23,16 +23,16 @@
                     <tbody>
                        <template v-for="(item, index) in pages" >
                           <tr class="parent" :id="createid('row',index)" @click="selectchild($event)">
-                              <td ><input v-model="pages[index].checked" type="checkbox" />{{pages[index].name}}</td>
+                              <td ><input v-model="pages[index].ischecked" type="checkbox" />{{pages[index].name}}</td>
                               <td ><div v-for="(item, index) in pages[index].buttons" >
-                                  <input v-model="item.checked" type="checkbox" />{{item.name}}
+                                  <input v-model="item.ischecked" type="checkbox" />{{item.name}}
                                  </div> </td>
                             </tr>
                             <tr :class="createclass('child_row',index)" v-for="(item, n) in pages[index].child_page" >
-                              <td><input v-model="item.checked" type="checkbox" />{{item.name}}</td>
+                              <td><input v-model="item.ischecked" type="checkbox" />{{item.name}}</td>
                               <td>
                                   <div v-for="(item, index) in item.buttons">
-                                      <input v-model="item.checked" type="checkbox" />{{item.name}}
+                                      <input v-model="item.ischecked" type="checkbox" />{{item.name}}
                                   </div>
                               </td>
                             </tr>
@@ -41,6 +41,8 @@
                   </table>
 
             </div>
+            <div class="row" @click="save($event)"><div>保存</div></div>
+
         </div>
      <script src="../comjs/jquery.js"></script>
      <script src="../comjs/Vue.js"></script>
