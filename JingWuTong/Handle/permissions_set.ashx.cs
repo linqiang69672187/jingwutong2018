@@ -21,9 +21,11 @@ namespace JingWuTong.Handle
             context.Response.ContentType = "text/plain";
             string type = context.Request.Form["requesttype"];
             DataTable rolo_power=null;
+            DataTable rolo = null;
             if (context.Request.Form["roleid"]!="")
             {
                 rolo_power = SQLHelper.ExecuteRead(CommandType.Text, "SELECT page_or_buttons_id,type,enable FROM [role_power]   where role_id =" + context.Request.Form["roleid"], "rolo_power");
+                rolo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT id,RoleName,Bz,Crateator FROM [role]   where id =" + context.Request.Form["roleid"], "rolo");
             }
 
             StringBuilder retJson = new StringBuilder();
@@ -46,7 +48,10 @@ namespace JingWuTong.Handle
                    where (p.Field<int>("JB") == 0)
                    orderby p.Field<int>("Sort") ascending
                    select p;
-            retJson.Append("[");
+            retJson.Append("{\"");
+            retJson.Append("pages");
+            retJson.Append('"');
+            retJson.Append(":[");
             int h = 0;
             int n = 0;
             int i = 0;
@@ -250,7 +255,54 @@ namespace JingWuTong.Handle
                 retJson.Append('}');
 
             }
-            retJson.Append("]");
+            retJson.Append("],\"role\":{");
+            retJson.Append('"');
+            retJson.Append("name");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            if (rolo != null)
+            {
+                retJson.Append(rolo.Rows[0]["RoleName"].ToString());
+            }
+            retJson.Append('"');
+            retJson.Append(',');
+            retJson.Append('"');
+            retJson.Append("id");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            if (rolo != null)
+            {
+                retJson.Append(rolo.Rows[0]["id"].ToString());
+            }
+            retJson.Append('"');
+            retJson.Append(',');
+            retJson.Append('"');
+            retJson.Append("remark");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            if (rolo != null)
+            {
+                retJson.Append(rolo.Rows[0]["Bz"].ToString());
+            }
+            retJson.Append('"');
+            retJson.Append(',');
+            retJson.Append('"');
+            retJson.Append("creater");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            if (rolo!=null)
+            {
+                retJson.Append(rolo.Rows[0]["crateator"].ToString());
+            }
+            retJson.Append('"');
+
+
+            retJson.Append("}}");
+
             context.Response.Write(retJson.ToString());
             return;
 

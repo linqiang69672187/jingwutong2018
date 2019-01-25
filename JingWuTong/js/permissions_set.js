@@ -1,7 +1,7 @@
 ﻿var app = new Vue({
     el: '#setbody',
     data: {
-        role: { 'id': '22', 'name': '管理员', 'remark': '这是管理员', 'creater': 'admin' },
+        role: {},
         pages: []
     },
     mounted:
@@ -12,7 +12,8 @@
                 data: { 'requesttype': 'add', 'roleid': GetQueryString('roleid') },
                 dataType: "json",
                 success: function (data) {
-                    app.pages = data;
+                    app.role = data.role;
+                    app.pages = data.pages;
                 },
                 error: function (msg) {
                     console.debug("错误:ajax");
@@ -35,7 +36,7 @@
                 $.ajax({
                     type: "POST",
                     url: "../Handle/permissions_set.ashx",
-                    data: { 'requesttype': 'save', 'data': JSON.stringify(_this.pages), 'role': JSON.stringify(_this.role), 'roleid': GetQueryString('roleid') },
+                    data: { 'requesttype': 'save', 'data': JSON.stringify(_this.pages), 'role': JSON.stringify(_this.role), 'roleid': GetQueryString('roleid'), 'roleid':'' },
                     dataType: "json",
                     success: function (data) {
                         alert(data)
