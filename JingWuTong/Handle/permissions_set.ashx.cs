@@ -20,17 +20,23 @@ namespace JingWuTong.Handle
         {
             context.Response.ContentType = "text/plain";
             string type = context.Request.Form["requesttype"];
+            DataTable rolo_power=null;
+            if (context.Request.Form["roleid"]!="")
+            {
+                rolo_power = SQLHelper.ExecuteRead(CommandType.Text, "SELECT page_or_buttons_id,type,enable FROM [role_power]   where role_id =" + context.Request.Form["roleid"], "rolo_power");
+            }
+
             StringBuilder retJson = new StringBuilder();
 
             switch (type)
             {
-                case "read":
-                    goto read;
+                case "add":
+                    goto add;
                 case "save":
                     goto save;
    
             }
-            read:
+            add:
             DataTable pages = SQLHelper.ExecuteRead(CommandType.Text, "SELECT id,name,JB,Sort,parent_id FROM Pages ", "pages");
             DataTable buttons = SQLHelper.ExecuteRead(CommandType.Text, "SELECT id,name,Sort,page_name FROM Buttons", "buttons");
             OrderedEnumerableRowCollection<DataRow> pagesrows;
@@ -44,14 +50,14 @@ namespace JingWuTong.Handle
             int h = 0;
             int n = 0;
             int i = 0;
-            foreach (var entityitem in pagesrows)
+            foreach (var fPage in pagesrows)
                 {
                 buttonsrows = from p in buttons.AsEnumerable()
-                              where (p.Field<string>("page_name") == entityitem["name"].ToString())
+                              where (p.Field<string>("page_name") == fPage["name"].ToString())
                               orderby p.Field<int>("Sort") ascending
                               select p;
                 childpagesrows = from p in pages.AsEnumerable()
-                              where (p.Field<int>("parent_id") == int.Parse(entityitem["id"].ToString()))
+                              where (p.Field<int>("parent_id") == int.Parse(fPage["id"].ToString()))
                               orderby p.Field<int>("Sort") ascending
                               select p;
 
@@ -63,23 +69,35 @@ namespace JingWuTong.Handle
                     retJson.Append('"');
                     retJson.Append(":");
                     retJson.Append('"');
-                    retJson.Append(entityitem["name"].ToString());
+                    retJson.Append(fPage["name"].ToString());
                     retJson.Append('"');
                     retJson.Append(',');
-
                     retJson.Append('"');
                     retJson.Append("id");
                     retJson.Append('"');
                     retJson.Append(":");
                     retJson.Append('"');
-                    retJson.Append(entityitem["id"].ToString());
+                    retJson.Append(fPage["id"].ToString());
                     retJson.Append('"');
                     retJson.Append(',');
                     retJson.Append('"');
+                  
                     retJson.Append("ischecked");
                     retJson.Append('"');
                     retJson.Append(":");
-                    retJson.Append("false");
+                    if (rolo_power != null)
+                    {
+                     
+                   var powerrows = from p in rolo_power.AsEnumerable()
+                                  where (p.Field<int>("page_or_buttons_id") == int.Parse(fPage["id"].ToString()) && p.Field<string>("type") == "page" && p.Field<Boolean>("enable")==true)
+                                  select p;
+                    retJson.Append((powerrows.Count()>0)?"true":"false");
+                    }
+                    else
+                    {
+                        retJson.Append("false");
+                    }
+                
                     retJson.Append(',');
                     retJson.Append('"');
                     retJson.Append("buttons");
@@ -101,7 +119,6 @@ namespace JingWuTong.Handle
                             retJson.Append(btitem["name"].ToString());
                             retJson.Append('"');
                             retJson.Append(',');
-
                             retJson.Append('"');
                             retJson.Append("id");
                             retJson.Append('"');
@@ -114,8 +131,19 @@ namespace JingWuTong.Handle
                             retJson.Append("ischecked");
                             retJson.Append('"');
                             retJson.Append(":");
+                        if (rolo_power != null)
+                        {
+
+                            var powerrows = from p in rolo_power.AsEnumerable()
+                                            where (p.Field<int>("page_or_buttons_id") == int.Parse(btitem["id"].ToString()) && p.Field<string>("type") == "button" && p.Field<Boolean>("enable") == true)
+                                            select p;
+                            retJson.Append((powerrows.Count() > 0) ? "true" : "false");
+                        }
+                        else
+                        {
                             retJson.Append("false");
-                            retJson.Append('}');
+                        }
+                    retJson.Append('}');
                          }
                     retJson.Append("]");
                     retJson.Append(',');
@@ -154,7 +182,19 @@ namespace JingWuTong.Handle
                             retJson.Append("ischecked");
                             retJson.Append('"');
                             retJson.Append(":");
-                            retJson.Append("false");
+
+                            if (rolo_power != null)
+                            {
+
+                                var powerrows = from p in rolo_power.AsEnumerable()
+                                                where (p.Field<int>("page_or_buttons_id") == int.Parse(childitem["id"].ToString()) && p.Field<string>("type") == "page" && p.Field<Boolean>("enable") == true)
+                                                select p;
+                                retJson.Append((powerrows.Count() > 0) ? "true" : "false");
+                            }
+                            else
+                            {
+                                retJson.Append("false");
+                            }
                             retJson.Append(',');
                             retJson.Append('"');
                             retJson.Append("buttons");
@@ -187,7 +227,19 @@ namespace JingWuTong.Handle
                                         retJson.Append("ischecked");
                                         retJson.Append('"');
                                         retJson.Append(":");
-                                        retJson.Append("false");
+
+                                        if (rolo_power != null)
+                                        {
+
+                                            var powerrows = from p in rolo_power.AsEnumerable()
+                                                            where (p.Field<int>("page_or_buttons_id") == int.Parse(btitem["id"].ToString()) && p.Field<string>("type") == "button" && p.Field<Boolean>("enable") == true)
+                                                            select p;
+                                            retJson.Append((powerrows.Count() > 0) ? "true" : "false");
+                                        }
+                                        else
+                                        {
+                                            retJson.Append("false");
+                                        }
                                         retJson.Append('}');
                                     }
 
@@ -201,6 +253,8 @@ namespace JingWuTong.Handle
             retJson.Append("]");
             context.Response.Write(retJson.ToString());
             return;
+
+
             save://添加标签
             string data = context.Request.Form["data"];
             string role = context.Request.Form["role"];

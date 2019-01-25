@@ -9,7 +9,7 @@
             $.ajax({
                 type: "POST",
                 url: "../Handle/permissions_set.ashx",
-                data: { 'requesttype': 'read' },
+                data: { 'requesttype': 'add', 'roleid': GetQueryString('roleid') },
                 dataType: "json",
                 success: function (data) {
                     app.pages = data;
@@ -35,7 +35,7 @@
                 $.ajax({
                     type: "POST",
                     url: "../Handle/permissions_set.ashx",
-                    data: { 'requesttype': 'save', 'data': JSON.stringify(_this.pages), 'role': JSON.stringify(_this.role) },
+                    data: { 'requesttype': 'save', 'data': JSON.stringify(_this.pages), 'role': JSON.stringify(_this.role), 'roleid': GetQueryString('roleid') },
                     dataType: "json",
                     success: function (data) {
                         alert(data)
@@ -49,7 +49,11 @@
     
       
 });
-
+function GetQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
 //$('tr.parent td').click(function () { // 获取所谓的父行
 //    $(this).toggleClass("selected").siblings('.child_' + this.id).toggle(); // 隐藏/显示所谓的子行
 //});
