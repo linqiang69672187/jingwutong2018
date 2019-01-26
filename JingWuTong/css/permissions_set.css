@@ -11,14 +11,80 @@
     }
 .row{
     display: block;
+    margin:5px 5px 10px 5px;
 }
 .row div {
-    display: inline;
+    display: inline-block;
 }
-table { border:0;border-collapse:collapse;width: 600px;} 
-td { font:normal 12px/17px Arial;padding:2px;width:100px;} 
-th { font:bold 12px/17px Arial;text-align:left;padding:4px;border-bottom:1px solid #333;width:100px;} 
-.parent { background:#FFF38F;cursor:pointer;} /* 偶数行样式*/ 
-.odd { background:#FFFFEE;} /* 奇数行样式*/ 
-.selected { background:#FF6500;color:#fff;}
-.childrow{display: none;} 
+.row>div:nth-child(1) {
+    width:60px;
+    
+    text-align:right;
+    vertical-align:top;
+}
+#configmodal .modal-content{
+    background-color:#000f45;
+
+}
+#configmodal table{
+    background-color:#13204d;
+
+}
+#configmodal textarea{ width:300px;
+                       border-radius:5px;
+                       background-color:transparent;
+                       border:1px solid #fff;
+}
+#configmodal th{ background-color:#116bf2;
+                 height:30px
+}
+#configmodal td{ 
+                 height:30px
+}
+#configmodal,#configmodal .close{
+    color:#fff !important;
+          opacity:1;
+
+}
+#configmodal th:nth-child(1){
+    width:30%;
+}
+#configmodal table{width:100%}
+.childrow{background-color:#213366;} 
+.modal-body{
+    max-height:500px;
+    overflow-y:auto;
+}
+[v-cloak]{display:none;}
+#configmodal input{
+    margin-right:3px;
+    margin-left:5px;
+    background-color:transparent;
+}
+#configmodal i{
+    margin-left:5px;
+    cursor:pointer;
+}
+.parent{
+    border-top:1px solid #fff;
+    border-bottom:1px solid #fff;
+}
+
+*::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 1px;
+    }
+*::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 10px;
+         -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: #535353;
+    }
+*::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 10px;
+        background: #EDEDED;
+    }
+.modal-footer{border-top:0px !important }
+.parent span{
+    cursor:pointer;
+}

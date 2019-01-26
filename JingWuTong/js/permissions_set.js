@@ -1,50 +1,74 @@
 ﻿var app = new Vue({
-    el: '#setbody',
+    el: '#configmodal',
     data: {
         role: {},
-        pages: []
+        pages: [],
+        checkvalue: { rolename_wrong: false },
+        modelname: '新增角色',
+        selctedall: false
     },
     mounted:
         function(){
-            $.ajax({
-                type: "POST",
-                url: "../Handle/permissions_set.ashx",
-                data: { 'requesttype': 'add', 'roleid': GetQueryString('roleid') },
-                dataType: "json",
-                success: function (data) {
-                    app.role = data.role;
-                    app.pages = data.pages;
-                },
-                error: function (msg) {
-                    console.debug("错误:ajax");
-                }
-            });
+          
         }
     ,
     methods: {
         createid:function(head,id){
             return head+id;
         },
-        createclass:function(head,id){
-            return head+id+" childrow";
+        faclass: function (index) {
+            // 隐藏/显示所谓的子行
+            var iclass;
+            if (this.pages[index].child_page.length == 0) return;
+            return (this.pages[index].child_page[0].isshow) ? "fa fa-caret-down" : "fa fa-caret-up";
         },
-        selectchild: function (event) {
-            $(event.currentTarget).toggleClass("selected").siblings('.child_' + event.currentTarget.id).toggle(); // 隐藏/显示所谓的子行
+        selectchild: function (index) {
+       
+            for (var i = 0; i < this.pages[index].child_page.length; i++) {
+                this.pages[index].child_page[i].isshow = !this.pages[index].child_page[i].isshow
+            }
         },
         save: function (event) {
-            var _this =this;
+            var _this = this;
+
+            if (_this.role.name.trim() == "") {
+                _this.checkvalue.rolename_wrong = true;
+
+               var timef= setTimeout(function () {
+                    _this.checkvalue.rolename_wrong = false;
+                    clearTimeout(timef);
+                    timef = null;
+                }, 3000);
+                return;
+            }
                 $.ajax({
                     type: "POST",
                     url: "../Handle/permissions_set.ashx",
                     data: { 'requesttype': 'save', 'data': JSON.stringify(_this.pages), 'role': JSON.stringify(_this.role), 'roleid': GetQueryString('roleid'), 'roleid':'' },
                     dataType: "json",
                     success: function (data) {
-                        alert(data)
+                        window.location = 'Role_Management.aspx';
                     },
                     error: function (msg) {
                         console.debug("错误:ajax");
                     }
                 });
+        },
+        selctedallfunc: function () {
+            this.selctedall = !this.selctedall;
+            for (var page in this.pages) {
+                this.pages[page].ischecked = this.selctedall;
+                for (var btn in this.pages[page].buttons) {
+                    this.pages[page].buttons[btn].ischecked = this.selctedall;
+                }
+                for (var childpage in this.pages[page].child_page) {
+                    this.pages[page].child_page[childpage].ischecked = this.selctedall;
+                    for (var childbtn in this.pages[page].child_page[childpage].buttons) {
+                        this.pages[page].child_page[childpage].buttons[childbtn].ischecked = this.selctedall;
+                    }
+                }
+
+            }
         }
     },
     
@@ -54,6 +78,42 @@ function GetQueryString(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]); return null;
+}
+function open_win() {
+    $.ajax({
+        type: "POST",
+        url: "../Handle/permissions_set.ashx",
+        data: { 'requesttype': 'add', 'roleid':null },
+        dataType: "json",
+        success: function (data) {
+            app.role = data.role;
+            app.pages = data.pages;
+            app.modelname = "新增角色";
+            $("#configmodal").modal("show");
+        },
+        error: function (msg) {
+            console.debug("错误:ajax");
+        }
+    });
+
+}
+
+function open_win_eide(ID) {
+    $.ajax({
+        type: "POST",
+        url: "../Handle/permissions_set.ashx",
+        data: { 'requesttype': 'add', 'roleid': ID },
+        dataType: "json",
+        success: function (data) {
+            app.role = data.role;
+            app.pages = data.pages;
+            app.modelname = "编辑角色";
+            $("#configmodal").modal("show");
+        },
+        error: function (msg) {
+            console.debug("错误:ajax");
+        }
+    });
 }
 //$('tr.parent td').click(function () { // 获取所谓的父行
 //    $(this).toggleClass("selected").siblings('.child_' + this.id).toggle(); // 隐藏/显示所谓的子行

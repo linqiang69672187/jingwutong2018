@@ -135,6 +135,8 @@ namespace DAL
 
 
             int rows = sqlhelper.ExecuteNonQuery(strSql.ToString(), CommandType.Text, parameters);
+                       sqlhelper.ExecuteNonQuery("delete role_power where role_id="+ID, CommandType.Text,null );
+
             if (rows > 0)
             {
                 return true;

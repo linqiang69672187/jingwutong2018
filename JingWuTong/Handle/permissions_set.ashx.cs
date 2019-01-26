@@ -27,7 +27,19 @@ namespace JingWuTong.Handle
                 rolo_power = SQLHelper.ExecuteRead(CommandType.Text, "SELECT page_or_buttons_id,type,enable FROM [role_power]   where role_id =" + context.Request.Form["roleid"], "rolo_power");
                 rolo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT id,RoleName,Bz,Crateator FROM [role]   where id =" + context.Request.Form["roleid"], "rolo");
             }
+            var s_name = "";
+            if (HttpContext.Current.Request.Cookies["cookieName"] != null)
+            {
 
+                HttpCookie cookies = HttpContext.Current.Request.Cookies["cookieName"];
+
+                if (cookies["name"] != null)
+                {
+                    s_name = HttpContext.Current.Server.UrlDecode(cookies["name"]);
+                }
+
+
+            }
             StringBuilder retJson = new StringBuilder();
 
             switch (type)
@@ -176,6 +188,12 @@ namespace JingWuTong.Handle
                             retJson.Append('"');
                             retJson.Append(',');
                             retJson.Append('"');
+                            retJson.Append("isshow");
+                            retJson.Append('"');
+                            retJson.Append(":");
+                            retJson.Append("false");
+                            retJson.Append(',');
+                            retJson.Append('"');
                             retJson.Append("id");
                             retJson.Append('"');
                             retJson.Append(":");
@@ -276,6 +294,10 @@ namespace JingWuTong.Handle
             {
                 retJson.Append(rolo.Rows[0]["id"].ToString());
             }
+            else
+            {
+                retJson.Append('0');
+            }
             retJson.Append('"');
             retJson.Append(',');
             retJson.Append('"');
@@ -294,9 +316,12 @@ namespace JingWuTong.Handle
             retJson.Append('"');
             retJson.Append(":");
             retJson.Append('"');
-            if (rolo!=null)
+            if (rolo != null)
             {
                 retJson.Append(rolo.Rows[0]["crateator"].ToString());
+            }
+            else {
+                retJson.Append(s_name);
             }
             retJson.Append('"');
 
@@ -404,7 +429,9 @@ namespace JingWuTong.Handle
         }
         public class role
         {
-            public int id { get; set; }
+            public int id {
+               get; set;
+            }
             public string Name { get; set; }
             public string remark { get; set; }
             public string creater { get; set; }

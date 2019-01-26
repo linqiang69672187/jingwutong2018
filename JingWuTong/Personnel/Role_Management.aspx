@@ -7,6 +7,7 @@
  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>单警科技装备管理系统</title>
+
       <style type="text/css"> 
 
          html,body{margin:0px; height:100%;width:100%}
@@ -55,6 +56,9 @@
     <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
 
 </head>
+         <link href="../css/permissions_set.css" rel="stylesheet" />
+        <link href="../Static_Seed_Project/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
 <body style="background-color:transparent">
 
     <form id="form1" runat="server">
@@ -210,35 +214,91 @@
 
 
     </form>
-  
+   <div class="modal fade custom-modal in" id="configmodal" tabindex="-1" role="dialog" aria-labelledby="mydeleModeNo"   v-cloak>
+        <div class="modal-backdrop fade in" style="height: 955px;z-index: -1;"></div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{modelname}}</h4>
+                </div>
+                <div class="modal-body">
+            <div class="row"><div>角色名称：</div><div><input v-model="role.name" placeholder="请输入角色名称" type="text" /><span class="err"  v-show="checkvalue.rolename_wrong">*角色名称不能为空</span></div></div>
+            <div class="row"><div>创建人：</div><div>{{role.creater}}</div></div>
+            <div class="row"><div>备注：</div><div><textarea v-model="role.remark"></textarea></div></div>
+            <div class="row"><div>设备状态：</div></div>
+            <div class="row">
+                <table>
+                    <thead>
+                      <tr>
+                        <th> <input v-model="selctedall"  @click="selctedallfunc()" type="checkbox" />导航名称</th>
+                        <th>权限</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                       <template v-for="(item, index) in pages" >
+                          <tr class="parent">
+                              <td ><input v-model="pages[index].ischecked" type="checkbox" /><span  @click="selectchild(index)">{{pages[index].name}}</span><i :class="faclass(index)" v-show="pages[index].child_page.length > 0"  @click="selectchild(index)"></i></td>
+                              <td ><div v-for="(item, index) in pages[index].buttons" >
+                                  <input v-model="item.ischecked" type="checkbox" />{{item.name}}
+                                 </div> </td>
+                            </tr>
+                            <tr class="childrow" v-for="(item, n) in pages[index].child_page"  v-show="item.isshow"  >
+                              <td><input v-model="item.ischecked" type="checkbox" />{{item.name}}</td>
+                              <td>
+                                  <div v-for="(item, index) in item.buttons">
+                                      <input v-model="item.ischecked" type="checkbox" />{{item.name}}
+                                  </div>
+                              </td>
+                            </tr>
+                       </template>
+                    </tbody>
+                  </table>
+
+            </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-save"  @click="save($event)" >保存</button>
+                    <button type="button" class="btn btn-primary btn-qx" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      <script src="../comjs/Vue.js"></script>
+    <script src="../js/permissions_set.js"></script>
 </body>
 </html>
 
 
 <script type="text/javascript">
-    function open_win() {
-        var iWidth = 800; //弹出窗口的宽度;
-        var iHeight = 600; //弹出窗口的高度;
+    //function open_win() {
+    //    var iWidth = 800; //弹出窗口的宽度;
+    //    var iHeight = 600; //弹出窗口的高度;
 
-        var iTop = (window.screen.availHeight - 30 - iHeight) / 2; //获得窗口的垂直位置;
+    //    var iTop = (window.screen.availHeight - 30 - iHeight) / 2; //获得窗口的垂直位置;
 
-        var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; //获得窗口的水平位置;
+    //    var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; //获得窗口的水平位置;
 
-        window.open("Role_Management_Add.aspx", "_blank", "top=" + iTop + ", left=" + iLeft + ",titlebar=no,scrollbars=no,toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" + iWidth + ", height=" + iHeight + "");
+    //    window.open("Role_Management_Add.aspx", "_blank", "top=" + iTop + ", left=" + iLeft + ",titlebar=no,scrollbars=no,toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" + iWidth + ", height=" + iHeight + "");
+      
+    
+    //}
 
-    }
+    //function open_win_eide(ID) {
+    //    var iWidth = 800; //弹出窗口的宽度;
+    //    var iHeight = 600; //弹出窗口的高度;
 
-    function open_win_eide(ID) {
-        var iWidth = 800; //弹出窗口的宽度;
-        var iHeight = 600; //弹出窗口的高度;
+    //    var iTop = (window.screen.availHeight - 30 - iHeight) / 2; //获得窗口的垂直位置;
 
-        var iTop = (window.screen.availHeight - 30 - iHeight) / 2; //获得窗口的垂直位置;
+    //    var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; //获得窗口的水平位置;
 
-        var iLeft = (window.screen.availWidth - 10 - iWidth) / 2; //获得窗口的水平位置;
-
-        window.open("Role_Management_Add.aspx?ID=" + ID, "_blank", "top=" + iTop + ", left=" + iLeft + ",titlebar=no,scrollbars=no,toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" + iWidth + ", height=" + iHeight + "");
-
-    }
+    //    window.open("Role_Management_Add.aspx?ID=" + ID, "_blank", "top=" + iTop + ", left=" + iLeft + ",titlebar=no,scrollbars=no,toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=" + iWidth + ", height=" + iHeight + "");
+      
+      
+    //}
 
 
 
