@@ -224,7 +224,7 @@
                 </div>
                 <div class="modal-body">
             <div class="row"><div>角色名称：</div><div><input v-model="role.name" placeholder="请输入角色名称" type="text" /><span class="err"  v-show="checkvalue.rolename_wrong">*角色名称不能为空</span></div></div>
-            <div class="row"><div>创建人：</div><div>{{role.creater}}</div></div>
+            <div class="row"><div>创建人：</div><div>{{role.xm}}</div></div>
             <div class="row"><div>备注：</div><div><textarea v-model="role.remark"></textarea></div></div>
             <div class="row"><div>设备状态：</div></div>
             <div class="row">

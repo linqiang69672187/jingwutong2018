@@ -25,17 +25,20 @@ namespace JingWuTong.Handle
             if (context.Request.Form["roleid"]!="")
             {
                 rolo_power = SQLHelper.ExecuteRead(CommandType.Text, "SELECT page_or_buttons_id,type,enable FROM [role_power]   where role_id =" + context.Request.Form["roleid"], "rolo_power");
-                rolo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT id,RoleName,Bz,Crateator FROM [role]   where id =" + context.Request.Form["roleid"], "rolo");
+                rolo = SQLHelper.ExecuteRead(CommandType.Text, "SELECT rl.id,RoleName,Bz,Crateator,us.xm FROM [role] rl left join ACL_USER us on Crateator=us.JYBH  where rl.id =" + context.Request.Form["roleid"], "rolo");
             }
             var s_name = "";
+            var xm = "";
             if (HttpContext.Current.Request.Cookies["cookieName"] != null)
             {
 
                 HttpCookie cookies = HttpContext.Current.Request.Cookies["cookieName"];
 
-                if (cookies["name"] != null)
+                if (cookies["JYBH"] != null)
                 {
-                    s_name = HttpContext.Current.Server.UrlDecode(cookies["name"]);
+                    s_name = HttpContext.Current.Server.UrlDecode(cookies["JYBH"]);
+                    xm = HttpContext.Current.Server.UrlDecode(cookies["name"]);
+
                 }
 
 
@@ -324,7 +327,21 @@ namespace JingWuTong.Handle
                 retJson.Append(s_name);
             }
             retJson.Append('"');
-
+            retJson.Append(',');
+            retJson.Append('"');
+            retJson.Append("xm");
+            retJson.Append('"');
+            retJson.Append(":");
+            retJson.Append('"');
+            if (rolo != null)
+            {
+                retJson.Append(rolo.Rows[0]["xm"].ToString());
+            }
+            else
+            {
+                retJson.Append(xm);
+            }
+            retJson.Append('"');
 
             retJson.Append("}}");
 
