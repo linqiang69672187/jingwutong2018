@@ -561,3 +561,20 @@ function formatSeconds(value, y) {
 }
 
 
+$.ajax({
+    type: "POST",
+    url: "../Handle/permissions_load.ashx",
+    data: { 'page_name': '实时状况','type':'button' },
+    dataType: "json",
+    success: function (data) {
+        var data = data.data;
+        for (var i = 0; i < data.length; ++i) {
+                if (data[i]["enable"] == "True") { $("[vslabel='" + data[i]["name"] + "']").show(); } else {
+                    $("[vslabel='" + data[i]["name"] + "']").hide();
+            }
+        }
+    },
+    error: function (msg) {
+        console.debug("错误:ajax");
+    }
+});

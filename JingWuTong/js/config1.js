@@ -13,7 +13,7 @@ function headload(id) {
 
 
     $("#header").load('../Top.aspx', function () {
-        $("#header ul li:eq("+id+")").addClass("active");
+        $("#header ul li:eq(" + id + ")").addClass("active");
     });
 
 }
@@ -47,3 +47,5 @@ function Load(url,mythis) {
 //$(document).on('click.bs.carousel.data-api', '#exprotIn', function (e) {
 //    $("#daochumodal").modal("show");
 //});
+
+

@@ -27,30 +27,30 @@
                 <ul>
                    
              
-                    <li class="leftbanneractive" onclick="Load('#',this)">
+                    <li  vspglabel="首页参数设置"  class="leftbanneractive" onclick="Load('#',this)">
                          <a href="../configs/indexconfig.html" target="frame"> 首页参数设置</a>
                           
                  
                     </li>
 
-                    <li onclick="Load('Department_Management.aspx',this)">
+                    <li vspglabel="部门管理"  onclick="Load('Department_Management.aspx',this)">
                     <a href="Department_Management.aspx" target="frame"> 部门管理</a>
                        
                     </li>
             
 
-                   <li onclick="Load('Equipment_Log.aspx',this)">
+                   <li vspglabel="设备日志"  onclick="Load('Equipment_Log.aspx',this)">
                    <a href="Equipment_Log.aspx" target="frame"> 设备日志</a>
                         
                
                     </li>
 
-                   <li onclick="Load('System_Log.aspx',this)">
+                   <li vspglabel="系统日志"  onclick="Load('System_Log.aspx',this)">
                      <a href="System_Log.aspx" target="frame"> 系统日志</a>
                       
                     </li>
 
-                    <li onclick="Load('AlarmGate.aspx',this)">
+                    <li vspglabel="预警设置"  onclick="Load('AlarmGate.aspx',this)">
                      <a href="AlarmGate.aspx" target="frame"> 预警设置</a>
                       
                     </li>

@@ -28,11 +28,11 @@
         <div class="leftbanner">
                 <ul >
                 
-                    <li class="leftbanneractive" onclick="Load('dataManagement.html',this)">
+                    <li vspglabel="报表统计" class="leftbanneractive" onclick="Load('dataManagement.html',this)">
                         <a href="../dataManagement.html" target="frame">报表统计</a><script src="../js/entitymanage.js"></script>
                     </li>
           
-                    <li onclick="Load('Timesharing_Reports.html',this)">
+                    <li vspglabel="分时段报表统计"  onclick="Load('Timesharing_Reports.html',this)">
                   <a href="Timesharing_Reports.html" target="frame">  分时段报表统计</a>  
                 
                     </li>

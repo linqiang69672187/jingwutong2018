@@ -2,10 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>单警科技装备管理系统</title>
+    <title>报表统计</title>
 	<meta charset="utf-8" />
 </head>
-<body>
+<body  vspglabel="报表统计" >
+    <span style="display:none;" class="pagelb">报表统计</span>
     <link href="Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
     <link href="CSS/dataManagement.css" rel="stylesheet" />
     <link href="CSS/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -38,16 +39,16 @@
          <label>—</label>
          <div class="date"><input type="text" class=" end_form_datetime"><i class="fa fa-calendar"></i></div>
          <div class="date search"><input type="text"  placeholder="请输入设备编号" ><i class="fa fa-search" aria-hidden="true"></i></div>
-         <div class="cell-button" id="requestbtn">查询</div>
-         <div class="cell-button" id="resetbtn">重置</div>
+         <div class="cell-button" vslabel="查询" id="requestbtn">查询</div>
+         <div class="cell-button"  vslabel="查询" id="resetbtn">重置</div>
      
          </div>
      
         <div class="row">
-        <div class="cell-button daochu">导出</div>
-        <div class="cell-button daochuall">一键导出</div>
-        <div class="cell-button" id="configbtn">参数配置</div>
-        <div class="cell-button btnsjx" disabled="disabled">显示数据项</div>
+        <div class="cell-button daochu" vslabel="导出" >导出</div>
+        <div class="cell-button daochuall" vslabel="一键导出" >一键导出</div>
+        <div class="cell-button" id="configbtn" vslabel="参数配置" >参数配置</div>
+        <div class="cell-button btnsjx" disabled="disabled" vslabel="数据项筛选" >显示数据项</div>
 
         <div class="cell-button shujudiv"><ul id="shujuxiang"><li><i class="fa fa-check-square-o" aria-hidden="true"></i>序号</li><li><i class="fa fa-check-square-o" aria-hidden="true"></i>操作</li></ul></div> 
         </div>

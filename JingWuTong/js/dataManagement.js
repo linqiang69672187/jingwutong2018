@@ -1112,3 +1112,25 @@ $(document).on('click.bs.carousel.data-api', '#shujuxiang li', function (e) {
 
     resizetbwidth()
 });
+
+$.ajax({
+    type: "POST",
+    url: "../Handle/permissions_load.ashx",
+    data: { 'page_name': '分时段报表统计','type':'all' },
+    dataType: "json",
+    success: function (data) {
+        var data = data.data;
+        for (var i = 0; i < data.length; ++i) {
+            if (data[i]["type"] == "page") {
+                $("[vspglabel='" + data[i]["name"] + "']").hide();
+            } else {
+                if (data[i]["enable"] == "True") { $("[vslabel='" + data[i]["name"] + "']").show(); } else {
+                    $("[vslabel='" + data[i]["name"] + "']").hide();
+                }
+            }
+        }
+    },
+    error: function (msg) {
+        console.debug("错误:ajax");
+    }
+});

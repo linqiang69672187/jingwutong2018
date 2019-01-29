@@ -617,6 +617,9 @@
     <Compile Include="Handle\loadfreshTime.ashx.cs">
       <DependentUpon>loadfreshTime.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Handle\permissions_load.ashx.cs">
+      <DependentUpon>permissions_load.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Handle\permissions_set.ashx.cs">
       <DependentUpon>permissions_set.ashx</DependentUpon>
     </Compile>
@@ -917,6 +920,7 @@
     <Content Include="Handle\exportAll_Timesharing_ReportsTime.ashx" />
     <Content Include="log4net.config" />
     <Content Include="Handle\permissions_set.ashx" />
+    <Content Include="Handle\permissions_load.ashx" />
     <None Include="Properties\PublishProfiles\web.config.pubxml" />
     <Content Include="Static_Seed_Project\css\bootstrap.css.map" />
     <Content Include="Static_Seed_Project\css\bootstrap.min.css.map" />
