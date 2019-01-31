@@ -7,6 +7,28 @@
         modelname: '新增角色',
         selctedall: false
     },
+    watch: {
+        // 如果 `question` 发生改变，这个函数就会运行
+        pages: {
+            handler(oldpages, newpages) {
+                this.selctedall = true;
+                for (var page in this.pages) {
+                    if (this.pages[page].ischecked == false) { this.selctedall = false; return; }
+                    for (var btn in this.pages[page].buttons) {
+                        if (this.pages[page].buttons[btn].ischecked == false) { this.selctedall = false; return; }
+                    }
+                    for (var childpage in this.pages[page].child_page) {
+                        if (this.pages[page].child_page[childpage].ischecked == false) { this.selctedall = false; return; }
+                        for (var childbtn in this.pages[page].child_page[childpage].buttons) {
+                            if (this.pages[page].child_page[childpage].buttons[childbtn].ischecked == false) { this.selctedall = false; return; }
+                        }
+                    }
+
+                }
+            },
+            deep:true
+        }
+    },
     mounted:
         function(){
           
