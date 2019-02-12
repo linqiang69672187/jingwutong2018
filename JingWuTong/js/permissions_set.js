@@ -43,8 +43,7 @@
             if (this.pages[index].child_page.length == 0) return;
             return (this.pages[index].child_page[0].isshow) ? "fa fa-caret-down" : "fa fa-caret-up";
         },
-        selectchild: function (index) {
-       
+        selectchild: function (index) {       
             for (var i = 0; i < this.pages[index].child_page.length; i++) {
                 this.pages[index].child_page[i].isshow = !this.pages[index].child_page[i].isshow
             }
