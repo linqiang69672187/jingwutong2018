@@ -30,8 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GemBox.Spreadsheet">
-      <HintPath>bin\Release\GemBox.Spreadsheet.dll</HintPath>
+    <Reference Include="GemBox.Spreadsheet, Version=35.1.40.1025, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\JingWuTong\bin\GemBox.Spreadsheet.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\JingWuTong\bin\log4net.dll</HintPath>

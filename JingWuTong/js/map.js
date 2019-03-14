@@ -342,9 +342,14 @@ $(document).on('click.bs.carousel.data-api', '#cz-cx', function (e) {
         success: function (data) {
             createTrace(data);
             $('.progresshz').hide();
+            var nodata=true;
             for (var n = 0; n < data.length; n++) {
-                if (data[n].data.length > 0) break;
-                $("#alertmodal").modal("show");
+                if (data[n].data.length > 0) {
+                    nodata = false;
+                }
+            }
+            if (nodata) {
+                 $("#alertmodal").modal("show");
             }
         },
         error: function (msg) {

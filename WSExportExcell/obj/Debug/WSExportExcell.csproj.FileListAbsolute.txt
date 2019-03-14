@@ -1,0 +1,10 @@
+E:\工作\jingwutong2018\WSExportExcell\obj\Debug\WSExportExcell.csprojResolveAssemblyReference.cache
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\WSExportExcell.dll
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\WSExportExcell.pdb
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\DbComponet.dll
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\GemBox.Spreadsheet.dll
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\log4net.dll
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\DbComponet.pdb
+E:\工作\jingwutong2018\WSExportExcell\obj\Debug\WSExportExcell.dll
+E:\工作\jingwutong2018\WSExportExcell\obj\Debug\WSExportExcell.pdb
+E:\工作\jingwutong2018\WSExportExcell\bin\Debug\GemBox.Spreadsheet.xml

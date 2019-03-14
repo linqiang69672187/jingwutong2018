@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "JingWuTong\Web.csproj", "{A84F39CE-5B47-44DB-BE79-1CBD3046B08A}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TOOL", "TOOL\TOOL.csproj", "{01372CAC-3D28-4256-A8CB-38284E7F6A7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbComponet", "DbComponet\DbComponet.csproj", "{3F4E5EB9-6DF5-4ED3-9363-A95B17F1BE51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSExportExcell", "WSExportExcell\WSExportExcell.csproj", "{879ACC01-BC28-4AC6-8200-C6F3148843B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{3F4E5EB9-6DF5-4ED3-9363-A95B17F1BE51}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F4E5EB9-6DF5-4ED3-9363-A95B17F1BE51}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F4E5EB9-6DF5-4ED3-9363-A95B17F1BE51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{879ACC01-BC28-4AC6-8200-C6F3148843B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{879ACC01-BC28-4AC6-8200-C6F3148843B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{879ACC01-BC28-4AC6-8200-C6F3148843B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{879ACC01-BC28-4AC6-8200-C6F3148843B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
