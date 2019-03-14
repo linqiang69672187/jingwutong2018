@@ -10784,6 +10784,10 @@
       <Project>{f288fce8-7dbf-4ff3-9b12-9e29c1006cd0}</Project>
       <Name>BLL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{cf307a0a-0417-439d-9b66-c821154d2922}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DbComponet\DbComponet.csproj">
       <Project>{3f4e5eb9-6df5-4ed3-9363-a95b17f1be51}</Project>
       <Name>DbComponet</Name>

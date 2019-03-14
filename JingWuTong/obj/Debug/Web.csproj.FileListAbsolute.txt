@@ -97,3 +97,5 @@ E:\工作\jingwutong2018\JingWuTong\bin\TOOL.pdb
 E:\工作\jingwutong2018\JingWuTong\bin\DAL.pdb
 E:\工作\jingwutong2018\JingWuTong\obj\Debug\JingWuTong.dll
 E:\工作\jingwutong2018\JingWuTong\obj\Debug\JingWuTong.pdb
+E:\工作\jingwutong2018\JingWuTong\bin\WSExportExcell.dll
+E:\工作\jingwutong2018\JingWuTong\bin\WSExportExcell.pdb

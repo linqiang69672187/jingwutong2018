@@ -28,9 +28,7 @@ namespace WSExportExcell
                 });
 
             }
-
-
-            excelFile.SaveXls(tmpath);
+            excelFile.Save(tmpath);
             return 0;
         }
     }
