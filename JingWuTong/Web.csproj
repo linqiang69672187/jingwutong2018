@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="APP\69.0.3497.100_chrome_installer.exe" />
+    <Content Include="bakDB.html" />
     <Content Include="bin\BLL.dll" />
     <Content Include="bin\BLL.pdb" />
     <Content Include="bin\DAL.dll" />
