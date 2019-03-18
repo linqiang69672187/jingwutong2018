@@ -193,6 +193,7 @@
     <Content Include="Handle\index_24histroy.ashx" />
     <Content Include="Handle\report\1.xls" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="HtmlPage2.html" />
     <Content Include="Html\permissions_set.html" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\sort_asc.png" />
